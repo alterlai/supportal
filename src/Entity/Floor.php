@@ -19,7 +19,7 @@ class Floor
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\building", inversedBy="floors")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="floors")
      * @ORM\JoinColumn(nullable=false)
      */
     private $building;

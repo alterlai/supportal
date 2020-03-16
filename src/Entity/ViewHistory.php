@@ -17,7 +17,7 @@ class ViewHistory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="viewHistories")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="viewHistories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -28,13 +28,13 @@ class ViewHistory
     private $timestamp;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\actions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Actions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $action_type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\document")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document")
      * @ORM\JoinColumn(nullable=false)
      */
     private $document;

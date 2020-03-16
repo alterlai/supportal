@@ -19,7 +19,7 @@ class Building
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\organisation", inversedBy="buildings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="buildings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $organisation;

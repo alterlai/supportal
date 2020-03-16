@@ -17,7 +17,7 @@ class Area
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\floor", inversedBy="areas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Floor", inversedBy="areas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $floor;

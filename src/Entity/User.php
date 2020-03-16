@@ -46,12 +46,12 @@ class User implements UserInterface
     private $viewHistories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\organisation", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="users")
      */
     private $organisation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\role", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $role;

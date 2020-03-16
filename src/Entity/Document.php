@@ -22,7 +22,7 @@ class Document
     private $file_name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\discipline", inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="documents")
      * @ORM\JoinColumn(nullable=false)
      */
     private $discipline;

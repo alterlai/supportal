@@ -17,6 +17,7 @@ easy_admin:
                     - organisation
                     - role
                     - username
+                    - password
                     - email
 
         Area:
