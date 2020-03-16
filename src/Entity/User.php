@@ -45,6 +45,17 @@ class User implements UserInterface
      */
     private $viewHistories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\organisation", inversedBy="users")
+     */
+    private $organisation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\role", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $role;
+
     public function __construct()
     {
         $this->viewHistories = new ArrayCollection();
@@ -162,6 +173,30 @@ class User implements UserInterface
                 $viewHistory->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrganisation(): ?organisation
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation(?organisation $organisation): self
+    {
+        $this->organisation = $organisation;
+
+        return $this;
+    }
+
+    public function getRole(): ?role
+    {
+        return $this->role;
+    }
+
+    public function setRole(?role $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
