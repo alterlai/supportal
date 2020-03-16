@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -37,6 +39,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewHistory", mappedBy="user_id", orphanRemoval=false)
+     */
+    private $viewHistories;
+
+    public function __construct()
+    {
+        $this->viewHistories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +131,37 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ViewHistory[]
+     */
+    public function getViewHistories(): Collection
+    {
+        return $this->viewHistories;
+    }
+
+    public function addViewHistory(ViewHistory $viewHistory): self
+    {
+        if (!$this->viewHistories->contains($viewHistory)) {
+            $this->viewHistories[] = $viewHistory;
+            $viewHistory->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewHistory(ViewHistory $viewHistory): self
+    {
+        if ($this->viewHistories->contains($viewHistory)) {
+            $this->viewHistories->removeElement($viewHistory);
+            // set the owning side to null (unless already changed)
+            if ($viewHistory->getUserId() === $this) {
+                $viewHistory->setUserId(null);
+            }
+        }
 
         return $this;
     }
