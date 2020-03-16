@@ -17,10 +17,10 @@ class Area
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Floor", inversedBy="areas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="areas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $floor;
+    private $building;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,19 +32,24 @@ class Area
      */
     private $code;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $floor;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFloorId(): ?floor
+    public function getBuildingId(): ?building
     {
-        return $this->floor;
+        return $this->building;
     }
 
-    public function setFloorId(?floor $floor_id): self
+    public function setBuildingId(?building $building_id): self
     {
-        $this->floor = $floor_id;
+        $this->building = $building_id;
 
         return $this;
     }
@@ -69,6 +74,30 @@ class Area
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getBuilding(): ?building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?building $building): self
+    {
+        $this->building = $building;
+
+        return $this;
+    }
+
+    public function getFloor(): ?int
+    {
+        return $this->floor;
+    }
+
+    public function setFloor(?int $floor): self
+    {
+        $this->floor = $floor;
 
         return $this;
     }

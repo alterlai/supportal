@@ -89,4 +89,21 @@ class Document
 
         return $this;
     }
+
+    public function getDiscipline(): ?Discipline
+    {
+        return $this->discipline;
+    }
+
+    public function setDiscipline(?Discipline $discipline): self
+    {
+        $this->discipline = $discipline;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFileName();
+    }
 }

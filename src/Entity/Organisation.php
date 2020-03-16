@@ -34,7 +34,7 @@ class Organisation
     private $color;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Building", mappedBy="organisation_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Building", mappedBy="organisation", orphanRemoval=true)
      */
     private $buildings;
 

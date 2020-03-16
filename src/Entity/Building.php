@@ -35,13 +35,13 @@ class Building
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Floor", mappedBy="building_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Area", mappedBy="building", orphanRemoval=true)
      */
-    private $floors;
+    private $areas;
 
     public function __construct()
     {
-        $this->floors = new ArrayCollection();
+        $this->areas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,33 +86,50 @@ class Building
     }
 
     /**
-     * @return Collection|Floor[]
+     * @return Collection|Area[]
      */
-    public function getFloors(): Collection
+    public function getAreas(): Collection
     {
-        return $this->floors;
+        return $this->areas;
     }
 
-    public function addFloor(Floor $floor): self
+    public function addArea(Area $area): self
     {
-        if (!$this->floors->contains($floor)) {
-            $this->floors[] = $floor;
-            $floor->setBuildingId($this);
+        if (!$this->areas->contains($area)) {
+            $this->areas[] = $area;
+            $area->setBuildingId($this);
         }
 
         return $this;
     }
 
-    public function removeFloor(Floor $floor): self
+    public function removeArea(Area $area): self
     {
-        if ($this->floors->contains($floor)) {
-            $this->floors->removeElement($floor);
+        if ($this->areas->contains($area)) {
+            $this->areas->removeElement($area);
             // set the owning side to null (unless already changed)
-            if ($floor->getBuildingId() === $this) {
-                $floor->setBuildingId(null);
+            if ($area->getBuildingId() === $this) {
+                $area->setBuildingId(null);
             }
         }
 
         return $this;
+    }
+
+    public function getOrganisation(): ?Organisation
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation(?Organisation $organisation): self
+    {
+        $this->organisation = $organisation;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

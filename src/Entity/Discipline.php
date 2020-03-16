@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DisciplineRepository")
@@ -96,5 +97,10 @@ class Discipline
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getCode();
     }
 }
