@@ -56,7 +56,7 @@ class Building
 
     public function setOrganisationId(?organisation $organisation_id): self
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation_id;
 
         return $this;
     }

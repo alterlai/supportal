@@ -56,7 +56,7 @@ class Floor
 
     public function setBuildingId(?building $building_id): self
     {
-        $this->building_id = $building_id;
+        $this->building = $building_id;
 
         return $this;
     }

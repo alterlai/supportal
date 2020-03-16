@@ -44,7 +44,7 @@ class Area
 
     public function setFloorId(?floor $floor_id): self
     {
-        $this->floor_id = $floor_id;
+        $this->floor = $floor_id;
 
         return $this;
     }

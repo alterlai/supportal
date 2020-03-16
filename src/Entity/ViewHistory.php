@@ -46,12 +46,12 @@ class ViewHistory
 
     public function getUserId(): ?user
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     public function setUserId(?user $user_id): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }
@@ -82,12 +82,12 @@ class ViewHistory
 
     public function getDocumentId(): ?document
     {
-        return $this->document_id;
+        return $this->document;
     }
 
     public function setDocumentId(?document $document_id): self
     {
-        $this->document_id = $document_id;
+        $this->document = $document_id;
 
         return $this;
     }

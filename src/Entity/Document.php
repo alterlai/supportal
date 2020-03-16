@@ -61,7 +61,7 @@ class Document
 
     public function setDisciplineCode(?discipline $discipline_code): self
     {
-        $this->discipline_code = $discipline_code;
+        $this->discipline = $discipline_code;
 
         return $this;
     }
