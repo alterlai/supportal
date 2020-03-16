@@ -25,7 +25,7 @@ class Document
      * @ORM\ManyToOne(targetEntity="App\Entity\discipline", inversedBy="documents")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $discipline_code;
+    private $discipline;
 
     /**
      * @ORM\Column(type="datetime")
@@ -56,7 +56,7 @@ class Document
 
     public function getDisciplineCode(): ?discipline
     {
-        return $this->discipline_code;
+        return $this->discipline;
     }
 
     public function setDisciplineCode(?discipline $discipline_code): self

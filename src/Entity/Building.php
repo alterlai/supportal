@@ -22,7 +22,7 @@ class Building
      * @ORM\ManyToOne(targetEntity="App\Entity\organisation", inversedBy="buildings")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $organisation_id;
+    private $organisation;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -51,7 +51,7 @@ class Building
 
     public function getOrganisationId(): ?organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
     public function setOrganisationId(?organisation $organisation_id): self

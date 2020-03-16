@@ -20,7 +20,7 @@ class Area
      * @ORM\ManyToOne(targetEntity="App\Entity\floor", inversedBy="areas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $floor_id;
+    private $floor;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -39,7 +39,7 @@ class Area
 
     public function getFloorId(): ?floor
     {
-        return $this->floor_id;
+        return $this->floor;
     }
 
     public function setFloorId(?floor $floor_id): self

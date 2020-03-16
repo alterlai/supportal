@@ -22,7 +22,7 @@ class Floor
      * @ORM\ManyToOne(targetEntity="App\Entity\building", inversedBy="floors")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $building_id;
+    private $building;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -51,7 +51,7 @@ class Floor
 
     public function getBuildingId(): ?building
     {
-        return $this->building_id;
+        return $this->building;
     }
 
     public function setBuildingId(?building $building_id): self

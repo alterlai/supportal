@@ -20,7 +20,7 @@ class ViewHistory
      * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="viewHistories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -37,7 +37,7 @@ class ViewHistory
      * @ORM\ManyToOne(targetEntity="App\Entity\document")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $document_id;
+    private $document;
 
     public function getId(): ?int
     {
