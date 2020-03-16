@@ -30,7 +30,7 @@ class Discipline
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="discipline_code")
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="discipline")
      */
     private $documents;
 
