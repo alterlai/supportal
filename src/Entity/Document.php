@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
+ * @Vich\Uploadable
  */
 class Document
 {
@@ -18,8 +20,14 @@ class Document
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @var string
      */
     private $file_name;
+
+    /**
+     * @Vich\UploadableField(mapping="file_content", fileNameProperty="file_content")
+     */
+    private $file_content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="documents")
@@ -52,6 +60,20 @@ class Document
         $this->file_name = $file_name;
 
         return $this;
+    }
+
+    public function getFileContent()
+    {
+        return $this->file_content;
+    }
+
+    public function setFileContent($file_content = null): void
+    {
+        $this->file_content = $file_content;
+
+        if ($file_content) {
+            $this->updated_at = new \DateTime('now');
+        }
     }
 
     public function getDisciplineCode(): ?discipline

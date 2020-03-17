@@ -28,6 +28,19 @@ easy_admin:
             class: App\Entity\Discipline
         Document:
             class: App\Entity\Document
+            label: "Documenten"
+            list:
+                fields:
+                    - file_name
+                    - { property: 'file_name', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%' }
+                    - discipline
+                    - description
+            form:
+                fields:
+                    - file_name
+                    - { property: 'file_content', type: 'file' }
+                    - discipline
+                    - description
         Organisation:
             class: App\Entity\Organisation
         Role:
