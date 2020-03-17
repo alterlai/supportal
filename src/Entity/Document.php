@@ -25,7 +25,7 @@ class Document
     private $file_name;
 
     /**
-     * @Vich\UploadableField(mapping="file_content", fileNameProperty="file_content")
+     * @Vich\UploadableField(mapping="documents", fileNameProperty="file_name")
      */
     private $file_content;
 
@@ -55,7 +55,7 @@ class Document
         return $this->file_name;
     }
 
-    public function setFileName(string $file_name): self
+    public function setFileName(?string $file_name): self
     {
         $this->file_name = $file_name;
 

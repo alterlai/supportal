@@ -31,17 +31,21 @@ easy_admin:
             label: "Documenten"
             list:
                 fields:
+                    - id
                     - file_name
-                    - { property: 'file_name', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%' }
+                    - { property: 'file', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%' }
                     - discipline
                     - description
             form:
                 fields:
-                    - file_name
-                    - { property: 'file_content', type: 'file' }
+                    - { property: 'file_content', type: 'vich_file' }
                     - discipline
                     - description
         Organisation:
             class: App\Entity\Organisation
         Role:
             class: App\Entity\Role
+    design:
+        form_theme:
+            - 'form_div_layout.html.twig'
+            - '@EasyAdmin/form/bootstrap_4.html.twig'
