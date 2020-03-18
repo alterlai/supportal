@@ -8,17 +8,19 @@ easy_admin:
                 title: "Meest recente gebruikers"
                 fields:
                     - id
-                    - organisation.name
+                    - { property: 'organisation.name', label: 'Organisatie' }
                     - { property: roles, type: 'collection' }
                     - username
                     - email
             form:
                 fields:
-                    - organisation
-                    - { property: roles, type: 'collection' }
+                    - { type: 'section', label: 'Informatie' }
+                    - { property: 'organisation', label: 'Organisatie' }
                     - username
-                    - { property: password, type: 'password' }
+                    - { property: roles, type: 'collection' }
                     - email
+                    - { type: 'section', label: 'Wachtwoord'}
+                    - { property: password, type: 'password', required: false }
 
         Area:
             class: App\Entity\Area
