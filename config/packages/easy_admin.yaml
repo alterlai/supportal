@@ -9,15 +9,15 @@ easy_admin:
                 fields:
                     - id
                     - organisation.name
-                    - role.name
+                    - { property: roles, type: 'collection' }
                     - username
                     - email
             form:
                 fields:
                     - organisation
-                    - role
+                    - { property: roles, type: 'collection' }
                     - username
-                    - password
+                    - { property: password, type: 'password' }
                     - email
 
         Area:
@@ -43,8 +43,6 @@ easy_admin:
                     - description
         Organisation:
             class: App\Entity\Organisation
-        Role:
-            class: App\Entity\Role
     design:
         form_theme:
             - 'form_div_layout.html.twig'

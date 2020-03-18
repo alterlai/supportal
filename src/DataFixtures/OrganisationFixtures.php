@@ -8,6 +8,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class OrganisationFixtures extends Fixture
 {
+
+    public const ORGANISATIE_REFERENCE = "Hanzehogeschool";
+
     public function load(ObjectManager $manager)
     {
         // $product = new Product();
@@ -15,6 +18,7 @@ class OrganisationFixtures extends Fixture
         $org = new Organisation();
         $org->setName('Hanzehogeschool');
         $org->setColor('#123456');
+        $this->addReference(self::ORGANISATIE_REFERENCE, $org);
 
         $manager->persist($org);
         $manager->flush();

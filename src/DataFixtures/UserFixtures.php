@@ -22,7 +22,8 @@ class UserFixtures extends Fixture
         $user = new User();
         $user->setUsername("testaccount");
         $user->setEmail("je.van.der.laan@st.hanze.nl");
-        $user->setRole($this->getReference(RoleFixtures::OPDRACHTGEVER_REFERENCE));
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
         $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$MDI4UFNneThOZXNVa2FIYg$BDp1NQDiNgY2jtFj4gTSQL3nZILq06q/id/X/2OX9d8'); //1234HvP
 
         $manager->persist($user);

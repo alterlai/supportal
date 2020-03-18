@@ -20,7 +20,7 @@ class ViewHistory
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="viewHistories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $user_id;
 
     /**
      * @ORM\Column(type="datetime_immutable")

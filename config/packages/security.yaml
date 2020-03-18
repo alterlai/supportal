@@ -38,7 +38,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
     # Role hierarchy: https://symfony.com/doc/current/security.html#security-role-hierarchy
+
+    # ROLE_LEVERANCIER is de basis groep.
+    role_hierarchy:
+        ROLE_LEVERANCIER: ROLE_USER
+        ROLE_OPDRACHTGEVER: ROLE_LEVERANCIER
+        ROLE_ADMIN: ROLE_OPDRACHTGEVER

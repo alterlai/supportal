@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -49,12 +50,6 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="users")
      */
     private $organisation;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $role;
 
     public function __construct()
     {
@@ -113,7 +108,6 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -185,18 +179,6 @@ class User implements UserInterface
     public function setOrganisation(?organisation $organisation): self
     {
         $this->organisation = $organisation;
-
-        return $this;
-    }
-
-    public function getRole(): ?role
-    {
-        return $this->role;
-    }
-
-    public function setRole(?role $role): self
-    {
-        $this->role = $role;
 
         return $this;
     }

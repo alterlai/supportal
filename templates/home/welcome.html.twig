@@ -4,6 +4,15 @@
 
     <h1>Dit is een test pagina</h1>
     <p>Welkom {{ app.user.username }}</p>
+    <p>Rechten:
+        <ul>
+            {%  for role in app.user.roles %}
+                <li>{{ role }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    <a href="{{ path('easyadmin') }}">Admin panel</a>
+    <br>
     <a href="{{ path('logout') }}">Logout</a>
 
 {% endblock %}
