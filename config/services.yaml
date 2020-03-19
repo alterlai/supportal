@@ -29,3 +29,10 @@ services:
 
     App\Service\DocumentNamer:
         public: true
+
+    App\Command\ImportDisciplinesCommand:
+        class: App\Command\ImportDisciplinesCommand
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: console.command }
