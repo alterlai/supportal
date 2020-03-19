@@ -3,24 +3,24 @@ easy_admin:
     entities:
         User:
             class: App\Entity\User
-            label: "Gebruikers"
+            label: "Users"
             list:
-                title: "Meest recente gebruikers"
+                title: "Most recent users"
                 fields:
                     - id
-                    - { property: 'organisation.name', label: 'Organisatie' }
-                    - { property: roles, type: 'collection' }
+                    - { property: 'organisation.name', label: 'Organisation' }
+                    - role
                     - username
                     - email
             form:
                 fields:
-                    - { type: 'section', label: 'Informatie' }
-                    - { property: 'organisation', label: 'Organisatie' }
+                    - { type: 'section', label: 'Information' }
+                    - { property: 'organisation', label: 'Organisation' }
                     - username
-                    - { property: roles, type: 'collection' }
-                    - email
-                    - { type: 'section', label: 'Wachtwoord'}
-                    - { property: password, type: 'password', required: false }
+                    - { property: 'role', type: 'choice', type_options: { choices: { 'Administrator': 'ROLE_ADMIN', 'Leverancier': 'ROLE_LEVERANCIER', 'Opdrachtgever': 'ROLE_OPDRACHTGEVER'}}}
+                    - { property: 'email', type: 'email' }
+                    - { type: 'section', label: 'Password'}
+                    - {'property': 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: false, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
 
         Area:
             class: App\Entity\Area
@@ -34,8 +34,8 @@ easy_admin:
             list:
                 fields:
                     - id
-                    - file_name
-                    - { property: 'file', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%' }
+                    - { property: file_name, label: 'filename' }
+                    - { property: 'file_name', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%', label: 'Preview' }
                     - discipline
                     - description
             form:

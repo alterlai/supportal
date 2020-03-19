@@ -101,6 +101,6 @@ class Discipline
 
     public function __toString()
     {
-        return (string) $this->getCode();
+        return ((string) $this->getCode()." : ".$this->getDescription());
     }
 }
