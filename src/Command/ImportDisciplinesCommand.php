@@ -35,20 +35,26 @@ class ImportDisciplinesCommand extends Command
 
         $reader = Reader::createFromPath('%kernel.root_dir%/../csv/nlsfb.csv', 'r');
 
-        $headers = $reader->fetchOne();
+        $reader->setDelimiter(";");
+
+        $headers = $reader->fetchOne();     // Get headers
+
+        $reader->setHeaderOffset(0);    // skip header row
 
         $data = $reader->getRecords($headers);
-        while ($row = $data->current())
+
+        foreach($data as  $row)
         {
             $discipline = (new Discipline())
-                ->setDescription($row[1])
-                ->setCode($row[0]);
+                ->setDescription($row['description'])
+                ->setCode((float) $row['code']);
             $this->entityManager->persist($discipline);
-            $data->next();
         }
 
         $this->entityManager->flush();
 
         $io->success("Disciplines imported!");
+
+        return 0;
     }
 }
