@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Document;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -35,6 +36,16 @@ class AdminController extends EasyAdminController
 
         parent::updateEntity($user);
     }
+
+
+//    /**
+//     * @param Document $document
+//     * @throws \Exception
+//     */
+//    protected function persistDocumentEntity(Document $document)
+//    {
+//        throw new \Exception("test foutmet uploaden");
+//    }
 
 }
 
