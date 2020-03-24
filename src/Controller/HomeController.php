@@ -13,13 +13,6 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render("home/test.html.twig", ['test' => "Test variabele"]);
-    }
-
-    /**
-     * @Route("/welcome", name="welcome")
-     */
-    public function welcome() {
-        return $this->render("home/welcome.html.twig");
+        return $this->render("home/home.html.twig");
     }
 }

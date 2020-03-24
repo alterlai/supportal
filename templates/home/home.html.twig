@@ -2,15 +2,17 @@
 
 {% block body %}
 
-    <h1>Dit is een test pagina</h1>
-    <p>Welkom {{ app.user.username }}</p>
-    <p>Rechten:
+    <h1>Temporary homepage</h1>
+    <p>Logged in as: {% if app.user %}{{ app.user.username }}{% else %}Anonymous{% endif %}</p>
+    {% if app.user %}
+        <p>Rechten:
         <ul>
             {%  for role in app.user.roles %}
                 <li>{{ role }}</li>
             {% endfor %}
         </ul>
-    </p>
+        </p>
+    {% endif %}
     <a href="{{ path('easyadmin') }}">Admin panel</a>
     <br>
     <a href="{{ path('logout') }}">Logout</a>
