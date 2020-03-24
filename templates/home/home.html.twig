@@ -1,25 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <h1>Temporary homepage</h1>
-    <p>Logged in as: {% if app.user %}{{ app.user.username }}{% else %}Anonymous{% endif %}</p>
-    {% if app.user %}
-        <p>Rechten:
-        <ul>
-            {%  for role in app.user.roles %}
-                <li>{{ role }}</li>
-            {% endfor %}
-        </ul>
-        </p>
-    {% endif %}
-
-    <br>
-    {% if app.user %}
-        <a href="{{ path('easyadmin') }}">Admin panel</a>
-        <a href="{{ path('logout') }}">Logout</a>
-    {% else %}
-        <a href="{{ path('login') }}">Login</a>
-    {% endif %}
-
+    {% include 'partials/navbar.html.twig' %}
 {% endblock %}
