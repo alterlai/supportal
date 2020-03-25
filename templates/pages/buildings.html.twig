@@ -13,8 +13,8 @@
             <div class="block-group d-flex">
                 <div class="left-block yellow mr-3"></div>
                 <div class="right-block d-flex flex-column">
-                    {% for building in app.user.organisation.buildings %}
-                        <a href="#" class="right-sub-block">
+                    {% for building in buildings %}
+                        <a href="{{ path('documents', {buildingId: building.id}) }}" class="right-sub-block">
                             <span>{{ building }}</span>
                         </a>
                     {% endfor %}

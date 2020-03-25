@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use App\Service\DocumentNamer;
-use phpDocumentor\Reflection\Types\Integer;
+use App\Entity\User;
+use App\Repository\BuildingRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PageController extends AbstractController
@@ -20,19 +21,29 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/buildings", name="buildings")
+     * @Route("/buildings/", name="buildings")
      * @IsGranted("ROLE_USER")
+     * @return Response
      */
-    public function buildings() {
-        return $this->render("pages/buildings.html.twig");
+    public function showBuildings()
+    {
+
+        /* @var User $user */
+        $user = $this->getUser();
+
+        $buildings = $user->getOrganisation()->getBuildings();
+
+        return $this->render("pages/buildings.html.twig", ['buildings' => $buildings]);
     }
 
-    /**
+     /**
      * @Route("/documents/{buildingId}", name="documents")
      * @param int $buildingId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function documents(int $buildingId) {
-        return $this->render("pages/documents.html.twig");
+    public function showDocuments(int $buildingId, BuildingRepository $buildingRepository)
+    {
+        $building = $buildingRepository->find($buildingId);
+        return $this->render("pages/documents.html.twig", ['building' => $building]);
     }
 }
