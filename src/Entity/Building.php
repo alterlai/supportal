@@ -39,6 +39,11 @@ class Building
      */
     private $areas;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $locatie;
+
     public function __construct()
     {
         $this->areas = new ArrayCollection();
@@ -131,5 +136,17 @@ class Building
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getLocatie(): ?string
+    {
+        return $this->locatie;
+    }
+
+    public function setLocatie(?string $locatie): self
+    {
+        $this->locatie = $locatie;
+
+        return $this;
     }
 }
