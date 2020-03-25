@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'partials/navbar.html.twig' %}
+
+    <div class="container-fluid">
+        <div class="content">
+            <div class="block-group d-flex">
+                <a href="{{ path('buildings') }}" class="left-block yellow mr-3">
+                    <h4>{{ app.user.organisation }}</h4>
+                </a>
+                <div style="height: 150px; background: #0f6674; width: 400px" class="right-sub-block">
+                    <span>Afbeelding van het gebouw</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

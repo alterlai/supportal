@@ -2,8 +2,10 @@
  * Specific styles of signin component
  */
 :root {
+    --nav-size: 50px;
     --bt-drak: #2a2a2e;
     --bg-light: #e3e7ed;
+    --yellow: #f6be00;
 }
 /*
  * General styles
@@ -14,6 +16,7 @@ body, html {
     position: fixed;
     top: 0;
     background: var(--bg-light);
+    padding-top: var(--nav-size);
 }
 
 background {
@@ -28,7 +31,7 @@ background {
 /*
  * Navbar
  */
-.navbar { height: 50px; }
+.navbar { height: var(--nav-size) }
 .navbar .username { color: ghostwhite; }
 
 /*
@@ -159,4 +162,23 @@ background {
 .forgot-password:active,
 .forgot-password:focus{
     color: rgb(12, 97, 33);
+}
+
+
+/*
+ * Main content
+ */
+.yellow { background: var(--yellow) }
+.content { padding-top: 75px; }
+
+.left-block { padding: 5px; }
+.left-block,
+.left-block:hover {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+    min-width: 200px;
+}
+.right-block {
+    padding: 5px;
+    color: ghostwhite;
 }

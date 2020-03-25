@@ -7,14 +7,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class PageController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="pages")
      * @IsGranted("ROLE_USER")
      */
     public function index()
     {
-        return $this->render("home/home.html.twig");
+        return $this->render("pages/home.html.twig");
+    }
+
+    /**
+     * @Route("/buildings", name="buildings")
+     * @IsGranted("ROLE_USER")
+     */
+    public function buildings() {
+        return $this->render("pages/buildings.html.twig");
     }
 }
