@@ -6,6 +6,7 @@
     --bt-drak: #2a2a2e;
     --bg-light: #e3e7ed;
     --yellow: #f6be00;
+    --antraciet: #3f4444;
 }
 /*
  * General styles
@@ -168,17 +169,25 @@ background {
 /*
  * Main content
  */
+.breadcrumb { margin-top: 15px;}
+
 .yellow { background: var(--yellow) }
 .content { padding-top: 75px; }
 
 .left-block { padding: 5px; }
 .left-block,
-.left-block:hover {
-    color: inherit; /* blue colors for links too */
-    text-decoration: inherit; /* no underline */
-    min-width: 200px;
-}
-.right-block {
-    padding: 5px;
+.left-block:hover,
+.right-sub-block:hover {
     color: ghostwhite;
+    text-decoration: inherit;
+    min-width: 100px;
 }
+.right-sub-block {
+    padding: 10px;
+    color: ghostwhite;
+    margin-bottom: 10px;
+    background: var(--antraciet);
+    min-width: 200px;
+    min-height: 75px;
+}
+.right-sub-block:last-child { margin-bottom: 0;}

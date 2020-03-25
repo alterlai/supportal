@@ -4,14 +4,18 @@
     {% include 'partials/navbar.html.twig' %}
 
     <div class="container-fluid">
+        <ol class="breadcrumb shadow-sm">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+            <li class="breadcrumb-item active">{{ app.user.organisation }}</li>
+        </ol>
+
         <div class="content">
             <div class="block-group d-flex">
                 <div class="left-block yellow mr-3"></div>
-                <div class="right-block">
+                <div class="right-block d-flex flex-column">
                     {% for building in app.user.organisation.buildings %}
                         <a href="#" class="right-sub-block">
                             <span>{{ building }}</span>
-                            <span>{{ building. }}</span>
                         </a>
                     {% endfor %}
                 </div>

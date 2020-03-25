@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
          * my logged in users)
          */
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('pages');
+            return $this->redirectToRoute('home');
         }
 
         // get the login error if there is one
