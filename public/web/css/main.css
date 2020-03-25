@@ -1,6 +1,10 @@
 /*
  * Specific styles of signin component
  */
+:root {
+    --bt-drak: #2a2a2e;
+    --bg-light: #e3e7ed;
+}
 /*
  * General styles
  */
@@ -9,6 +13,7 @@ body, html {
     width: 100%;
     position: fixed;
     top: 0;
+    background: var(--bg-light);
 }
 
 background {
