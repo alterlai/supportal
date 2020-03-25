@@ -15,7 +15,8 @@
                 <div class="right-block d-flex flex-column">
                     {% for building in buildings %}
                         <a href="{{ path('documents', {buildingId: building.id}) }}" class="right-sub-block">
-                            <span>{{ building }}</span>
+                            <span class="d-block font-weight-bold">{{ building.locatie }}</span>
+                            <span class="d-block">{{ building }}</span>
                         </a>
                     {% endfor %}
                 </div>
