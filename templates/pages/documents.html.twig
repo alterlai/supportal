@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'partials/navbar.html.twig' %}
 
     <div class="container-fluid">
-        <p>{{ building.name }}</p>
+        <ul>
+            {% for document in building. %}
+                
+            {% endfor %}
+        </ul>
     </div>
 
 {% endblock %}
