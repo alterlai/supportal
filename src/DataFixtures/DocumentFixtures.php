@@ -40,7 +40,6 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($objectset as $object)
         {
-            print('object');
             $manager->persist($object);
         }
         $manager->flush();

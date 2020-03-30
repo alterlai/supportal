@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\BuildingRepository;
+use App\Repository\DocumentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,9 +42,22 @@ class PageController extends AbstractController
      * @param int $buildingId
      * @return Response
      */
-    public function showDocuments(int $buildingId, BuildingRepository $buildingRepository)
+    public function showDocuments(int $buildingId, BuildingRepository $buildingRepository, DocumentRepository $documentRepository)
     {
         $building = $buildingRepository->find($buildingId);
-        return $this->render("pages/documents.html.twig", ['building' => $building]);
+        $documents = $documentRepository->findAll();
+        return $this->render("pages/documents.html.twig", ['building' => $building, 'documents' => $documents]);
+    }
+
+    /**
+     * @Route("/disciplines/{buildingId}", name="disciplines")
+     * @param int $buildingId
+     * @param BuildingRepository $buildingRepository
+     * @return Response
+     */
+    public function showDisciplines(int $buildingId, BuildingRepository $buildingRepository)
+    {
+        $building = $buildingRepository->find($buildingId);
+        return $this->render("pages/disciplines.html.twig", ['building' => $building]);
     }
 }
