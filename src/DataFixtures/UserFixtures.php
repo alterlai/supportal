@@ -19,26 +19,27 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new User();
-        $user->setUsername("testaccount");
-        $user->setEmail("je.van.der.laan@st.hanze.nl");
-        $user->setRoles(['ROLE_ADMIN']);
-        $user->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
-        $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$MDI4UFNneThOZXNVa2FIYg$BDp1NQDiNgY2jtFj4gTSQL3nZILq06q/id/X/2OX9d8'); //1234HvP
+        $user = (new User())
+            ->setUsername("leverancier")
+            ->setRole("ROLE_LEVERANCIER")
+            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
+            ->setEmail("levr@user.com");
+        $user->setPassword($this->passwordEncoder->encodePassword($user, "leverancier"));
         $manager->persist($user);
 
-        $user = (new User())->
-            setUsername("user")->
-            setRole("ROLE_LEVERANCIER")
-            ->setPassword($this->passwordEncoder->encodePassword($user, "user"))
+        $user = (new User())
+            ->setUsername("opdrachtgever")
+            ->setRole("ROLE_OPDRACHTGEVER")
+            ->setPassword($this->passwordEncoder->encodePassword($user, "opdrachtgever"))
             ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setEmail("user@user.com");
+            ->setEmail("opdr@user.com");
+        $manager->persist($user);
 
         $user = (new User())
             ->setUsername("admin")
-            ->setRole("ROLE_LEVERANCIER")
+            ->setRole("ROLE_ADMIN")
             ->setPassword($this->passwordEncoder->encodePassword($user, "admin"))
-            ->setEmail("user@user.com");
+            ->setEmail("admin@user.com");
         $manager->persist($user);
         $manager->flush();
     }
