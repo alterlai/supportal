@@ -9,53 +9,54 @@ use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
 use App\Service\DocumentNameParserService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Nelmio\Alice\Loader\NativeLoader;
 
 
-class DocumentFixtures extends Fixture
+class DocumentFixtures extends Fixture implements DependentFixtureInterface
 {
-    private $buildings;
     private $disciplines;
-    private $fileNameParser;
 
-    private function __construct(BuildingRepository $buildingRepo, DocumentNameParserService $fileNameParser, DisciplineRepository $disciplineRepository)
+    public function __construct(DisciplineRepository $dr)
     {
-        $this->buildings = $buildingRepo->findAll();
-        $this->disciplines = $disciplineRepository->findAll();
-        $this->fileNameParser = $fileNameParser;
+        $this->disciplines = $dr->findAll();
     }
 
-    public function load(ObjectManager $manager)
+    /**
+     * @inheritDoc
+     */
+    public function load(\Doctrine\Persistence\ObjectManager $manager)
     {
-        $randomBuilding = $this->getRandomBuilding();
-        $floor = rand(0, 3);
-        $randomDiscipline = $this->getRandomDiscipline();
-        $description = "Randomly generated document";
-        $updated_at = new \DateTime("now");
-        $filename = $this->fileNameParser->generateFileNameFromEntities($randomBuilding, $randomDiscipline, $floor, 1);
+        $loader = new NativeLoader();
+        $objectset = $loader->loadData([\App\Entity\Document::class => [
+            'document{1..10}' => [
+                'discipline' => $this->getRandomDiscipline(),
+                'file_name' => "testfile.pdf",
+                'updated_at' => '<dateTime("now")>',
+                'description' => '<text()>'
+            ]
+        ]])->getObjects();
 
-        $document = (new Document())
-            ->setFileName($filename)
-            ->setDiscipline($randomDiscipline)
-            ->setUpdatedAt($updated_at)
-            ->setDescription($description);
-        $manager->persist($document);
-
+        foreach ($objectset as $object)
+        {
+            print('object');
+            $manager->persist($object);
+        }
         $manager->flush();
     }
 
-    private function getRandomBuilding() : Building
-    {
-        /** @var Building $building */
-        $randomBuilding = shuffle($this->buildings)[0];
-
-        return $randomBuilding;
+    public function getRandomDiscipline() : Discipline {
+        $key = array_rand($this->disciplines);
+        return $this->disciplines[$key];
     }
 
-    private function getRandomDiscipline() : Discipline
-    {
-        $randomDiscipline = shuffle($this->disciplines)[0];
 
-        return $randomDiscipline;
+    public function getDependencies()
+    {
+        return array(
+            DisciplineFixtures::class,
+            BuildingFixtures::class
+        );
     }
 }

@@ -30,7 +30,7 @@ class Document
     private $file_content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="documents", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $discipline;

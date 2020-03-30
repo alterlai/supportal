@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BuildingFixtures extends Fixture implements DependentFixtureInterface
 {
+
     public function load(ObjectManager $manager)
     {
         $building = (new Building())
