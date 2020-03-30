@@ -1,0 +1,87 @@
+/*
+ * Main content
+ */
+.breadcrumb { margin-top: 15px;}
+
+.yellow { background: var(--yellow) }
+.antraciet { background: var(--antraciet)}
+.content { padding-top: 50px; }
+
+.left-block { padding: 5px; }
+.left-block,
+.left-block:hover,
+.right-sub-block:hover {
+    text-decoration: inherit;
+    min-width: 100px;
+    color: inherit;
+}
+.left-block:hover { color: black; }
+.right-sub-block:hover {color: ghostwhite;}
+.right-sub-block {
+    padding: 10px;
+    color: ghostwhite;
+    margin-bottom: 10px;
+    background: var(--antraciet);
+    min-width: 200px;
+    min-height: 75px;
+}
+.right-sub-block:last-child { margin-bottom: 0;}
+
+.grid {
+    display: grid;
+    grid-template-areas:
+            'mail info info'
+            'people info info'
+            'blank settings exit';
+    grid-gap: 10px;
+    margin-left: 100px;
+
+}
+grid-item {
+    background: var(--antraciet);
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+grid-item svg {
+    color: ghostwhite;
+    height: 50px;
+    width: 50px;
+}
+.grid-info {
+    grid-area: info;
+    width: 100%;
+    height: 100%;
+    background: #3f4444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.grid-info svg {
+    width: 150px;
+    height: 150px;
+    color: ghostwhite;
+}
+.grid-mail { grid-area: mail; }
+.grid-people { grid-area: people; }
+.grid-blank { grid-area: blank; }
+.grid-settings { grid-area: settings; }
+.grid-exit { grid-area: exit; }
+
+.discipline-grid-container {
+    display: grid;
+    grid-template-columns: 150px 150px 150px;
+    grid-gap: 10px;
+}
+.discipline-grid-container > * {
+    height: 150px;
+    padding: 10px;
+}
+
+.g-span-2-3 {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    font-size: ;
+}
