@@ -6,6 +6,10 @@
         </button>
 
         <div class="collapse navbar-collapse">
+            <form action="{{ path('search') }}" method="get">
+                <input type="text" name="search" placeholder="Zoeken...">
+                <input type="submit" value="Go">
+            </form>
             <ul class="navbar-nav px-3 ml-auto">
                 <li class="nav-item">
                     <span class="navbar-text username">{{ app.user.username }}</span>

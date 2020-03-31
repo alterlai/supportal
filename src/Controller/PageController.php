@@ -7,6 +7,7 @@ use App\Repository\BuildingRepository;
 use App\Repository\DocumentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,20 +38,9 @@ class PageController extends AbstractController
         return $this->render("pages/buildings.html.twig", ['buildings' => $buildings]);
     }
 
-     /**
-     * @Route("/documents/{buildingId}", name="documents")
-     * @param int $buildingId
-     * @return Response
-     */
-    public function showDocuments(int $buildingId, BuildingRepository $buildingRepository, DocumentRepository $documentRepository)
-    {
-        $building = $buildingRepository->find($buildingId);
-        $documents = $documentRepository->findAll();
-        return $this->render("pages/documents.html.twig", ['building' => $building, 'documents' => $documents]);
-    }
-
     /**
      * @Route("/disciplines/{buildingId}", name="disciplines")
+     * @IsGranted("ROLE_USER")
      * @param int $buildingId
      * @param BuildingRepository $buildingRepository
      * @return Response
@@ -59,5 +49,16 @@ class PageController extends AbstractController
     {
         $building = $buildingRepository->find($buildingId);
         return $this->render("pages/disciplines.html.twig", ['building' => $building]);
+    }
+
+    /**
+     * @Route("/search/", name="search")
+     * @return Response
+     * @throws \Exception
+     */
+    public function searchDocuments(DocumentRepository $documentRepository, Request $request) {
+        if (!$request->get("search")) throw new \Exception("Vul een geldige zoekterm in");
+        $documents = $documentRepository->searchAllColumns($request->get("search"));
+        return $this->render("pages/documents.html.twig", ['documents' => $documents]);
     }
 }

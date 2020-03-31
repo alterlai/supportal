@@ -75,13 +75,42 @@ grid-item svg {
     grid-template-columns: 150px 150px 150px;
     grid-gap: 10px;
 }
-.discipline-grid-container > * {
+.discipline-grid-container > *{
     height: 150px;
     padding: 10px;
 }
+.discipline-grid-container .yellow { font-size: 20px; }
 
+.grid-col-1 {
+    grid-template-columns: 150px;
+    grid-gap: 10px;
+    display: grid;
+}
+.grid-col-1 > * {
+    height: 150px;
+    padding: 10px;
+}
+.grid-col-1 > .antraciet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ghostwhite;
+}
+.discipline-grid-container .antraciet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: ghostwhite;
+
+}
+.discipline-grid-container .disabled { opacity: 80%; }
+.discipline-grid-container a:hover { text-decoration: none; }
+.grid-col-1 svg {height: 100px; width: 100px;}
 .g-span-2-3 {
     grid-column-start: 2;
     grid-column-end: 4;
-    font-size: ;
 }
+
+.ml-10 { margin-left: 100px;}

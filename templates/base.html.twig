@@ -2,10 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{{ app.user.organisation }} | {% block title %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('web/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('web/css/main.css') }}">
         <link rel="stylesheet" href="{{ asset('web/css/design1.css') }}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -14,6 +15,7 @@
         <script src="{{ asset('web/js/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ asset('web/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('web/js/main.js') }}"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/fh-3.1.6/r-2.2.3/datatables.min.js"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
