@@ -48,6 +48,7 @@ class PageController extends AbstractController
     public function showDisciplines(int $buildingId, BuildingRepository $buildingRepository)
     {
         $building = $buildingRepository->find($buildingId);
+
         return $this->render("pages/disciplines.html.twig", ['building' => $building]);
     }
 
@@ -56,9 +57,15 @@ class PageController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function searchDocuments(DocumentRepository $documentRepository, Request $request) {
-        if (!$request->get("search")) throw new \Exception("Vul een geldige zoekterm in");
+    public function searchDocuments(DocumentRepository $documentRepository, Request $request)
+    {
+        if (!$request->get("search"))
+        {
+            $documents = $documentRepository->findAll();
+        }
+
         $documents = $documentRepository->searchAllColumns($request->get("search"));
+
         return $this->render("pages/documents.html.twig", ['documents' => $documents]);
     }
 }
