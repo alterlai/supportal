@@ -37,7 +37,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         $objectset = $loader->loadData(
             [\App\Entity\Document::class =>
                 [
-                    'document{1..10}' => [
+                    'document{1..40}' => [
                         'updated_at' => '<dateTime("now")>',
                         'description' => '<text()>'
                     ]
@@ -70,7 +70,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
         $randomBuilding = $this->buildings[$key];
 
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1);
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, "");
     }
 
 

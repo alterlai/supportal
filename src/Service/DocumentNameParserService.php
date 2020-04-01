@@ -22,9 +22,9 @@ class DocumentNameParserService
         return null;
     }
 
-    public function generateFileNameFromEntities(Building $building, Discipline $discipline, int $floor, int $revision)
+    public function generateFileNameFromEntities(Building $building, Discipline $discipline, int $floor, int $revision, string $fileExtension)
     {
-        $name = (string) $building->getCode() . "-" . $floor . "-" . $discipline->getCode() . "." . "11" . "-000-" . $revision . ".dwg";
+        $name = (string) $building->getCode() . "-" . $floor . "-" . $discipline->getCode() . "." . "11" . "-000-" . $revision . $fileExtension;
         return $name;
     }
 
