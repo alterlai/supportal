@@ -4,8 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Discipline;
 use App\Entity\Document;
-use App\Faker\NewNativeLoader;
-use App\Faker\Provider\DocumentProvider;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
 use App\Service\DocumentNameParserService;
@@ -70,7 +68,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
         $randomBuilding = $this->buildings[$key];
 
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, "");
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, ".pdf");
     }
 
 

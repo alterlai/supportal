@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'partials/navbar.html.twig' %}
+    <div class="container">
+        <div class="content row">
+            <div id="pdfContainer" class="col-md-6">
+                <span>PDF container</span>
+            </div>
+            <div id="detailsContainer" class="col-md-6 d-flex flex-column">
+                <div id="specificationContainer">
+                    <h3>Specificaties</h3>
+                    <div class="well">{{ document.description }}</div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Naam</td>
+                            <td>{{ document.documentName }}</td>
+                        </tr>
+                        <tr>
+                            <td>Discipline</td>
+                            <td>{{ document.discipline }}</td>
+                        </tr>
+                        <tr>
+                            <td>Laatst geupdate</td>
+                            <td>{{ document.updatedAt.format("d-m-Y") }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="historyContainer">
+                    <h3>Geschiedenis</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

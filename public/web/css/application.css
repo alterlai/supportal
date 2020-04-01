@@ -1,0 +1,34 @@
+.navbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.row {margin-left: 0; margin-right: 0;}
+
+.content {padding-top: 50px;}
+
+#documenten {
+    background: white;
+    display: flex;
+    padding: 40px;
+}
+
+#filterContainer {
+    margin-right: 50px;
+    padding: 10px;
+    background: #f2f2f2;
+}
+#filterContainer hr { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+
+.filterOption ul { margin-bottom: 0; }
+.filterOption { font-size: 13px; }
+.filterOption h4 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.filterOption h5{
+    font-size: 13px;
+}
+

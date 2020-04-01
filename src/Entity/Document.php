@@ -55,6 +55,15 @@ class Document
         return $this->file_name;
     }
 
+    /**
+     * Return filename without file extension
+     * @return string
+     */
+    public function getDocumentName(): string
+    {
+        return substr($this->file_name, 0, -4);
+    }
+
     public function setFileName(?string $file_name): self
     {
         $this->file_name = $file_name;
@@ -122,6 +131,12 @@ class Document
         $this->discipline = $discipline;
 
         return $this;
+    }
+
+    /** Files only contain .pdf or .dwg, so slice last four characters */
+    public function getFileType()
+    {
+        return substr($this->file_name, -4, 4);
     }
 
     public function __toString()

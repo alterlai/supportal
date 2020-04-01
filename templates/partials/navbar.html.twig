@@ -1,23 +1,21 @@
 {% block navbar %}
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap shadow navbar-expand-sm">
-        <a class="navbar-brand col-sm-3 col-md-2" href="{{ path('home') }}">{{ app.user.organisation }}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-dark bg-dark  flex-md-nowrap shadow navbar-expand-sm">
+        <div class="container">
+            <a class="navbar-brand col-sm-3 col-md-2" href="{{ path('home') }}">{{ app.user.organisation }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse">
-            <form action="{{ path('search') }}" method="get">
-                <input type="text" name="search" placeholder="Zoeken...">
-                <input type="submit" value="Go">
-            </form>
-            <ul class="navbar-nav px-3 ml-auto">
-                <li class="nav-item">
-                    <span class="navbar-text username">{{ app.user.username }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('logout') }}">Uitloggen</a>
-                </li>
-            </ul>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav px-3 ml-auto">
+                    <li class="nav-item">
+                        <span class="navbar-text username">{{ app.user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Uitloggen</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 {% endblock %}

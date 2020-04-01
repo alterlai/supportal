@@ -17,40 +17,32 @@ class PageController extends AbstractController
      * @Route("/", name="home")
      * @IsGranted("ROLE_USER")
      */
-    public function index()
+    public function index(DocumentRepository $documentRepository)
     {
-        return $this->render("pages/home.html.twig");
+        $allDocuments = $documentRepository->findAll();
+        return $this->render("pages/home.html.twig", ['documents' => $allDocuments]);
     }
 
     /**
-     * @Route("/buildings/", name="buildings")
-     * @IsGranted("ROLE_USER")
+     * @Route("/document/", name="document")
+     * @param Request $request
      * @return Response
+     * @throws \Exception
      */
-    public function showBuildings()
-    {
+   public function showDocument(Request $request, DocumentRepository $documentRepository)
+   {
+       if (!$id = $request->query->get("id"))
+       {
+           throw new \Exception("Invalid document");
+       }
+       $document = $documentRepository->find($id);
+       if (!$document)
+       {
+           throw new \Exception("Unknown document number");
+       }
 
-        /* @var User $user */
-        $user = $this->getUser();
-
-        $buildings = $user->getOrganisation()->getBuildings();
-
-        return $this->render("pages/buildings.html.twig", ['buildings' => $buildings]);
-    }
-
-    /**
-     * @Route("/disciplines/{buildingId}", name="disciplines")
-     * @IsGranted("ROLE_USER")
-     * @param int $buildingId
-     * @param BuildingRepository $buildingRepository
-     * @return Response
-     */
-    public function showDisciplines(int $buildingId, BuildingRepository $buildingRepository)
-    {
-        $building = $buildingRepository->find($buildingId);
-
-        return $this->render("pages/disciplines.html.twig", ['building' => $building]);
-    }
+       return $this->render('pages/document.html.twig', ['document' => $document]);
+   }
 
     /**
      * @Route("/search/", name="search")
