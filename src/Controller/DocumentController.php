@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Document;
 use App\Repository\DocumentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +20,7 @@ class DocumentController extends AbstractController
      */
     public function show(Request $request, DocumentRepository $documentRepository)
     {
-        if (!$id = $request->query->get("id"))
+        if (!$id = $request->query->get("documentId"))
         {
             throw new \Exception("Invalid document");
         }
@@ -32,7 +34,7 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("document/update/{documentId}", name="document.update", methods={"POST"})
+     * @Route("/document/update/{documentId}", name="document.update", methods={"POST"})
      * @param int $documentId
      * @param Request $request
      * @return Response
@@ -41,5 +43,20 @@ class DocumentController extends AbstractController
     {
         // todo: logica voor uploaden bestand.
         return $this->render('pages/blank.html.twig', ['message' => "Het document is verstuurd voor goedkeuring."]);
+    }
+
+    /**
+     * @Route("/api/document", name="api.document")
+     * @param Request $request
+     * @param DocumentRepository $documentRepository
+     * @return JsonResponse
+     */
+    public function filter(Request $request, DocumentRepository $documentRepository)
+    {
+        $documents = $documentRepository->findAll();
+        return new JsonResponse(array(
+            'status' => 'OK',
+            'message' => array($documents)
+            ));
     }
 }

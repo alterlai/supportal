@@ -5,10 +5,14 @@
     {% include 'partials/navbar.html.twig' %}
 
     <div class="container">
+        <ol class="breadcrumb shadow-sm bg-white">
+            <li class="breadcrumb-item">Home /</li>
+        </ol>
         <div id="documenten">
             <div id="filterContainer">
                 <div id="filters">
                     <h3>Filter</h3>
+                    <hr>
                     <div id="gebouwenFilter" class="filterOption">
                         <h4>Gebouw</h4>
                         <h5>Groningen</h5>
@@ -49,7 +53,7 @@
                 </div>
             </div>
             <div id="listingContainer">
-                <table class="dataTable" id="listing">
+                <table class="dataTable table-striped" id="listing">
                     <thead>
                     <tr>
                         <th>NL/SfB #</th>
@@ -68,11 +72,16 @@
                                 <td>{{ document.discipline.description }}</td>
                                 <td>TODO</td>
                                 <td>TODO</td>
-                                <td>Acties</td>
+                                <td><a href="{{ path('document', {documentId: document.id}) }}">Bekijk</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <button id="testbutton">Testbutton</button>
+                <button id="ajaxTest">AJAX</button>
+                <div id="result">
+
+                </div>
             </div>
         </div>
     </div>
