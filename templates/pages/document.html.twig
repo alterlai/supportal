@@ -3,7 +3,11 @@
 {% block body %}
     {% include 'partials/navbar.html.twig' %}
     <div class="container">
-        <div class="content row">
+        <ol class="breadcrumb shadow-sm bg-white">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+            <li class="breadcrumb-item active">{{ document.documentName }}</li>
+        </ol>
+        <div class="content row" id="documentContainer">
             <div id="pdfContainer" class="col-md-6">
                 <span>PDF container</span>
             </div>
@@ -11,7 +15,7 @@
                 <div id="specificationContainer">
                     <h3>Specificaties</h3>
                     <div class="well">{{ document.description }}</div>
-                    <table>
+                    <table class="table table-striped">
                         <tbody>
                         <tr>
                             <td>Naam</td>
@@ -28,11 +32,85 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="buttonContainer">
+                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG opvragen</button>
+                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#putDwg">DWG indienen</button>
+                </div>
                 <div id="historyContainer">
                     <h3>Geschiedenis</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Versie</th>
+                                <th>Datum</th>
+                                <th>Door</th>
+                                <th>Acties</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
+    {#  DWG Opvragen modal  #}
+    <div class="modal fade" id="requestDwg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">DWG opvragen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Aan deze actie zijn kosten verbonden. Wilt u doorgaan?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                    <button type="button" class="btn btn-info">Doorgaan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    DWG indienen modal#}
+    <div class="modal fade" id="putDwg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">DWG indienen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ path('document.update', {documentId: document.id}) }}" method="POST">
+                <div class="modal-body">
+                    <p>
+                        Gebruik dit formulier om een aangepaste tekening in te dienen.
+                        De tekening zal worden gekeurd voordat hij voor anderen zichtbaar is.
+                        <br><br>
+                        Zorg ervoor dat de bestandsnaam voldoet aan de NL/SfB standaard.
+                    </p>
+                    <h6 class="font-weight-bold">Bestand uploaden</h6>
+                    <label>
+                        <input type="file" class="form-control-file">
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                    <button type="submit" class="btn btn-info">Doorgaan</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

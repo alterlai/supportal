@@ -3,6 +3,7 @@
     top: 0;
     width: 100%;
 }
+.breadcrumb { margin-top: 1rem; }
 .row {margin-left: 0; margin-right: 0;}
 
 .content {padding-top: 50px;}
@@ -12,7 +13,15 @@
     display: flex;
     padding: 40px;
 }
-
+#documentContainer {
+    background: white;
+}
+#pdfContainer {
+    width: 100%;
+    outline: 1px solid black;
+    background: darkgrey;
+}
+#historyContainer { margin-top: 25px; }
 #filterContainer {
     margin-right: 50px;
     padding: 10px;

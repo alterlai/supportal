@@ -24,27 +24,6 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/document/", name="document")
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
-     */
-   public function showDocument(Request $request, DocumentRepository $documentRepository)
-   {
-       if (!$id = $request->query->get("id"))
-       {
-           throw new \Exception("Invalid document");
-       }
-       $document = $documentRepository->find($id);
-       if (!$document)
-       {
-           throw new \Exception("Unknown document number");
-       }
-
-       return $this->render('pages/document.html.twig', ['document' => $document]);
-   }
-
-    /**
      * @Route("/search/", name="search")
      * @return Response
      * @throws \Exception

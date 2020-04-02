@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center flex-column">
+    <h1 >{{ message }}</h1>
+    <a class="d-block" href="{{ path('home') }}"><button class="btn btn-block btn-lg btn-success">Terug naar home</button></a>
+</div>
+{% endblock %}
