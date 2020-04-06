@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Document;
 use App\Repository\DocumentRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ class DocumentController extends AbstractController
      * @param Request $request
      * @return Response
      * @throws \Exception
+     * @IsGranted("ROLE_USER")
      */
     public function show(Request $request, DocumentRepository $documentRepository)
     {
@@ -38,6 +40,7 @@ class DocumentController extends AbstractController
      * @param int $documentId
      * @param Request $request
      * @return Response
+     * @IsGranted("ROLE_USER")
      */
     public function updateDocument(int $documentId, Request $request)
     {
@@ -46,10 +49,11 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("/ajax/document", name="ajax.document")
+     * @Route("/ajax/document", name="ajax.document", methods={"GET"})
      * @param Request $request
      * @param DocumentRepository $documentRepository
      * @return JsonResponse
+     * @IsGranted("ROLE_USER")
      */
     public function filter(Request $request, DocumentRepository $documentRepository)
     {

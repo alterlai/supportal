@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PageController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="home", methods={"GET"})
      * @IsGranted("ROLE_USER")
      */
     public function index(DocumentRepository $documentRepository)
@@ -24,9 +24,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/search/", name="search")
+     * @Route("/search/", name="search", methods={"GET"})
      * @return Response
      * @throws \Exception
+     * @IsGranted("ROLE_USER")
      */
     public function searchDocuments(DocumentRepository $documentRepository, Request $request)
     {
