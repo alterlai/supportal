@@ -46,17 +46,30 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("/api/document", name="api.document")
+     * @Route("/ajax/document", name="ajax.document")
      * @param Request $request
      * @param DocumentRepository $documentRepository
      * @return JsonResponse
      */
     public function filter(Request $request, DocumentRepository $documentRepository)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->render("pages/blank.html.twig", ['message' => "This page doesn't exist"]);
+        }
         $documents = $documentRepository->findAll();
-        return new JsonResponse(array(
-            'status' => 'OK',
-            'message' => array($documents)
-            ));
+
+        $jsonData = array();
+
+        foreach ($documents as $document){
+            array_push($jsonData, [
+                'naam' => $document->getDocumentName(),
+                'discipline' => $document->getDiscipline()->getCode(),
+                'omschrijving' => $document->getDiscipline()->getDescription(),
+                'gebouw' => "TODO",
+                'verdieping' => 'TODO',
+                'documentId' => $document->getId()
+            ]);
+        }
+        return new JsonResponse($jsonData);
     }
 }
