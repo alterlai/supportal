@@ -20,7 +20,7 @@
                             {% for locatie in app.user.organisation.buildings %}
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="locatie"
+                                        <input type="checkbox" name="buildingCode"
                                                value="{{ locatie }}"> {{ locatie }}
                                     </label>
                                 </li>
@@ -35,7 +35,7 @@
                         <ul class="list-group list-unstyled">
                             {% for i in 0..9 %}
                                 <label>
-                                    <input type="checkbox" name="locatie"
+                                    <input type="checkbox" name="disciplineGroup"
                                            value="{{ i*10 }}"> {{ i*10 }}-{{ i*10+9 }}
                                 </label>
                             {% endfor %}
@@ -49,6 +49,10 @@
                         <label>
                             <input type="text" name="floor" />
                         </label>
+                    </div>
+                    <hr>
+                    <div>
+                        <button id="applyFilter" class="btn btn-info">Filter toepassen</button>
                     </div>
                 </div>
             </div>

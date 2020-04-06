@@ -1,26 +1,21 @@
 $(document).ready(function() {
 
+    /** DataTable object **/
    var table = $('.dataTable').DataTable();
 
-   $('#testbutton').click(function()
+    /**
+     * Fetch document records using an AJAX request.
+     */
+   $('#applyFilter').click(function()
    {
-      table.clear();
-      table.rows.add(
-          [
-            ["test", "test", "test", "test", "test", "test"]
-          ]
-      ).draw();
-   });
-
-   $('#ajaxTest').click(function()
-   {
+       parameters = getFilterOptions();
        $.ajax({
            url: "/ajax/document",
            type: "GET",
            dataType: 'json',
            async: true,
+           data: getFilterOptions(),
            success: function (result, status) {
-               console.log(result);
                updateDocumentTable(result)
             },
            error: function(result, var2, var3) {
@@ -29,6 +24,37 @@ $(document).ready(function() {
        });
    });
 
+    /**
+     * Get the applied filter options.
+     */
+   function getFilterOptions()
+   {
+        var selectedFilters = $('input:checked');
+        var previousName = null;
+        var output = {};
+        console.log(selectedFilters);
+
+        // Loop over each selected filter and add the names and values to a new array.
+        for (var i = 0; i < selectedFilters.length; i++)
+        {
+            if (selectedFilters[i].name !== previousName)
+            {
+                output[selectedFilters[i].name] = [];
+                output[selectedFilters[i].name].push(selectedFilters[i].value)
+            }
+            else
+            {
+                output[selectedFilters[i].name].push(selectedFilters[i].value);
+            }
+            previousName = selectedFilters[i].name;
+        }
+        return output;
+   }
+
+    /**
+     * Update the home dataTable with new data.
+     * @param data
+     */
     function updateDocumentTable(data)
     {
         // Prepare data for table insertion
@@ -40,7 +66,7 @@ $(document).ready(function() {
                 data[i].omschrijving,
                 data[i].gebouw,
                 data[i].verdieping,
-                "<a href='/document/"+data[i].documentId+"'>Bekijk</a>"
+                "<a href='/document/?documentId="+data[i].documentId+"'>Bekijk</a>"
             ]);
         }
 

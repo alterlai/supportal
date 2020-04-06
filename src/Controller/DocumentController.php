@@ -57,9 +57,12 @@ class DocumentController extends AbstractController
      */
     public function filter(Request $request, DocumentRepository $documentRepository)
     {
+        // Deny non-ajax requests
         if (!$request->isXmlHttpRequest()) {
             return $this->render("pages/blank.html.twig", ['message' => "This page doesn't exist"]);
         }
+
+        print($request->getContent());
         $documents = $documentRepository->findAll();
 
         $jsonData = array();
