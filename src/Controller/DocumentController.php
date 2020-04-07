@@ -55,14 +55,15 @@ class DocumentController extends AbstractController
      * @return JsonResponse
      * @IsGranted("ROLE_USER")
      */
-    public function filter(Request $request, DocumentRepository $documentRepository)
+    public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository)
     {
         // Deny non-ajax requests
         if (!$request->isXmlHttpRequest()) {
             return $this->render("pages/blank.html.twig", ['message' => "This page doesn't exist"]);
         }
 
-        print($request->getContent());
+        $disciplineGroups = $request->query->get("disciplineGroup");
+        $
         $documents = $documentRepository->findAll();
 
         $jsonData = array();
