@@ -45,6 +45,21 @@ class Document
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Area", inversedBy="documents")
+     */
+    private $area;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="documents")
+     */
+    private $building;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="documents")
+     */
+    private $location;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,5 +157,41 @@ class Document
     public function __toString()
     {
         return $this->getFileName();
+    }
+
+    public function getArea(): ?Area
+    {
+        return $this->area;
+    }
+
+    public function setArea(?Area $area): self
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?Building $building): self
+    {
+        $this->building = $building;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 }

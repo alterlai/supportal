@@ -15,42 +15,37 @@ class BuildingFixtures extends Fixture implements DependentFixtureInterface
         $building = (new Building())
             ->setName("Van Doorenveste")
             ->setCode("ZP11")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
         $manager->persist($building);
 
         $building2 = (new Building())
             ->setName("Van Olsttoren")
             ->setCode("ZP09")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
         $manager->persist($building2);
 
         $building3 = (new Building())
             ->setName("Brugsmaborg")
             ->setCode("ZP07")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
         $manager->persist($building3);
 
         $building4 = (new Building())
             ->setName("DSH")
             ->setCode("ZE10")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
         $manager->persist($building4);
 
         $building5 = (new Building())
             ->setName("Marie Kamphuisborg")
             ->setCode("ZP23")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
         $manager->persist($building5);
 
         $manager->flush();
     }
 
     public function getDependencies() {
-        return array(OrganisationFixtures::class);
+        return array(LocationFixtures::class);
     }
 }
