@@ -21,17 +21,17 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($loc);
         $this->addReference(LocationFixtures::GRONINGEN, $loc);
 
-        $loc = (new Location())
-            ->setName("Assen")
-            ->setCode("ASS")
-            ->setOrganisationId( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
-        $manager->persist($loc);
-
-        $loc = (new Location())
-            ->setName("Amsterdam")
-            ->setCode("AMS")
-            ->setOrganisationId( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
-        $manager->persist($loc);
+//        $loc = (new Location())
+//            ->setName("Assen")
+//            ->setCode("ASS")
+//            ->setOrganisationId( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
+//        $manager->persist($loc);
+//
+//        $loc = (new Location())
+//            ->setName("Amsterdam")
+//            ->setCode("AMS")
+//            ->setOrganisationId( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
+//        $manager->persist($loc);
 
         $manager->flush();
     }

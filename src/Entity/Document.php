@@ -60,6 +60,11 @@ class Document
      */
     private $location;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $floor;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,6 +103,18 @@ class Document
         if ($file_content) {
             $this->updated_at = new \DateTime('now');
         }
+    }
+
+    public function getFloor(): ?int
+    {
+        return $this->floor;
+    }
+
+    public function setFloor(?int $floor): self
+    {
+        $this->floor = $floor;
+
+        return $this;
     }
 
     public function getDisciplineCode(): ?discipline

@@ -38,7 +38,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
                 [
                     'document{1..40}' => [
                         'updated_at' => '<dateTime("now")>',
-                        'description' => '<text()>'
+                        'description' => '<text()>',
                     ]
                 ]
             ]
@@ -46,15 +46,15 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($objectset as $object)
         {
+            // Generate a few random properties
             $randomDiscipline = $this->getRandomDiscipline();
-
             $randomBuilding = $this->getRandomBuilding();
+            $randomFloor = rand(0, 4);
 
-
-
+            // Set random properties
             $object->setDiscipline($randomDiscipline);
-
-            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding));
+            $object->setFloor($randomFloor);
+            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding, $randomFloor));
 
             $manager->persist($object);
         }
@@ -74,9 +74,9 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         return $this->buildings[$key];
     }
 
-    public function generateRandomFilename(Discipline $discipline, Building $randomBuilding): string
+    public function generateRandomFilename(Discipline $discipline, Building $randomBuilding, int $floor): string
     {
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, ".pdf");
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $floor , 1, ".pdf");
     }
 
 

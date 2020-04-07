@@ -35,11 +35,6 @@ class Area
     private $code;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $floor;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="area")
      */
     private $documents;
@@ -98,18 +93,6 @@ class Area
     public function setBuilding(?building $building): self
     {
         $this->building = $building;
-
-        return $this;
-    }
-
-    public function getFloor(): ?int
-    {
-        return $this->floor;
-    }
-
-    public function setFloor(?int $floor): self
-    {
-        $this->floor = $floor;
 
         return $this;
     }

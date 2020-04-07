@@ -19,16 +19,25 @@
                         <ul class="fa-columns list-unstyled">
                             {% for locatie in app.user.organisation.locations %}
                                 <h5>{{ locatie }}</h5>
-
+                                {% for building in locatie.buildings %}
                                 <li>
                                     <label>
                                         <input type="checkbox" name="buildingCode"
-                                               value="building"> Building
+                                               value="{{ building }}"> {{ building }}
                                     </label>
                                 </li>
-
+                                {% endfor %}
                             {% endfor %}
                         </ul>
+                    </div>
+
+                    <hr>
+
+                    <div class="filterOption" id="floorFilter">
+                        <h4>Verdieping</h4>
+                        <label>
+                            <input type="text" name="floor" />
+                        </label>
                     </div>
 
                     <hr>
@@ -43,15 +52,6 @@
                                 </label>
                             {% endfor %}
                         </ul>
-                    </div>
-
-                    <hr>
-
-                    <div class="filterOption" id="floorFilter">
-                        <h4>Verdieping</h4>
-                        <label>
-                            <input type="text" name="floor" />
-                        </label>
                     </div>
                     <hr>
                     <div>
@@ -77,8 +77,8 @@
                                 <td>{{ document.documentName }}</td>
                                 <td>{{ document.discipline.code }}</td>
                                 <td>{{ document.discipline.description }}</td>
-                                <td>TODO</td>
-                                <td>TODO</td>
+                                <td>{{ document.building }}</td>
+                                <td>{{ document.floor }}</td>
                                 <td><a href="{{ path('document', {documentId: document.id}) }}">Bekijk</a></td>
                             </tr>
                         {% endfor %}
