@@ -54,6 +54,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
             // Set random properties
             $object->setDiscipline($randomDiscipline);
             $object->setFloor($randomFloor);
+            $object->setLocation($this->getReference(LocationFixtures::GRONINGEN));
             $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding, $randomFloor));
 
             $manager->persist($object);
