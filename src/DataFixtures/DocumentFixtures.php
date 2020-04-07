@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Building;
 use App\Entity\Discipline;
 use App\Entity\Document;
 use App\Repository\BuildingRepository;
@@ -47,9 +48,13 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         {
             $randomDiscipline = $this->getRandomDiscipline();
 
-            $object->setFileName($this->generateRandomFilename($randomDiscipline));
+            $randomBuilding = $this->getRandomBuilding();
 
-            $object->setDiscipline($this->getRandomDiscipline());
+
+
+            $object->setDiscipline($randomDiscipline);
+
+            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding));
 
             $manager->persist($object);
         }
@@ -62,12 +67,15 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         return $this->disciplines[$key];
     }
 
-    public function generateRandomFilename(Discipline $discipline): string
+    public function getRandomBuilding(): Building
     {
         $key = array_rand($this->buildings);
 
-        $randomBuilding = $this->buildings[$key];
+        return $this->buildings[$key];
+    }
 
+    public function generateRandomFilename(Discipline $discipline, Building $randomBuilding): string
+    {
         return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, ".pdf");
     }
 
