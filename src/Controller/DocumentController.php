@@ -63,9 +63,10 @@ class DocumentController extends AbstractController
         }
 
         $disciplineGroups = $request->query->get("disciplineGroup");
-        $
-        $documents = $documentRepository->findAll();
+        $buildingCodes = $request->query->get("buildingCodes");
 
+        /** @var Document $documents */
+        $documents = $documentRepository->findbyCurrentUser($this->getUser());
         $jsonData = array();
 
         foreach ($documents as $document){

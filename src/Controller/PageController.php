@@ -18,8 +18,8 @@ class PageController extends AbstractController
      */
     public function index(DocumentRepository $documentRepository)
     {
-        $allDocuments = $documentRepository->findAll();
-        return $this->render("pages/home.html.twig", ['documents' => $allDocuments]);
+        $documents = $documentRepository->findbyCurrentUser($this->getUser());
+        return $this->render("pages/home.html.twig", ['documents' => $documents]);
     }
 
 }

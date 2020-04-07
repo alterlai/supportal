@@ -18,8 +18,10 @@ $(document).ready(function() {
            success: function (result, status) {
                updateDocumentTable(result)
             },
-           error: function(result, var2, var3) {
-                alert("Er is iets fout gegaan. Neem contact op met een administrator.")
+           error: function(result, message) {
+                alert("Er is iets fout gegaan. Neem contact op met een administrator.");
+                console.log(message);
+                console.log(result);
             },
        });
    });

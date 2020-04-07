@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Document;
+use App\Entity\Location;
+use App\Entity\Organisation;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -57,7 +60,17 @@ class DocumentRepository extends ServiceEntityRepository
             ;
     }
 
-
+    /**
+     * Find all documents related to the current user and organisation
+     */
+    public function findByCurrentUser(User $user)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
+            ->getQuery()
+            ->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?Document
     {
