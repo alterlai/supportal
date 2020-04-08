@@ -34,7 +34,6 @@ $(document).ready(function() {
         var selectedFilters = $('input:checked');
         var previousName = null;
         var output = {};
-        console.log(selectedFilters);
 
         // Loop over each selected filter and add the names and values to a new array.
         for (var i = 0; i < selectedFilters.length; i++)
@@ -50,6 +49,9 @@ $(document).ready(function() {
             }
             previousName = selectedFilters[i].name;
         }
+        output['floor'] = $('#floorInput').val();
+
+        console.log(output);
         return output;
    }
 

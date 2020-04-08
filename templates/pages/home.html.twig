@@ -23,7 +23,7 @@
                                 <li>
                                     <label>
                                         <input type="checkbox" name="buildingCode"
-                                               value="{{ building }}"> {{ building }}
+                                               value="{{ building.code }}"> {{ building }}
                                     </label>
                                 </li>
                                 {% endfor %}
@@ -36,7 +36,7 @@
                     <div class="filterOption" id="floorFilter">
                         <h4>Verdieping</h4>
                         <label>
-                            <input type="text" name="floor" />
+                            <input type="number" name="floor" id="floorInput" />
                         </label>
                     </div>
 
@@ -48,7 +48,7 @@
                             {% for i in 0..9 %}
                                 <label>
                                     <input type="checkbox" name="disciplineGroup"
-                                           value="{{ i*10 }}"> {{ i*10 }}-{{ i*10+9 }}
+                                           value="{{ i }}"> {{ i*10 }}-{{ i*10+9 }}
                                 </label>
                             {% endfor %}
                         </ul>

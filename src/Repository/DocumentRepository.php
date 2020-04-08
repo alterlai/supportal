@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Document|null find($id, $lockMode = null, $lockVersion = null)
@@ -90,24 +91,45 @@ class DocumentRepository extends ServiceEntityRepository
     }
     */
 
-    public function findWithFilter(User $user, array $disciplines = null, int $floor = null, arrray $buildings)
+    public function findWithFilter(UserInterface $user, array $disciplines = null, int $floor = null, array $buildings = null)
     {
+
         // Get documents related to the current user
         $query = $this->createQueryBuilder('d')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
             ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
-            ->innerJoin('user', 'u', 'WITH', 'u.organisation_id = o.id')
-            ->where('u.id = :userid')
-            ->setParameter(':userid', $user->getId());
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id');
 
+
+        // If disciplines filter is set, apply filter
         if ($disciplines)
         {
-            for ($i = 0; $i < count($disciplines); $i++)
-                $query->orWhere(" ")
-                    ->setParameter(
-                    sprintf('discipline_filter%s',$i) , $disciplines[$i-1]
-            );
+            foreach($disciplines as $i => $discipline)
+            {
+                $query->orWhere("dp.code LIKE :discipline$i")
+                    ->setParameter("discipline$i", $discipline."%");
+            }
         }
+
+        // Filter on floor level
+        if ($floor)
+        {
+            $query->andWhere("d.floor = :floor")
+                ->setParameter("floor", $floor);
+        }
+
+        // Match the values in $buildings array with the first 4 characters of the filename.
+        if ($buildings)
+        {
+            $query->andWhere($query->expr()->in($query->expr()->substring("d.file_name", 1, 4), $buildings));
+        }
+
+        // And filter on User id
+        return $query->andWhere('u.id = :userid')
+            ->setParameter(':userid', $user->getId())
+            ->getQuery()
+            ->getResult();
     }
 
 }

@@ -66,14 +66,12 @@ class DocumentController extends AbstractController
         }
 
         $disciplineGroups = $request->query->get("disciplineGroup");
-        $buildingCodes = $request->query->get("buildingCodes");
+        $buildingCodes = $request->query->get("buildingCode");
+        $floor = empty($request->query->get('floor')) ? null : $request->query->get('floor');
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findbyCurrentUser($this->getUser());
+        $documents = $documentRepository->findWithFilter($this->getUser(), $disciplineGroups, $floor, $buildingCodes);
 
-        $documents->filter(function (Document $document) {
-           return $document->getFloor() == 1;
-        });
         $jsonData = array();
 
         foreach ($documents as $document){
