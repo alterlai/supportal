@@ -72,7 +72,7 @@ class DocumentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
-            ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
+            ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
             ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
             ->where('u.id = :userid')
             ->setParameter(':userid', $user->getId())
@@ -98,7 +98,7 @@ class DocumentRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('d')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
             ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
-            ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
+            ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
             ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id');
 
 

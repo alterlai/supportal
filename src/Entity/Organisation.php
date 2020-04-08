@@ -39,7 +39,7 @@ class Organisation
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="organisation_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="organisation")
      */
     private $locations;
 

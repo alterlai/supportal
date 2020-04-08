@@ -22,7 +22,7 @@ class Location
      * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="locations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $organisation_id;
+    private $organisation;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -54,14 +54,14 @@ class Location
         return $this->id;
     }
 
-    public function getOrganisationId(): ?Organisation
+    public function getOrganisation(): ?Organisation
     {
-        return $this->organisation_id;
+        return $this->organisation;
     }
 
-    public function setOrganisationId(?Organisation $organisation_id): self
+    public function setOrganisation(?Organisation $organisation): self
     {
-        $this->organisation_id = $organisation_id;
+        $this->organisation = $organisation;
 
         return $this;
     }
