@@ -33,6 +33,27 @@
                             <td>Organisatie</td>
                             <td>{{ document.location.organisation }}</td>
                         </tr>
+                        <tr>
+                            <td>Locatie</td>
+                            <td>{{ document.location }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gebouw</td>
+                            <td>{{ document.building ? document.building : "N.V.T." }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gebouwdeel</td>
+                            <td>{{ document.area ? document.area : "N.V.T." }}</td>
+                        </tr>
+                        <tr>
+                            <td>Verdieping</td>
+                            <td>{{ document.floor is not empty ? document.floor : "N.V.T." }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gebouwdeel</td>
+                            <td>{{ document.area ? document.area : "N.V.T." }}</td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </div>

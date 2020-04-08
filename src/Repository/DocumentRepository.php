@@ -91,7 +91,7 @@ class DocumentRepository extends ServiceEntityRepository
     }
     */
 
-    public function findWithFilter(UserInterface $user, array $disciplines = null, int $floor = null, array $buildings = null)
+    public function findWithFilter(UserInterface $user, array $disciplines = null, $floor = null, array $buildings = null)
     {
 
         // Get documents related to the current user
@@ -113,7 +113,7 @@ class DocumentRepository extends ServiceEntityRepository
         }
 
         // Filter on floor level
-        if ($floor)
+        if ($floor !== null && strlen($floor) > 0)
         {
             $query->andWhere("d.floor = :floor")
                 ->setParameter("floor", $floor);

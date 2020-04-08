@@ -6,7 +6,24 @@ $(document).ready(function() {
     /**
      * Fetch document records using an AJAX request.
      */
-   $('#applyFilter').click(function()
+   $('input').change(function()
+   {
+       updateTable();
+   });
+
+    /**
+     * Remove filters button action and update the table
+     */
+    $("#removeFilters").click(function () {
+        $("input:checked").prop("checked", false);
+        updateTable();
+    });
+
+
+    /**
+     * Fire an AJAX request and update the datatable with new values
+     */
+   function updateTable()
    {
        parameters = getFilterOptions();
        $.ajax({
@@ -17,14 +34,14 @@ $(document).ready(function() {
            data: getFilterOptions(),
            success: function (result, status) {
                updateDocumentTable(result)
-            },
+           },
            error: function(result, message) {
-                alert("Er is iets fout gegaan. Neem contact op met een administrator.");
-                console.log(message);
-                console.log(result);
-            },
+               alert("Er is iets fout gegaan. Neem contact op met een administrator.");
+               console.log(message);
+               console.log(result);
+           },
        });
-   });
+   }
 
     /**
      * Get the applied filter options.
@@ -78,5 +95,7 @@ $(document).ready(function() {
         table.clear();
         table.rows.add(tableData).draw();
     }
+
+
 });
 

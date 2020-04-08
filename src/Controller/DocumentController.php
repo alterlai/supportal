@@ -67,7 +67,7 @@ class DocumentController extends AbstractController
 
         $disciplineGroups = $request->query->get("disciplineGroup");
         $buildingCodes = $request->query->get("buildingCode");
-        $floor = empty($request->query->get('floor')) ? null : $request->query->get('floor');
+        $floor = $request->query->get('floor');
 
         /** @var ArrayCollection|Document[] $documents */
         $documents = $documentRepository->findWithFilter($this->getUser(), $disciplineGroups, $floor, $buildingCodes);
