@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Document;
 use App\Repository\DocumentRepository;
+use App\Service\DocumentFilterService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Schema\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,7 +55,7 @@ class DocumentController extends AbstractController
      * @Route("/ajax/document", name="ajax.document", methods={"GET"})
      * @param Request $request
      * @param DocumentRepository $documentRepository
-     * @return JsonResponse
+     * @return JsonResponse|Response
      * @IsGranted("ROLE_USER")
      */
     public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository)
@@ -65,8 +68,12 @@ class DocumentController extends AbstractController
         $disciplineGroups = $request->query->get("disciplineGroup");
         $buildingCodes = $request->query->get("buildingCodes");
 
-        /** @var Document $documents */
+        /** @var ArrayCollection|Document[] $documents */
         $documents = $documentRepository->findbyCurrentUser($this->getUser());
+
+        $documents->filter(function (Document $document) {
+           return $document->getFloor() == 1;
+        });
         $jsonData = array();
 
         foreach ($documents as $document){

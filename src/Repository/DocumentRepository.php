@@ -7,7 +7,9 @@ use App\Entity\Location;
 use App\Entity\Organisation;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Document|null find($id, $lockMode = null, $lockVersion = null)
@@ -62,12 +64,17 @@ class DocumentRepository extends ServiceEntityRepository
 
     /**
      * Find all documents related to the current user and organisation
+     * @param UserInterface $user
+     * @return array|Document
      */
-    public function findByCurrentUser(User $user)
+    public function findByCurrentUser(UserInterface $user)
     {
         return $this->createQueryBuilder('d')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
             ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->where('u.id = :userid')
+            ->setParameter(':userid', $user->getId())
             ->getQuery()
             ->getResult();
     }
@@ -82,4 +89,25 @@ class DocumentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findWithFilter(User $user, array $disciplines = null, int $floor = null, arrray $buildings)
+    {
+        // Get documents related to the current user
+        $query = $this->createQueryBuilder('d')
+            ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('l.organisation_id', 'o', 'WITH',  'l.organisation_id = o.id')
+            ->innerJoin('user', 'u', 'WITH', 'u.organisation_id = o.id')
+            ->where('u.id = :userid')
+            ->setParameter(':userid', $user->getId());
+
+        if ($disciplines)
+        {
+            for ($i = 0; $i < count($disciplines); $i++)
+                $query->orWhere(" ")
+                    ->setParameter(
+                    sprintf('discipline_filter%s',$i) , $disciplines[$i-1]
+            );
+        }
+    }
+
 }
