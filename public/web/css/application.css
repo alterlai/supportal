@@ -8,37 +8,15 @@
 
 .content {padding-top: 50px;}
 
-#documenten {
-    background: white;
-    display: flex;
-    padding: 40px;
-}
-#documentContainer {
-    background: white;
-}
-#pdfContainer {
+.topBarContainer {
     width: 100%;
-    outline: 1px solid black;
-    background: darkgrey;
+    align-items: center;
+    justify-content: center;
+    background: #0c5460;
+    color: white;
 }
-#historyContainer { margin-top: 25px; }
-#filterContainer {
-    margin-right: 50px;
-    padding: 10px;
-    background: #f2f2f2;
-}
-#filterContainer hr { margin-top: 0.5rem; margin-bottom: 0.5rem; }
 
-.filterOption ul { margin-bottom: 0; }
-.filterOption { font-size: 13px; }
-.filterOption h4 {
-    font-size: 13px;
+.searchTitle h5 {
+    text-align: center;
     font-weight: bold;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
 }
-.filterOption h5{
-    font-size: 13px;
-}
-
-#removeFilters {width: 100%;}
