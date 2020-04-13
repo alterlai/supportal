@@ -6,7 +6,7 @@ $(document).ready(function() {
     /**
      * Fetch document records using an AJAX request.
      */
-   $('input').change(function()
+   $('.filterOption input').change(function()
    {
        updateTable();
    });
@@ -15,7 +15,7 @@ $(document).ready(function() {
      * Remove filters button action and update the table
      */
     $("#removeFilters").click(function () {
-        $("input:checked").prop("checked", false);
+        $(".filterOption input:checked").prop("checked", false);
         updateTable();
     });
 
