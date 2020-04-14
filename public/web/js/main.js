@@ -15,9 +15,9 @@ $(document).ready(function() {
         if (input !== "")
         {
             filters.push(input);
+            addPill(input);
             updateContent();
         }
-
     });
 
     /**
@@ -42,28 +42,12 @@ $(document).ready(function() {
         });
     }
 
-
     /**
-     * Fire an AJAX request and update the datatable with new values
+     * Add a filter pill below the search bar
      */
-   function updateTable()
-   {
-       parameters = getFilterOptions();
-       $.ajax({
-           url: "/ajax/document",
-           type: "GET",
-           dataType: 'json',
-           async: true,
-           data: getFilterOptions(),
-           success: function (result, status) {
-               updateDocumentTable(result)
-           },
-           error: function(result, message) {
-               alert("Er is iets fout gegaan. Neem contact op met een administrator.");
-               console.log(message);
-               console.log(result);
-           },
-       });
-   }
+    function addPill(input)
+    {
+        $('#pillContainer').append("<div class='tagPill'>" + input + " </div>")
+    }
 });
 

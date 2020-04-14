@@ -78,6 +78,7 @@ class DocumentRepository extends ServiceEntityRepository
                 foreach ($filters as $i => $filter) {
                     $parameters[":input".$i] = "%".$filter."%";
 
+                    // Prepare SQL statement
                     if ($i == 0)
                     {
                         $clauses = "(d.id LIKE :input".$i." 
@@ -122,17 +123,6 @@ class DocumentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    /*
-    public function findOneBySomeField($value): ?Document
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 
     public function findWithFilter(UserInterface $user, array $disciplines = null, $floor = null, array $buildings = null)
     {
