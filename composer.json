@@ -38,7 +38,8 @@
         "symfony/debug-pack": "^1.0",
         "symfony/maker-bundle": "^1.14",
         "symfony/profiler-pack": "*",
-        "symfony/test-pack": "*"
+        "symfony/test-pack": "*",
+        "symfony/var-dumper": "5.0.*"
     },
     "config": {
         "preferred-install": {

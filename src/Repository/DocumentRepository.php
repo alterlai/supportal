@@ -48,7 +48,7 @@ class DocumentRepository extends ServiceEntityRepository
      * @param string $inputString
      * @return Document[] Returns array of Document objects
      */
-    public function searchAllColumns(string $inputString) {
+    public function findInAnyColumn(string $inputString) {
         return $this->createQueryBuilder('d')
             ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
             ->where('d.id LIKE :input')
@@ -61,6 +61,49 @@ class DocumentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * Search for documents in all columns with multiple filters.
+     * @param array $filters
+     * @return Document[] Returns array of Document objects
+     */
+    public function findInAnyColumnWithMultipleFilters(array $filters)
+    {
+
+        $clauses = "";
+        $parameters = array();
+
+        if (sizeof($filters) > 0) {
+                foreach ($filters as $i => $filter) {
+                    $parameters[":input".$i] = "%".$filter."%";
+
+                    if ($i == 0)
+                    {
+                        $clauses = "(d.id LIKE :input".$i." 
+                        OR dp.code LIKE :input".$i." 
+                        OR dp.description LIKE :input".$i." 
+                        OR d.description LIKE :input".$i." 
+                        OR d.file_name LIKE :input".$i." 
+                        OR d.updated_at LIKE :input".$i.")";
+                    }
+                    else {
+                        $clauses .= " AND (d.id LIKE :input".$i." 
+                            OR dp.code LIKE :input".$i." 
+                            OR dp.description LIKE :input".$i." 
+                            OR d.description LIKE :input".$i." 
+                            OR d.file_name LIKE :input".$i." 
+                            OR d.updated_at LIKE :input".$i.")";
+                    }
+                }
+            }
+
+        $query =  $this->createQueryBuilder('d')
+            ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
+            ->where($clauses)
+            ->setParameters($parameters);
+
+        return $query->getQuery()->getResult();
     }
 
     /**

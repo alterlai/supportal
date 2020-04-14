@@ -7,6 +7,7 @@ use App\Repository\DocumentRepository;
 use App\Service\DocumentFilterService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\View;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,25 +56,36 @@ class DocumentController extends AbstractController
      * @Route("/ajax/document", name="ajax.document", methods={"GET"})
      * @param Request $request
      * @param DocumentRepository $documentRepository
+     * @param LoggerInterface $logger
      * @return JsonResponse|Response
      * @IsGranted("ROLE_USER")
      */
-    public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository)
+    public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository, LoggerInterface $logger)
     {
         // Deny non-ajax requests
         if (!$request->isXmlHttpRequest()) {
             return $this->render("pages/blank.html.twig", ['message' => "This page doesn't exist"]);
         }
 
-        $disciplineGroups = $request->query->get("disciplineGroup");
-        $buildingCodes = $request->query->get("buildingCode");
-        $floor = $request->query->get('floor');
+        $filters = $request->query->get('filters');
+        $logger->info(implode($filters));
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findWithFilter($this->getUser(), $disciplineGroups, $floor, $buildingCodes);
+        $documents = $documentRepository->findInAnyColumnWithMultipleFilters($filters);
 
+        return $this->arrayToJson($documents);
+    }
+
+    /**
+     * Generate a json response from an array of objects.
+     * @param $documents
+     * @return JsonResponse
+     */
+    private function arrayToJson($documents): JsonResponse
+    {
         $jsonData = array();
 
+        /** @var Document $document */
         foreach ($documents as $document){
             array_push($jsonData, [
                 'naam' => $document->getDocumentName(),
@@ -84,6 +96,7 @@ class DocumentController extends AbstractController
                 'documentId' => $document->getId()
             ]);
         }
+
         return new JsonResponse($jsonData);
     }
 }
