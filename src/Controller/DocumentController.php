@@ -68,10 +68,16 @@ class DocumentController extends AbstractController
         }
 
         $filters = $request->query->get('filters');
-        $logger->info(implode($filters));
+
+        // If no filters are present: return all documents from the user
+        if (empty($filters))
+        {
+            return $this->arrayToJson($documentRepository->findByCurrentUser($this->getUser()));
+        }
+
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findInAnyColumnWithMultipleFilters($filters);
+        $documents = $documentRepository->findInAnyColumnWithMultipleFilters($filters, $this->getUser());
 
         return $this->arrayToJson($documents);
     }
@@ -89,10 +95,13 @@ class DocumentController extends AbstractController
         foreach ($documents as $document){
             array_push($jsonData, [
                 'naam' => $document->getDocumentName(),
+                'locatie' => $document->getLocation()->getName(),
                 'discipline' => $document->getDiscipline()->getCode(),
-                'omschrijving' => $document->getDiscipline()->getDescription(),
+                'disciplineOmschrijving' => $document->getDiscipline()->getDescription(),
+                'omschrijving' => $document->getDescription(),
                 'gebouw' => $document->getBuilding(),
                 'verdieping' => $document->getFloor(),
+                'updatedAt' => $document->getUpdatedAt()->format('d/m/Y'),
                 'documentId' => $document->getId()
             ]);
         }

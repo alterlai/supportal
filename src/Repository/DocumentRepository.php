@@ -66,13 +66,16 @@ class DocumentRepository extends ServiceEntityRepository
     /**
      * Search for documents in all columns with multiple filters.
      * @param array $filters
+     * @param UserInterface $user
      * @return Document[] Returns array of Document objects
      */
-    public function findInAnyColumnWithMultipleFilters(array $filters)
+    public function findInAnyColumnWithMultipleFilters(array $filters, UserInterface $user)
     {
 
         $clauses = "";
-        $parameters = array();
+        $parameters = array(
+            ':userid' => $user->getId()
+        );
 
         if (sizeof($filters) > 0) {
                 foreach ($filters as $i => $filter) {
@@ -101,7 +104,11 @@ class DocumentRepository extends ServiceEntityRepository
 
         $query =  $this->createQueryBuilder('d')
             ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
-            ->where($clauses)
+            ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->where('u.id = :userid')
+            ->andWhere($clauses)
             ->setParameters($parameters);
 
         return $query->getQuery()->getResult();
