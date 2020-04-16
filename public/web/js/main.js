@@ -27,7 +27,7 @@ $(document).ready(function() {
    {
        parameters = getFilterOptions();
        $.ajax({
-           url: "/ajax/document",
+           url: "/ajax/documents/"+parameters['buildingId'],
            type: "GET",
            dataType: 'json',
            async: true,
@@ -37,7 +37,6 @@ $(document).ready(function() {
            },
            error: function(result, message) {
                alert("Er is iets fout gegaan. Neem contact op met een administrator.");
-               console.log(message);
                console.log(result);
            },
        });
@@ -67,6 +66,7 @@ $(document).ready(function() {
             previousName = selectedFilters[i].name;
         }
         output['floor'] = $('#floorInput').val();
+        output['buildingId'] = $('#buildingId').val();
 
         console.log(output);
         return output;
@@ -83,6 +83,7 @@ $(document).ready(function() {
         for (var i = 0; i < data.length; i++) {
             tableData.push([
                 data[i].naam,
+                data[i].documentType,
                 data[i].discipline,
                 data[i].omschrijving,
                 data[i].gebouw,

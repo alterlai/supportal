@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Document;
 use App\Repository\BuildingRepository;
 use App\Repository\DocumentRepository;
+use App\Repository\DocumentTypeRepository;
 use App\Service\DocumentFilterService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\View;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,13 +55,14 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("/ajax/document", name="ajax.document", methods={"GET"})
+     * @Route("/ajax/documents/{buildingId}", name="ajax.documents", methods={"GET"})
      * @param Request $request
+     * @param int $buildingId
      * @param DocumentRepository $documentRepository
      * @return JsonResponse|Response
      * @IsGranted("ROLE_USER")
      */
-    public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository)
+    public function ajax_filter_documents(Request $request, int $buildingId, DocumentRepository $documentRepository)
     {
         // Deny non-ajax requests
         if (!$request->isXmlHttpRequest()) {
@@ -67,11 +70,11 @@ class DocumentController extends AbstractController
         }
 
         $disciplineGroups = $request->query->get("disciplineGroup");
-        $buildingCodes = $request->query->get("buildingCode");
+        $documentTypes = $request->query->get("documentTypes");
         $floor = $request->query->get('floor');
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findWithFilter($this->getUser(), $disciplineGroups, $floor, $buildingCodes);
+        $documents = $documentRepository->findWithFilter($this->getUser(), $buildingId, $disciplineGroups, $floor, $documentTypes);
 
         $jsonData = array();
 
@@ -80,9 +83,10 @@ class DocumentController extends AbstractController
                 'naam' => $document->getDocumentName(),
                 'discipline' => $document->getDiscipline()->getCode(),
                 'omschrijving' => $document->getDiscipline()->getDescription(),
-                'gebouw' => $document->getBuilding(),
+                'gebouw' => $document->getBuilding()->getName(),
                 'verdieping' => $document->getFloor(),
-                'documentId' => $document->getId()
+                'documentId' => $document->getId(),
+                'documentType' => $document->getDocumentType()->getName()
             ]);
         }
         return new JsonResponse($jsonData);
@@ -91,12 +95,21 @@ class DocumentController extends AbstractController
     /**
      * @Route("/documents/{buildingId}", name="documents", methods={"GET"})
      * @param integer $buildingId
+     * @param BuildingRepository $buildingRepository
+     * @param DocumentTypeRepository $documentTypeRepository
      * @return Response
      * @IsGranted("ROLE_USER")
      */
-    public function index(int $buildingId, BuildingRepository $buildingRepository)
+    public function index(int $buildingId, BuildingRepository $buildingRepository, DocumentTypeRepository $documentTypeRepository)
     {
         $documents = ($buildingRepository->find($buildingId))->getDocuments();
-        return $this->render('pages/documents.html.twig', ['documents' => $documents]);
+
+        $documentTypes = $documentTypeRepository->findAll();
+
+        return $this->render('pages/documents.html.twig', [
+            'documents' => $documents,
+            'documentTypes' => $documentTypes,
+            'buildingId' => $buildingId
+        ]);
     }
 }

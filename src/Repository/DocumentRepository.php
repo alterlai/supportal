@@ -91,15 +91,17 @@ class DocumentRepository extends ServiceEntityRepository
     }
     */
 
-    public function findWithFilter(UserInterface $user, array $disciplines = null, $floor = null, array $buildings = null)
+    public function findWithFilter(UserInterface $user, int $buildingId, array $disciplines = null, $floor = null, array $documentTypes = null)
     {
 
         // Get documents related to the current user
         $query = $this->createQueryBuilder('d')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
-            ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
+            ->innerJoin('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
             ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
-            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id');
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
+        ;
 
 
         // If disciplines filter is set, apply filter
@@ -119,15 +121,21 @@ class DocumentRepository extends ServiceEntityRepository
                 ->setParameter("floor", $floor);
         }
 
-        // Match the values in $buildings array with the first 4 characters of the filename.
-        if ($buildings)
+
+        if ($documentTypes)
         {
-            $query->andWhere($query->expr()->in($query->expr()->substring("d.file_name", 1, 4), $buildings));
+            foreach($documentTypes as $i => $documentType)
+            {
+                $query->andWhere("dt.code = :documentType$i")
+                    ->setParameter("documentType$i", $documentType);
+            }
         }
 
         // And filter on User id
         return $query->andWhere('u.id = :userid')
-            ->setParameter(':userid', $user->getId())
+            ->andWhere('d.building = :buildingId')
+            ->setParameter('userid', $user->getId())
+            ->setParameter('buildingId', $buildingId)
             ->getQuery()
             ->getResult();
     }
