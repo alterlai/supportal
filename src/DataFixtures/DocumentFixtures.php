@@ -54,14 +54,15 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
             // Generate a few random properties
             $randomDiscipline = $this->getRandomDiscipline();
             $randomBuilding = $this->getRandomBuilding();
+            $randomDocumentType = $this->getRandomDocumentType();
             $randomFloor = rand(0, 4);
 
             // Set random properties
             $object->setDiscipline($randomDiscipline);
             $object->setFloor($randomFloor);
-            $object->setDocumentType($this->getRandomDocumentType());
+            $object->setDocumentType($randomDocumentType);
             $object->setLocation($this->getReference(LocationFixtures::GRONINGEN));
-            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding, $randomFloor));
+            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomDocumentType, $randomBuilding, $randomFloor));
 
             $manager->persist($object);
         }
@@ -81,9 +82,9 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         return $this->buildings[$key];
     }
 
-    public function generateRandomFilename(Discipline $discipline, Building $randomBuilding, int $floor): string
+    public function generateRandomFilename(Discipline $discipline, DocumentType $documentType, Building $randomBuilding, int $floor): string
     {
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $floor , 1, ".pdf");
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $documentType, $floor , 1, ".pdf");
     }
 
     private function loadDocumentTypes(ObjectManager $manager)
