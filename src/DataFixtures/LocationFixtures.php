@@ -17,7 +17,7 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
         $loc = (new Location())
             ->setName("Groningen")
             ->setCode("GRO")
-            ->setOrganisationId( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
+            ->setOrganisation( $this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE));
         $manager->persist($loc);
         $this->addReference(LocationFixtures::GRONINGEN, $loc);
 

@@ -5,11 +5,14 @@ namespace App\DataFixtures;
 use App\Entity\Building;
 use App\Entity\Discipline;
 use App\Entity\Document;
+use App\Entity\DocumentType;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
 use App\Service\DocumentNameParserService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use League\Csv\Reader;
 use Nelmio\Alice\Loader\NativeLoader;
 
 
@@ -18,6 +21,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     private $disciplines;
     private $buildings;
     private $nameParser;
+    private $documentTypes = array();
 
     public function __construct(DisciplineRepository $dr, BuildingRepository $br)
     {
@@ -29,8 +33,9 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @inheritDoc
      */
-    public function load(\Doctrine\Persistence\ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
+        $this->loadDocumentTypes($manager);
         $loader = new NativeLoader();
         /** @var Document[] $objectset */
         $objectset = $loader->loadData(
@@ -54,6 +59,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
             // Set random properties
             $object->setDiscipline($randomDiscipline);
             $object->setFloor($randomFloor);
+            $object->setDocumentType($this->getRandomDocumentType());
             $object->setLocation($this->getReference(LocationFixtures::GRONINGEN));
             $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomBuilding, $randomFloor));
 
@@ -78,6 +84,36 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     public function generateRandomFilename(Discipline $discipline, Building $randomBuilding, int $floor): string
     {
         return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $floor , 1, ".pdf");
+    }
+
+    private function loadDocumentTypes(ObjectManager $manager)
+    {
+        $reader = Reader::createFromPath('%kernel.root_dir%/../csv/documentTypes.csv', 'r');
+
+        $reader->setDelimiter(";");
+
+        $headers = $reader->fetchOne();     // Get headers
+
+        $reader->setHeaderOffset(0);    // skip header row
+
+        $data = $reader->getRecords($headers);
+
+        foreach($data as  $row)
+        {
+            $documentType = ( new DocumentType())
+                ->setCode($row['Code'])
+                ->setName($row['Benaming']);
+            array_push($this->documentTypes, $documentType);
+            $manager->persist($documentType);
+        }
+
+        $manager->flush();
+    }
+
+    private function getRandomDocumentType()
+    {
+        $key = array_rand($this->documentTypes);
+        return $this->documentTypes[$key];
     }
 
 
