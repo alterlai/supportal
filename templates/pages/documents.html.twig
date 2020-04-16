@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+{% block body %}
+    {% include 'partials/navbar.html.twig' %}
+
+    <div class="container">
+        <ol class="breadcrumb shadow-sm bg-white">
+            <li class="breadcrumb-item">Home /</li>
+        </ol>
+        <div id="documenten">
+            <div id="filterContainer">
+                <div id="filters">
+                    <h3>Filter</h3>
+                    <hr>
+                    <div id="gebouwenFilter" class="filterOption">
+                        <h4>Gebouw</h4>
+
+                        <ul class="fa-columns list-unstyled">
+                            {% for locatie in app.user.organisation.locations %}
+                                <h5>{{ locatie }}</h5>
+                                {% for building in locatie.buildings %}
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="buildingCode"
+                                               value="{{ building.code }}"> {{ building }}
+                                    </label>
+                                </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <hr>
+
+                    <div class="filterOption" id="floorFilter">
+                        <h4>Verdieping</h4>
+                        <label>
+                            <input type="number" name="floor" id="floorInput" />
+                        </label>
+                    </div>
+
+                    <hr>
+
+                    <div class="filterOption" id="disciplineFilter">
+                        <h4>Discipline</h4>
+                        <ul class="list-group list-unstyled">
+                            {% for i in 0..9 %}
+                                <label>
+                                    <input type="checkbox" name="disciplineGroup"
+                                           value="{{ i }}"> {{ i*10 }}-{{ i*10+9 }}
+                                </label>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <hr>
+                    <div>
+                        <button id="removeFilters" class="btn btn-info">Filters wissen</button>
+                    </div>
+                </div>
+            </div>
+            <div id="listingContainer">
+                <table class="dataTable table-striped" id="listing">
+                    <thead>
+                    <tr>
+                        <th>NL/SfB #</th>
+                        <th>Discipline</th>
+                        <th>Omschrijving</th>
+                        <th>Gebouw</th>
+                        <th>Verdieping</th>
+                        <th>Acties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for document in documents %}
+                            <tr>
+                                <td>{{ document.documentName }}</td>
+                                <td>{{ document.discipline.code }}</td>
+                                <td>{{ document.discipline.description }}</td>
+                                <td>{{ document.building }}</td>
+                                <td>{{ document.floor }}</td>
+                                <td><a href="{{ path('document', {documentId: document.id}) }}">Bekijk</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

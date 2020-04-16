@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% for building in buildings %}
+        {{ building.name }}
+    {% endfor %}
+
+{% endblock %}

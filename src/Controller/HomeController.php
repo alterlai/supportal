@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\DocumentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PageController extends AbstractController
+class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home", methods={"GET"})
@@ -16,10 +17,12 @@ class PageController extends AbstractController
      * @param DocumentRepository $documentRepository
      * @return Response
      */
-    public function index(DocumentRepository $documentRepository)
+    public function index()
     {
-        $documents = $documentRepository->findbyCurrentUser($this->getUser());
-        return $this->render("pages/home.html.twig", ['documents' => $documents]);
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $locations = $currentUser->getOrganisation()->getLocations();
+        return $this->render("pages/home.html.twig", ['locations' => $locations]);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Repository\BuildingRepository;
 use App\Repository\DocumentRepository;
 use App\Service\DocumentFilterService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -85,5 +86,17 @@ class DocumentController extends AbstractController
             ]);
         }
         return new JsonResponse($jsonData);
+    }
+
+    /**
+     * @Route("/documents/{buildingId}", name="documents", methods={"GET"})
+     * @param integer $buildingId
+     * @return Response
+     * @IsGranted("ROLE_USER")
+     */
+    public function index(int $buildingId, BuildingRepository $buildingRepository)
+    {
+        $documents = ($buildingRepository->find($buildingId))->getDocuments();
+        return $this->render('pages/documents.html.twig', ['documents' => $documents]);
     }
 }

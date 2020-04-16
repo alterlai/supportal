@@ -42,3 +42,20 @@
 }
 
 #removeFilters {width: 100%;}
+
+
+/**
+ * Location CSS
+ */
+.card.location {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 25px 30px;
+}
+.locationText { flex-grow: 1; }
+.locationImage {
+    height: 200px;
+    width: 200px;
+    background: grey;
+    display: inline-block;
+}
