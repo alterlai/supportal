@@ -19,10 +19,10 @@ $(document).ready(function() {
         updateTable();
     });
 
-    $(".parentfilter").click(function () {
-        $(this).
+    $('.subfilter').hide();
+    $('.subgroupTitle').click(function () {
+        $(this).next('.subfilter').toggle();
     });
-
 
     /**
      * Fire an AJAX request and update the datatable with new values

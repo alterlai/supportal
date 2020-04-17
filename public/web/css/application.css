@@ -41,6 +41,7 @@
     font-size: 13px;
 }
 
+
 #listing { width: 100%;}
 #listing td { padding: 10px 5px;}
 
@@ -66,4 +67,6 @@
 .buildingContainer {
     background: #f7f7f7;
 }
-.subfilter { margin-left: 10px;}
+.subfilter {
+    margin-left: 10px;
+}

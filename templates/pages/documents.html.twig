@@ -15,13 +15,16 @@
                     <hr>
                     <div class="filterOption" id="DocumentTypeFilter">
                         <h4>Document type</h4>
-                        <ul class="list-group list-unstyled">
                             {% for documentTypeGroup in documentTypes %}
-                                <ul>
-                                     {{  }}
-                                    {% for documentType in documentTypeGroup %}
-                                        {{ documentType.name }}
-                                    {% endfor %}
+                                    <h4 class="subgroupTitle">{{ documentTypeGroup[0].name }}</h4>
+                                    <ul class="list-group list-unstyled subfilter">
+                                        {% for documentType in documentTypeGroup %}
+                                                <label>
+                                                    <input type="checkbox" name="documentTypes" value="{{ documentType.code }}">
+                                                    {{ documentType.name }}
+                                                </label>
+                                        {% endfor %}
+                                    </ul>
                                 </ul>
                             {% endfor %}
                         </ul>
