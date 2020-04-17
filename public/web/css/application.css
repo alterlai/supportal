@@ -54,10 +54,14 @@
     flex-direction: row;
     padding: 20px 25px 30px;
 }
-.locationText { flex-grow: 1; }
+.locationText { flex-grow: 1; padding-left: 15px;}
 .locationImage {
     height: 200px;
     width: 200px;
     background: grey;
     display: inline-block;
+}
+
+.buildingContainer {
+    background: #f7f7f7;
 }
