@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Document;
 use App\Repository\BuildingRepository;
+use App\Repository\DisciplineRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\DocumentTypeRepository;
 use App\Service\DocumentFilterService;
@@ -19,6 +20,30 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DocumentController extends AbstractController
 {
+    /**
+     * @Route("/documents/{buildingId}", name="documents", methods={"GET"})
+     * @param integer $buildingId
+     * @param BuildingRepository $buildingRepository
+     * @param DocumentTypeRepository $documentTypeRepository
+     * @return Response
+     * @IsGranted("ROLE_USER")
+     */
+    public function index(int $buildingId, BuildingRepository $buildingRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository)
+    {
+        $documents = ($buildingRepository->find($buildingId))->getDocuments();
+
+        $documentTypes = $documentTypeRepository->findAll();
+
+        $disciplines = $disciplineRepository->findAll();
+
+        return $this->render('pages/documents.html.twig', [
+            'documents' => $documents,
+            'documentTypes' => $documentTypes,
+            'buildingId' => $buildingId,
+            'disciplines' => $disciplines
+        ]);
+    }
+
     /**
      * @Route("/document/", name="document", methods={"GET"})
      * @param Request $request
@@ -92,24 +117,5 @@ class DocumentController extends AbstractController
         return new JsonResponse($jsonData);
     }
 
-    /**
-     * @Route("/documents/{buildingId}", name="documents", methods={"GET"})
-     * @param integer $buildingId
-     * @param BuildingRepository $buildingRepository
-     * @param DocumentTypeRepository $documentTypeRepository
-     * @return Response
-     * @IsGranted("ROLE_USER")
-     */
-    public function index(int $buildingId, BuildingRepository $buildingRepository, DocumentTypeRepository $documentTypeRepository)
-    {
-        $documents = ($buildingRepository->find($buildingId))->getDocuments();
 
-        $documentTypes = $documentTypeRepository->findAll();
-
-        return $this->render('pages/documents.html.twig', [
-            'documents' => $documents,
-            'documentTypes' => $documentTypes,
-            'buildingId' => $buildingId
-        ]);
-    }
 }
