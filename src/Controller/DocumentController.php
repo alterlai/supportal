@@ -32,7 +32,7 @@ class DocumentController extends AbstractController
     {
         $documents = ($buildingRepository->find($buildingId))->getDocuments();
 
-        $documentTypes = $documentTypeRepository->findAll();
+        $documentTypes = $documentTypeRepository->findAllAsArray();
 
         $disciplines = $disciplineRepository->findAll();
 

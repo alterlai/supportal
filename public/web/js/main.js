@@ -19,6 +19,10 @@ $(document).ready(function() {
         updateTable();
     });
 
+    $(".parentfilter").click(function () {
+        $(this).
+    });
+
 
     /**
      * Fire an AJAX request and update the datatable with new values

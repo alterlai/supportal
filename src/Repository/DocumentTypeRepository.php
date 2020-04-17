@@ -47,4 +47,21 @@ class DocumentTypeRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * Return all document types in a hierarchical array
+     * @Return array
+     */
+    public function findAllAsArray()
+    {
+        $documentTypes = $this->findAll();
+
+        $result = array();
+
+        foreach ($documentTypes as $documentType)
+        {
+            $result[$documentType->getCode() / 10][$documentType->getCode() % 10] = $documentType;
+        }
+        return $result;
+    }
 }

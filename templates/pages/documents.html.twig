@@ -16,20 +16,14 @@
                     <div class="filterOption" id="DocumentTypeFilter">
                         <h4>Document type</h4>
                         <ul class="list-group list-unstyled">
-                        {% for documentType in documentTypes %}
-                            {% if documentType.code % 10 == 0 %}
-                                <label class="parentfilter">
-                                    <input type="checkbox" name="documentTypes" value="{{ documentType.code }}">
-                                    {{ documentType.name }}
-                                </label>
-                            {% endif %}
-                            {% if documentType.code % 10 != 0 %}
-                                <label class="subfilter">
-                                    <input type="checkbox" name="documentTypes" value="{{ documentType.code }}">
-                                    {{ documentType.name }}
-                                </label>
-                            {% endif %}
-                        {% endfor %}
+                            {% for documentTypeGroup in documentTypes %}
+                                <ul>
+                                     {{  }}
+                                    {% for documentType in documentTypeGroup %}
+                                        {{ documentType.name }}
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
                         </ul>
                     </div>
 
