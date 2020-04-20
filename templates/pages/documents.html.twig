@@ -12,11 +12,10 @@
             <div id="filterContainer" class="col-md-2">
                 <div id="filters">
                     <h3>Filter</h3>
-                    <hr>
                     <div class="filterOption" id="DocumentTypeFilter">
                         <h4>Document type</h4>
                             {% for documentTypeGroup in documentTypes %}
-                                    <h4 class="subgroupTitle">{{ documentTypeGroup[0].name }}</h4>
+                                    <span class="subgroupTitle toggleBtn">{{ documentTypeGroup[0].name }}</span>
                                     <ul class="list-group list-unstyled subfilter">
                                         {% for documentType in documentTypeGroup %}
                                                 <label>
@@ -30,9 +29,20 @@
                         </ul>
                     </div>
 
-                    <hr>
                     <div class="filterOption" id="disciplineFilter">
-                        <h4>Discipline</h4>
+                        <h4 class="toggleBtn">Discipline</h4>
+                        {% for discipline in disciplines %}
+                            {% if discipline.code < 10 and discipline.code matches '/^\\d+$/'%}
+                                <span class="subgroupTitle toggleBtn">{{ discipline.description }}</span>
+                            {% else %}
+                                <label>
+                                    <input type="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
+                                    {{ discipline.description }}
+                                </label>
+                            {% endif %}
+                        {% endfor %}
+
+
                         <ul class="list-group list-unstyled">
                             {% for discipline in disciplines %}
                                 {% if discipline.code < 10 and discipline.code matches '/^\\d+$/'%}
@@ -42,12 +52,6 @@
                                     </label>
                                 {% endif %}
                             {% endfor %}
-{#                            {% for i in 0..9 %}#}
-{#                                <label>#}
-{#                                    <input type="checkbox" name="disciplineGroup" value="{{ i }}">#}
-{#                                    {{ i*10 }}-{{ i*10+9 }}#}
-{#                                </label>#}
-{#                            {% endfor %}#}
                         </ul>
                     </div>
                     <div class="filterOption" id="floorFilter">
@@ -56,7 +60,6 @@
                             <input type="number" name="floor" id="floorInput" />
                         </label>
                     </div>
-                    <hr>
                     <input type="hidden" name="buildingId", id="buildingId" value="{{ buildingId }}">
                     <div>
                         <button id="removeFilters" class="btn btn-info">Filters wissen</button>
