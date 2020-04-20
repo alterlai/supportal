@@ -19,32 +19,26 @@ class DisciplineRepository extends ServiceEntityRepository
         parent::__construct($registry, Discipline::class);
     }
 
-    // /**
-    //  * @return Discipline[] Returns an array of Discipline objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Return all document types in a hierarchical array
+     * @Return array
+     * TODO: verwijderen zodra design gekozen is.
+     */
+    public function findAllAsGroupedArray()
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $disciplines = $this->findAll();
 
-    /*
-    public function findOneBySomeField($value): ?Discipline
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $result = array();
+        $currentGroupIndex = 0;
+
+        foreach ($disciplines as $discipline)
+        {
+            if(ctype_digit((string)$discipline->getCode()) && $discipline->getCode() < 10)
+            {
+                $currentGroupIndex++;
+            }
+            $result[$currentGroupIndex][] = $discipline;
+        }
+        return $result;
     }
-    */
 }

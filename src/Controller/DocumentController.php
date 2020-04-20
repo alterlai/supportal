@@ -34,13 +34,13 @@ class DocumentController extends AbstractController
 
         $documentTypes = $documentTypeRepository->findAllAsArray();
 
-        $disciplines = $disciplineRepository->findAll();
+        $disciplines = $disciplineRepository->findAllAsGroupedArray();
 
         return $this->render('pages/documents.html.twig', [
             'documents' => $documents,
             'documentTypes' => $documentTypes,
             'buildingId' => $buildingId,
-            'disciplines' => $disciplines
+            'disciplineGroups' => $disciplines
         ]);
     }
 

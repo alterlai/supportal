@@ -30,29 +30,18 @@
                     </div>
 
                     <div class="filterOption" id="disciplineFilter">
-                        <h4 class="toggleBtn">Discipline</h4>
-                        {% for discipline in disciplines %}
-                            {% if discipline.code < 10 and discipline.code matches '/^\\d+$/'%}
-                                <span class="subgroupTitle toggleBtn">{{ discipline.description }}</span>
-                            {% else %}
-                                <label>
-                                    <input type="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
-                                    {{ discipline.description }}
-                                </label>
-                            {% endif %}
-                        {% endfor %}
-
-
-                        <ul class="list-group list-unstyled">
-                            {% for discipline in disciplines %}
-                                {% if discipline.code < 10 and discipline.code matches '/^\\d+$/'%}
+                        <h4>Discipline</h4>
+                        {% for disciplineGroup in disciplineGroups %}
+                            <span class="subgroupTitle toggleBtn">[{{ disciplineGroup[0].code * 10 }}...{{ disciplineGroup[0].code * 10 + 10 }}] {{ disciplineGroup[0].description|lower }}</span>
+                            <ul class="list-group list-unstyled subfilter">
+                                {% for discipline in disciplineGroup %}
                                     <label>
-                                        <input type="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
-                                        {{ discipline.description }}
+                                        <input type="checkbox" class="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
+                                        [{{ discipline.code }}] {{ discipline.description|lower }}
                                     </label>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
                     </div>
                     <div class="filterOption" id="floorFilter">
                         <h4>Verdieping</h4>
@@ -72,8 +61,8 @@
                     <tr>
                         <th>Bestandsnaam</th>
                         <th>Document type</th>
-                        <th>Discipline</th>
-                        <th>Omschrijving</th>
+                        <th>Discipline omschrijving</th>
+                        <th>Discipline code</th>
                         <th>Gebouw</th>
                         <th>Verdieping</th>
                         <th>Acties</th>
@@ -84,8 +73,8 @@
                             <tr>
                                 <td>{{ document.documentName }}</td>
                                 <td>{{ document.documentType.name }}</td>
-                                <td>{{ document.discipline.code }}</td>
                                 <td>{{ document.discipline.description }}</td>
+                                <td>{{ document.discipline.code }}</td>
                                 <td>{{ document.building }}</td>
                                 <td>{{ document.floor }}</td>
                                 <td><a href="{{ path('document', {documentId: document.id}) }}">Bekijk</a></td>

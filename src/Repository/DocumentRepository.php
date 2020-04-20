@@ -109,7 +109,7 @@ class DocumentRepository extends ServiceEntityRepository
         {
             foreach($disciplines as $i => $discipline)
             {
-                $query->orWhere("dp.code LIKE :discipline$i")
+                $query->orWhere("dp.code = :discipline$i")
                     ->setParameter("discipline$i", $discipline."%");
             }
         }

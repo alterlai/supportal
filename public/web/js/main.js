@@ -88,8 +88,8 @@ $(document).ready(function() {
             tableData.push([
                 data[i].naam,
                 data[i].documentType,
-                data[i].discipline,
                 data[i].omschrijving,
+                data[i].discipline,
                 data[i].gebouw,
                 data[i].verdieping,
                 "<a href='/document/?documentId="+data[i].documentId+"'>Bekijk</a>"
