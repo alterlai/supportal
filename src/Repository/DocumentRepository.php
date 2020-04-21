@@ -3,8 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Document;
+use App\Entity\Location;
+use App\Entity\Organisation;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Document|null find($id, $lockMode = null, $lockVersion = null)
@@ -57,7 +63,22 @@ class DocumentRepository extends ServiceEntityRepository
             ;
     }
 
-
+    /**
+     * Find all documents related to the current user and organisation
+     * @param UserInterface $user
+     * @return array|Document
+     */
+    public function findByCurrentUser(UserInterface $user)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->where('u.id = :userid')
+            ->setParameter(':userid', $user->getId())
+            ->getQuery()
+            ->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?Document
     {
@@ -69,4 +90,54 @@ class DocumentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findWithFilter(UserInterface $user, int $buildingId, array $disciplines = null, $floor = null, array $documentTypes = null)
+    {
+
+        // Get documents related to the current user
+        $query = $this->createQueryBuilder('d')
+            ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
+            ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
+        ;
+
+
+        // If disciplines filter is set, apply filter
+        if ($disciplines)
+        {
+            foreach($disciplines as $i => $discipline)
+            {
+                $query->orWhere("dp.code = :discipline$i")
+                    ->setParameter("discipline$i", $discipline."%");
+            }
+        }
+
+        // Filter on floor level
+        if ($floor !== null && strlen($floor) > 0)
+        {
+            $query->andWhere("d.floor = :floor")
+                ->setParameter("floor", $floor);
+        }
+
+
+        if ($documentTypes)
+        {
+            foreach($documentTypes as $i => $documentType)
+            {
+                $query->andWhere("dt.code = :documentType$i")
+                    ->setParameter("documentType$i", $documentType);
+            }
+        }
+
+        // And filter on User id
+        return $query->andWhere('u.id = :userid')
+            ->andWhere('d.building = :buildingId')
+            ->setParameter('userid', $user->getId())
+            ->setParameter('buildingId', $buildingId)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -34,19 +34,20 @@ class Organisation
     private $color;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Building", mappedBy="organisation", orphanRemoval=true)
-     */
-    private $buildings;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organisation")
      */
     private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="organisation")
+     */
+    private $locations;
 
     public function __construct()
     {
         $this->buildings = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,37 +92,6 @@ class Organisation
     }
 
     /**
-     * @return Collection|Building[]
-     */
-    public function getBuildings(): Collection
-    {
-        return $this->buildings;
-    }
-
-    public function addBuilding(Building $building): self
-    {
-        if (!$this->buildings->contains($building)) {
-            $this->buildings[] = $building;
-            $building->setOrganisationId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBuilding(Building $building): self
-    {
-        if ($this->buildings->contains($building)) {
-            $this->buildings->removeElement($building);
-            // set the owning side to null (unless already changed)
-            if ($building->getOrganisationId() === $this) {
-                $building->setOrganisationId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|User[]
      */
     public function getUsers(): Collection
@@ -155,5 +125,36 @@ class Organisation
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|Location[]
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setOrganisationId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->contains($location)) {
+            $this->locations->removeElement($location);
+            // set the owning side to null (unless already changed)
+            if ($location->getOrganisationId() === $this) {
+                $location->setOrganisationId(null);
+            }
+        }
+
+        return $this;
     }
 }

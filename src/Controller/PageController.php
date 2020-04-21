@@ -33,7 +33,13 @@ class PageController extends AbstractController
         /* @var User $user */
         $user = $this->getUser();
 
-        $buildings = $user->getOrganisation()->getBuildings();
+        $locations = $user->getOrganisation()->getLocations();
+        $buildings = array();
+
+        foreach ($locations as $location)
+        {
+            $buildings = array_merge($location->getBuildings()->toArray(), $buildings);
+        }
 
         return $this->render("pages/buildings.html.twig", ['buildings' => $buildings]);
     }

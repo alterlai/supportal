@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Building;
+use App\Entity\Location;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Building|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +22,17 @@ class BuildingRepository extends ServiceEntityRepository
         parent::__construct($registry, Building::class);
     }
 
-    // /**
-    //  * @return Building[] Returns an array of Building objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByUserAndLocation(UserInterface $user, int $locationId)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->innerJoin('b.location', 'l', 'WITH', 'b.location = l.id')
+            ->innerJoin('l.organisation', 'o', 'WITH', 'l.organisation = o.id')
+            ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->where('u.id = :userId')
+            ->andWhere('l.id = :locationId')
+            ->setParameter('userId', $user->getId())
+            ->setParameter('locationId', $locationId)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Building
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

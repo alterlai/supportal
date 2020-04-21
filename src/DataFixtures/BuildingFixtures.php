@@ -10,47 +10,54 @@ use Doctrine\Common\Persistence\ObjectManager;
 class BuildingFixtures extends Fixture implements DependentFixtureInterface
 {
 
+    public const BUILDINGS_REFERENCE = "buildings";
+
     public function load(ObjectManager $manager)
     {
         $building = (new Building())
             ->setName("Van Doorenveste")
             ->setCode("ZP11")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+        $this->setReference('building1', $building);
         $manager->persist($building);
 
-        $building2 = (new Building())
+        $building = (new Building())
             ->setName("Van Olsttoren")
             ->setCode("ZP09")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
-        $manager->persist($building2);
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+        $this->setReference('building2', $building);
+        $manager->persist($building);
 
-        $building3 = (new Building())
+        $building = (new Building())
             ->setName("Brugsmaborg")
             ->setCode("ZP07")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
-        $manager->persist($building3);
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+        $this->setReference('building3', $building);
+        $manager->persist($building);
 
-        $building4 = (new Building())
+        $building = (new Building())
             ->setName("DSH")
             ->setCode("ZE10")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
-        $manager->persist($building4);
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+        $this->setReference('building4', $building);
+        $manager->persist($building);
 
-        $building5 = (new Building())
+        $building = (new Building())
             ->setName("Marie Kamphuisborg")
             ->setCode("ZP23")
-            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
-            ->setLocatie("Groningen");
-        $manager->persist($building5);
+            ->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+        $this->setReference('building5', $building);
+        $manager->persist($building);
 
         $manager->flush();
     }
 
+    public static function getReferenceKey($index)
+    {
+        return sprintf("building%s", $index);
+    }
+
     public function getDependencies() {
-        return array(OrganisationFixtures::class);
+        return array(LocationFixtures::class);
     }
 }

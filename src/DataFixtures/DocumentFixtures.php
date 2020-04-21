@@ -2,15 +2,17 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Building;
 use App\Entity\Discipline;
 use App\Entity\Document;
-use App\Faker\NewNativeLoader;
-use App\Faker\Provider\DocumentProvider;
+use App\Entity\DocumentType;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
 use App\Service\DocumentNameParserService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use League\Csv\Reader;
 use Nelmio\Alice\Loader\NativeLoader;
 
 
@@ -19,6 +21,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     private $disciplines;
     private $buildings;
     private $nameParser;
+    private $documentTypes = array();
 
     public function __construct(DisciplineRepository $dr, BuildingRepository $br)
     {
@@ -30,8 +33,9 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @inheritDoc
      */
-    public function load(\Doctrine\Persistence\ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
+        $this->loadDocumentTypes($manager);
         $loader = new NativeLoader();
         /** @var Document[] $objectset */
         $objectset = $loader->loadData(
@@ -39,7 +43,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
                 [
                     'document{1..40}' => [
                         'updated_at' => '<dateTime("now")>',
-                        'description' => '<text()>'
+                        'description' => '<text()>',
                     ]
                 ]
             ]
@@ -47,11 +51,20 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($objectset as $object)
         {
+            // Generate a few random properties
             $randomDiscipline = $this->getRandomDiscipline();
+            $randomBuilding = $this->getRandomBuilding();
+            $randomDocumentType = $this->getRandomDocumentType();
 
-            $object->setFileName($this->generateRandomFilename($randomDiscipline));
+            $randomFloor = rand(0, 4);
 
-            $object->setDiscipline($this->getRandomDiscipline());
+            // Set random properties
+            $object->setDiscipline($randomDiscipline);
+            $object->setFloor($randomFloor);
+            $object->setDocumentType($randomDocumentType);
+            $object->setBuilding($randomBuilding);
+            $object->setLocation($this->getReference(LocationFixtures::GRONINGEN));
+            $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomDocumentType, $randomBuilding, $randomFloor));
 
             $manager->persist($object);
         }
@@ -64,13 +77,48 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         return $this->disciplines[$key];
     }
 
-    public function generateRandomFilename(Discipline $discipline): string
+    public function getRandomBuilding()
     {
-        $key = array_rand($this->buildings);
+        $i = random_int(1, 5);
 
-        $randomBuilding = $this->buildings[$key];
+        /** @var Building $building */
+        $building = $this->getReference("building$i");
+        return $building;
+    }
 
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, rand(0, 4), 1, "");
+    public function generateRandomFilename(Discipline $discipline, DocumentType $documentType, Building $randomBuilding, int $floor): string
+    {
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $documentType, $floor , 1, ".pdf");
+    }
+
+    private function loadDocumentTypes(ObjectManager $manager)
+    {
+        $reader = Reader::createFromPath('%kernel.root_dir%/../csv/documentTypes.csv', 'r');
+
+        $reader->setDelimiter(";");
+
+        $headers = $reader->fetchOne();     // Get headers
+
+        $reader->setHeaderOffset(0);    // skip header row
+
+        $data = $reader->getRecords($headers);
+
+        foreach($data as  $row)
+        {
+            $documentType = ( new DocumentType())
+                ->setCode($row['Code'])
+                ->setName($row['Benaming']);
+            array_push($this->documentTypes, $documentType);
+            $manager->persist($documentType);
+        }
+
+        $manager->flush();
+    }
+
+    private function getRandomDocumentType()
+    {
+        $key = array_rand($this->documentTypes);
+        return $this->documentTypes[$key];
     }
 
 

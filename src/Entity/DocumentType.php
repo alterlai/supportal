@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AreaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DocumentTypeRepository")
  */
-class Area
+class DocumentType
 {
     /**
      * @ORM\Id()
@@ -19,10 +19,9 @@ class Area
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="areas")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $building;
+    private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,12 +29,7 @@ class Area
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $code;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="area")
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="documentType")
      */
     private $documents;
 
@@ -49,14 +43,14 @@ class Area
         return $this->id;
     }
 
-    public function getBuildingId(): ?building
+    public function getCode(): ?int
     {
-        return $this->building;
+        return $this->code;
     }
 
-    public function setBuildingId(?building $building_id): self
+    public function setCode(int $code): self
     {
-        $this->building = $building_id;
+        $this->code = $code;
 
         return $this;
     }
@@ -73,30 +67,6 @@ class Area
         return $this;
     }
 
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): self
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    public function getBuilding(): ?building
-    {
-        return $this->building;
-    }
-
-    public function setBuilding(?building $building): self
-    {
-        $this->building = $building;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Document[]
      */
@@ -109,7 +79,7 @@ class Area
     {
         if (!$this->documents->contains($document)) {
             $this->documents[] = $document;
-            $document->setArea($this);
+            $document->setDocumentType($this);
         }
 
         return $this;
@@ -120,8 +90,8 @@ class Area
         if ($this->documents->contains($document)) {
             $this->documents->removeElement($document);
             // set the owning side to null (unless already changed)
-            if ($document->getArea() === $this) {
-                $document->setArea(null);
+            if ($document->getDocumentType() === $this) {
+                $document->setDocumentType(null);
             }
         }
 

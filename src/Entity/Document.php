@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -45,6 +47,42 @@ class Document
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Area", inversedBy="documents")
+     */
+    private $area;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="documents")
+     */
+    private $building;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="documents")
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $floor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DocumentHistory", mappedBy="document")
+     */
+    private $documentHistories;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DocumentType", inversedBy="documents")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $documentType;
+
+    public function __construct()
+    {
+        $this->documentHistories = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +91,15 @@ class Document
     public function getFileName(): ?string
     {
         return $this->file_name;
+    }
+
+    /**
+     * Return filename without file extension
+     * @return string
+     */
+    public function getDocumentName(): string
+    {
+        return substr($this->file_name, 0, -4);
     }
 
     public function setFileName(?string $file_name): self
@@ -74,6 +121,18 @@ class Document
         if ($file_content) {
             $this->updated_at = new \DateTime('now');
         }
+    }
+
+    public function getFloor(): ?int
+    {
+        return $this->floor;
+    }
+
+    public function setFloor(?int $floor): self
+    {
+        $this->floor = $floor;
+
+        return $this;
     }
 
     public function getDisciplineCode(): ?discipline
@@ -124,8 +183,93 @@ class Document
         return $this;
     }
 
+    /** Files only contain .pdf or .dwg, so slice last four characters */
+    public function getFileType()
+    {
+        return substr($this->file_name, -4, 4);
+    }
+
     public function __toString()
     {
         return $this->getFileName();
+    }
+
+    public function getArea(): ?Area
+    {
+        return $this->area;
+    }
+
+    public function setArea(?Area $area): self
+    {
+        $this->area = $area;
+
+        return $this;
+    }
+
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(?Building $building): self
+    {
+        $this->building = $building;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocumentHistory[]
+     */
+    public function getDocumentHistories(): Collection
+    {
+        return $this->documentHistories;
+    }
+
+    public function addDocumentHistory(DocumentHistory $documentHistory): self
+    {
+        if (!$this->documentHistories->contains($documentHistory)) {
+            $this->documentHistories[] = $documentHistory;
+            $documentHistory->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentHistory(DocumentHistory $documentHistory): self
+    {
+        if ($this->documentHistories->contains($documentHistory)) {
+            $this->documentHistories->removeElement($documentHistory);
+            // set the owning side to null (unless already changed)
+            if ($documentHistory->getDocument() === $this) {
+                $documentHistory->setDocument(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDocumentType(): ?DocumentType
+    {
+        return $this->documentType;
+    }
+
+    public function setDocumentType(?DocumentType $documentType): self
+    {
+        $this->documentType = $documentType;
+
+        return $this;
     }
 }

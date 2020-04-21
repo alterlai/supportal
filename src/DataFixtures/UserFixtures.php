@@ -39,6 +39,7 @@ class UserFixtures extends Fixture
             ->setUsername("admin")
             ->setRole("ROLE_ADMIN")
             ->setPassword($this->passwordEncoder->encodePassword($user, "admin"))
+            ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
             ->setEmail("admin@user.com");
         $manager->persist($user);
         $manager->flush();

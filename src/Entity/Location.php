@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AreaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
  */
-class Area
+class Location
 {
     /**
      * @ORM\Id()
@@ -19,10 +19,10 @@ class Area
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="areas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="locations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $building;
+    private $organisation;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,14 +30,19 @@ class Area
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="area")
+     * @ORM\OneToMany(targetEntity="App\Entity\Document", mappedBy="location")
      */
     private $documents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Building", mappedBy="location", orphanRemoval=false)
+     */
+    private $buildings;
 
     public function __construct()
     {
@@ -49,14 +54,14 @@ class Area
         return $this->id;
     }
 
-    public function getBuildingId(): ?building
+    public function getOrganisation(): ?Organisation
     {
-        return $this->building;
+        return $this->organisation;
     }
 
-    public function setBuildingId(?building $building_id): self
+    public function setOrganisation(?Organisation $organisation): self
     {
-        $this->building = $building_id;
+        $this->organisation = $organisation;
 
         return $this;
     }
@@ -78,21 +83,9 @@ class Area
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(?string $code): self
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    public function getBuilding(): ?building
-    {
-        return $this->building;
-    }
-
-    public function setBuilding(?building $building): self
-    {
-        $this->building = $building;
 
         return $this;
     }
@@ -109,7 +102,7 @@ class Area
     {
         if (!$this->documents->contains($document)) {
             $this->documents[] = $document;
-            $document->setArea($this);
+            $document->setLocation($this);
         }
 
         return $this;
@@ -120,11 +113,31 @@ class Area
         if ($this->documents->contains($document)) {
             $this->documents->removeElement($document);
             // set the owning side to null (unless already changed)
-            if ($document->getArea() === $this) {
-                $document->setArea(null);
+            if ($document->getLocation() === $this) {
+                $document->setLocation(null);
             }
         }
 
         return $this;
+    }
+
+    public function getBuildings()
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Building $building)
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings[] = $building;
+            $building->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }
