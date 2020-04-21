@@ -45,6 +45,11 @@ class Building
      */
     private $documents;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
 
     public function __construct()
     {
@@ -125,6 +130,18 @@ class Building
                 $document->setBuilding(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

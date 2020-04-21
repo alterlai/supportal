@@ -37,6 +37,11 @@ class DocumentHistory
      */
     private $updated_by;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document", inversedBy="documentHistories")
+     */
+    private $document;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class DocumentHistory
     public function setUpdatedBy(?user $updated_by): self
     {
         $this->updated_by = $updated_by;
+
+        return $this;
+    }
+
+    public function getDocument(): ?Document
+    {
+        return $this->document;
+    }
+
+    public function setDocument(?Document $document): self
+    {
+        $this->document = $document;
 
         return $this;
     }

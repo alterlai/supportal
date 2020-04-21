@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -64,6 +66,22 @@ class Document
      * @ORM\Column(type="integer", nullable=true)
      */
     private $floor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DocumentHistory", mappedBy="document")
+     */
+    private $documentHistories;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DocumentType", inversedBy="documents")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $documentType;
+
+    public function __construct()
+    {
+        $this->documentHistories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,7 +147,7 @@ class Document
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
     }
@@ -208,6 +226,49 @@ class Document
     public function setLocation(?Location $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocumentHistory[]
+     */
+    public function getDocumentHistories(): Collection
+    {
+        return $this->documentHistories;
+    }
+
+    public function addDocumentHistory(DocumentHistory $documentHistory): self
+    {
+        if (!$this->documentHistories->contains($documentHistory)) {
+            $this->documentHistories[] = $documentHistory;
+            $documentHistory->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentHistory(DocumentHistory $documentHistory): self
+    {
+        if ($this->documentHistories->contains($documentHistory)) {
+            $this->documentHistories->removeElement($documentHistory);
+            // set the owning side to null (unless already changed)
+            if ($documentHistory->getDocument() === $this) {
+                $documentHistory->setDocument(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDocumentType(): ?DocumentType
+    {
+        return $this->documentType;
+    }
+
+    public function setDocumentType(?DocumentType $documentType): self
+    {
+        $this->documentType = $documentType;
 
         return $this;
     }
