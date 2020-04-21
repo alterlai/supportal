@@ -10,18 +10,37 @@ $(document).ready(function() {
    /** Event handler for add tag button **/
     $('#addTagButton').click( function()
     {
-        var input = $("#searchContent").val();
-        console.log("function activated");
-        if (input !== "")
+        handleSubmit()
+    });
+
+    /** Event handler for add tag input field on enter press **/
+    $("#searchContent").keyup(function(e)
+    {
+        if(e.keyCode === 13) // enter
         {
-            filters.push(input);
-            addPill(input);
-            updateContent();
+            handleSubmit()
         }
     });
 
+    /** Event handler for document on click event **/
+    $(".documentCard").click(function ()
+    {
+        var selectedDocument = $(this).find('li');
+        console.log(selectedDocument);
+
+       $("#documentModal").modal();
+
+       var modalFields = $("#documentModal").find('.documentInfo');
+
+       modalFields.each(function(index) {
+          $(this).html(selectedDocument[index].textContent);
+       });
+    });
+
+
     /** Event handler for closing pill button **/
-    $(document).on('click', '.tagPill', function () {
+    $(document).on('click', '.tagPill', function ()
+    {
         value = $(this).find('span').text();
 
         // Delete the element
@@ -36,6 +55,21 @@ $(document).ready(function() {
         // Update the table
         updateContent();
     });
+
+    /**
+     * Handle the sumbission of the search form. This is called by multiple events
+     */
+    function handleSubmit()
+    {
+        var input = $("#searchContent").val();
+        if (input !== "")
+        {
+            filters.push(input);
+            $("#searchContent").val('');
+            addPill(input);
+            updateContent();
+        }
+    }
 
     /**
      * Update main content with documents
@@ -94,7 +128,7 @@ $(document).ready(function() {
                 "                                <li>Verdieping: " +   $doc.verdieping + "</li>\n" +
                 "                                <li>"+  $doc.discipline + $doc.disciplineOmschrijving + "</li>\n" +
                 "                                <li>"+  $doc.updatedAt + "</li>\n" +
-                "                                <li>[Documentsoort]</li>\n" +
+                "                                <li>" + $doc.documentSoort + "</li>\n" +
                 "                            </ul>\n" +
                 "                        </div>\n" +
                 "                    </div>");

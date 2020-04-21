@@ -89,6 +89,8 @@ class DocumentRepository extends ServiceEntityRepository
                         OR dp.description LIKE :input".$i." 
                         OR d.description LIKE :input".$i." 
                         OR d.file_name LIKE :input".$i." 
+                        OR d.floor = :input".$i."
+                        OR dt.name LIKE :input".$i." 
                         OR d.updated_at LIKE :input".$i.")";
                     }
                     else {
@@ -96,6 +98,7 @@ class DocumentRepository extends ServiceEntityRepository
                             OR dp.code LIKE :input".$i." 
                             OR dp.description LIKE :input".$i." 
                             OR d.description LIKE :input".$i." 
+                            OR dt.name LIKE :input".$i." 
                             OR d.file_name LIKE :input".$i." 
                             OR d.updated_at LIKE :input".$i.")";
                     }
@@ -107,6 +110,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
             ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
             ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
+            ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
             ->where('u.id = :userid')
             ->andWhere($clauses)
             ->setParameters($parameters);

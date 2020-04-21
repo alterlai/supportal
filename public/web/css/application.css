@@ -43,6 +43,7 @@
     display: flex;
     min-width: 500px;
     margin: 15px;
+    cursor: pointer;
 }
 
 .documentContainer .tileContainer .pdfPreview {
@@ -94,4 +95,21 @@
 #pillContainer {
     height: 50px;
     padding-top: 10px;
+}
+
+.modal .pdfPreview {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #3f4444;
+    height: 600px;
+    margin-right: 20px;
+}
+#documentModal .modal-body {
+    display: flex;
+
+}
+#documentModal .modalTableWrapper {
+    flex-grow: 1;
 }

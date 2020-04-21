@@ -99,10 +99,11 @@ class DocumentController extends AbstractController
                 'discipline' => $document->getDiscipline()->getCode(),
                 'disciplineOmschrijving' => $document->getDiscipline()->getDescription(),
                 'omschrijving' => $document->getDescription(),
-                'gebouw' => $document->getBuilding(),
+                'gebouw' => $document->getBuilding()->getName(),
                 'verdieping' => $document->getFloor(),
                 'updatedAt' => $document->getUpdatedAt()->format('d/m/Y'),
-                'documentId' => $document->getId()
+                'documentId' => $document->getId(),
+                'documentSoort' => $document->getDocumentType()->getName()
             ]);
         }
 

@@ -40,7 +40,7 @@
                                 <li>Verdieping: {{ document.floor}}</li>
                                 <li>{{ document.discipline }}</li>
                                 <li>{{ document.updatedAt.format('d/m/Y') }}</li>
-                                <li>[Documentsoort]</li>
+                                <li>{{ document.documentType.name }}</li>
                             </ul>
                         </div>
                     </div>
@@ -51,6 +51,92 @@
             </div>
         </div>
 
+    </div>
+
+{# Document modal #}
+    <div class="modal" tabindex="-1" role="dialog" id="documentModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="pdfPreview">
+                        <svg class="bi bi-image-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.002 3a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2h-12a2 2 0 01-2-2V3zm1 9l2.646-2.354a.5.5 0 01.63-.062l2.66 1.773 3.71-3.71a.5.5 0 01.577-.094L15.002 9.5V13a1 1 0 01-1 1h-12a1 1 0 01-1-1v-1zm5-6.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="modalTableWrapper d-inline">
+                        <h3>Document informatie</h3>
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td>Naam</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Locatie</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Gebouw</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Gebouwdeel</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Verdieping</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Discipline</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Laatst geupdate</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            <tr>
+                                <td>Documenttype</td>
+                                <td class="documentInfo"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="historyContainer">
+                            <h3>Geschiedenis</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Versie</th>
+                                    <th>Datum</th>
+                                    <th>Door</th>
+                                    <th>Acties</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>TODO</td>
+                                    <td>TODO</td>
+                                    <td>TODO</td>
+                                    <td>TODO</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">PDF opvragen</button>
+                    <button type="button" class="btn btn-primary">DWG opvragen</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
