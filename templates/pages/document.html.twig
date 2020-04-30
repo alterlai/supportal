@@ -5,6 +5,8 @@
     <div class="container">
         <ol class="breadcrumb shadow-sm bg-white">
             <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ document.building.location.name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('documents', {buildingId: document.building.id}) }}">{{document.building}}</a></li>
             <li class="breadcrumb-item active">{{ document.documentName }}</li>
         </ol>
         <div class="content row" id="documentContainer">
@@ -50,8 +52,8 @@
                             <td>{{ document.floor is not empty ? document.floor : "N.V.T." }}</td>
                         </tr>
                         <tr>
-                            <td>Gebouwdeel</td>
-                            <td>{{ document.area ? document.area : "N.V.T." }}</td>
+                            <td>Document type</td>
+                            <td>{{ document.documentType ? document.documentType : "N.V.T." }}</td>
                         </tr>
 
                         </tbody>

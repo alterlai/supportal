@@ -25,6 +25,28 @@ $(document).ready(function() {
     });
 
     /**
+     * Location click event handler
+     */
+    $(".location").click(function () {
+        $(this).next(".buildingContainer").toggle("fast");
+    });
+
+    //
+    // /**
+    //  * Show more functionality
+    //  */
+    // if($("label").length > 5)
+    // {
+    //     $("label:gt(4)").hide();
+    //     $('.show-more').show();
+    // }
+    // $('.show-more').click(function () {
+    //     $('label:gt(4)').toggle();
+    //     $(this).text() === "Meer zien" ? $(this).text('Minder zien') : $(this).text('Meer zien');
+    // });
+
+
+    /**
      * Fire an AJAX request and update the datatable with new values
      */
    function updateTable()

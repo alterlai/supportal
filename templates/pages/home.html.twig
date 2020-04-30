@@ -21,12 +21,13 @@
             </div>
             <div class="buildingContainer">
                 {% for building in location.buildings %}
-                    <div class="building">
-                        <a href="{{ path('documents', {buildingId: building.id}) }}">
+                    <a href="{{ path('documents', {buildingId: building.id}) }}">
+                        <div class="building">
+
                             {{ building.name }}
-                        </a>
-                        <hr>
-                    </div>
+
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         {% endfor %}
