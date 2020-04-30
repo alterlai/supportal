@@ -84,23 +84,24 @@ class DocumentRepository extends ServiceEntityRepository
                     // Prepare SQL statement
                     if ($i == 0)
                     {
-                        $clauses = "(d.id LIKE :input".$i." 
-                        OR dp.code LIKE :input".$i." 
-                        OR dp.description LIKE :input".$i." 
-                        OR d.description LIKE :input".$i." 
-                        OR d.file_name LIKE :input".$i." 
-                        OR d.floor = :input".$i."
-                        OR dt.name LIKE :input".$i." 
-                        OR d.updated_at LIKE :input".$i.")";
+                        $clauses = "(dp.code LIKE :input".$i."
+                            OR l.name LIKE :input".$i."
+                            OR o.name LIKE :input".$i."
+                            OR b.name LIKE :input".$i."
+                            OR d.floor LIKE :input".$i."
+                            OR d.file_name LIKE :input".$i."
+                            OR dt.name LIKE :input".$i."
+                            OR dp.description LIKE :input".$i.")";
                     }
                     else {
-                        $clauses .= " AND (d.id LIKE :input".$i." 
-                            OR dp.code LIKE :input".$i." 
-                            OR dp.description LIKE :input".$i." 
-                            OR d.description LIKE :input".$i." 
-                            OR dt.name LIKE :input".$i." 
-                            OR d.file_name LIKE :input".$i." 
-                            OR d.updated_at LIKE :input".$i.")";
+                        $clauses .= " AND (dp.code LIKE :input".$i." 
+                            OR l.name LIKE :input".$i."
+                            OR o.name LIKE :input".$i."
+                            OR b.name LIKE :input".$i."
+                            OR d.floor LIKE :input".$i."
+                            OR d.file_name LIKE :input".$i."
+                            OR dt.name LIKE :input".$i."
+                            OR dp.description LIKE :input".$i.")";
                     }
                 }
             }
@@ -108,6 +109,7 @@ class DocumentRepository extends ServiceEntityRepository
         $query =  $this->createQueryBuilder('d')
             ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
             ->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id')
+            ->innerJoin('d.building', 'b', 'WITH', 'd.building = b.id')
             ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
             ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
             ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
