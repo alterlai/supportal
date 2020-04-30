@@ -23,7 +23,7 @@ $(document).ready(function() {
     });
 
     /** Event handler for document on click event **/
-    $(".documentCard").click(function ()
+    $("body").on('click', '.documentCard', function ()
     {
         var selectedDocument = $(this).find('li');
         console.log(selectedDocument);
