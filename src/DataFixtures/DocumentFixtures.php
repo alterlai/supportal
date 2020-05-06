@@ -18,14 +18,13 @@ use Nelmio\Alice\Loader\NativeLoader;
 
 class DocumentFixtures extends Fixture implements DependentFixtureInterface
 {
-    private $disciplines;
     private $buildings;
     private $nameParser;
     private $documentTypes = array();
+    private $disciplines = array();
 
     public function __construct(DisciplineRepository $dr, BuildingRepository $br)
     {
-        $this->disciplines = $dr->findAll();
         $this->buildings = $br->findAll();
         $this->nameParser = new DocumentNameParserService();
     }
@@ -36,12 +35,13 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->loadDocumentTypes($manager);
+        $this->loadDisciplines($manager);
         $loader = new NativeLoader();
         /** @var Document[] $objectset */
         $objectset = $loader->loadData(
             [\App\Entity\Document::class =>
                 [
-                    'document{1..40}' => [
+                    'document{1..400}' => [
                         'updated_at' => '<dateTime("now")>',
                         'description' => '<text()>',
                     ]
@@ -71,20 +71,6 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getRandomDiscipline() : Discipline
-    {
-        $key = array_rand($this->disciplines);
-        return $this->disciplines[$key];
-    }
-
-    public function getRandomBuilding()
-    {
-        $i = random_int(1, 5);
-
-        /** @var Building $building */
-        $building = $this->getReference("building$i");
-        return $building;
-    }
 
     public function generateRandomFilename(Discipline $discipline, DocumentType $documentType, Building $randomBuilding, int $floor): string
     {
@@ -115,6 +101,29 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    private function loadDisciplines(ObjectManager $manager) {
+        $reader = Reader::createFromPath('%kernel.root_dir%/../csv/nlsfb.csv', 'r');
+
+        $reader->setDelimiter(";");
+
+        $headers = $reader->fetchOne();     // Get headers
+
+        $reader->setHeaderOffset(0);    // skip header row
+
+        $data = $reader->getRecords($headers);
+
+        foreach($data as  $row)
+        {
+            $discipline = (new Discipline())
+                ->setDescription($row['description'])
+                ->setCode((float) $row['code']);
+            array_push($this->disciplines, $discipline);
+            $manager->persist($discipline);
+        }
+
+        $manager->flush();
+    }
+
     private function getRandomDocumentType()
     {
         $key = array_rand($this->documentTypes);
@@ -122,10 +131,25 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     }
 
 
+    public function getRandomDiscipline() : Discipline
+    {
+        $key = array_rand($this->disciplines);
+        return $this->disciplines[$key];
+    }
+
+    public function getRandomBuilding()
+    {
+        $i = random_int(1, 5);
+
+        /** @var Building $building */
+        $building = $this->getReference("building$i");
+        return $building;
+    }
+
+
     public function getDependencies()
     {
         return array(
-            DisciplineFixtures::class,
             BuildingFixtures::class
         );
     }
