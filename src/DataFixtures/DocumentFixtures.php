@@ -80,6 +80,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     private function loadDocumentTypes(ObjectManager $manager)
     {
         $reader = Reader::createFromPath('%kernel.root_dir%/../csv/documentTypes.csv', 'r');
+        $reader->addStreamFilter('convert.iconv.Windows-1252/UTF-8');
 
         $reader->setDelimiter(";");
 
