@@ -76,6 +76,7 @@ $(document).ready(function() {
      */
     function updateContent()
     {
+        $(".loading").show();
         $.ajax({
             url: "/ajax/document",
             type: "GET",
@@ -89,6 +90,9 @@ $(document).ready(function() {
                 alert("Er is iets fout gegaan. Neem contact op met een administrator.");
                 console.log(message);
                 console.log(result);
+            },
+            complete: function () {
+                $(".loading").hide();
             }
         });
     }

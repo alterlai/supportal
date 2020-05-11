@@ -29,6 +29,19 @@
     justify-content: space-evenly;
 }
 
+.loading {
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    display: none;
+    top: 50%;
+    right: 50%;
+    background: url("/web/img/loader.gif");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+
 .documentCard {
     background-color: #F7F7F7;
     padding: 5px;

@@ -115,6 +115,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
             ->where('u.id = :userid')
             ->andWhere($clauses)
+            ->setMaxResults(100)
             ->setParameters($parameters);
 
         return $query->getQuery()->getResult();
@@ -132,6 +133,7 @@ class DocumentRepository extends ServiceEntityRepository
             ->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id')
             ->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id')
             ->where('u.id = :userid')
+            ->setMaxResults(100)
             ->setParameter(':userid', $user->getId())
             ->getQuery()
             ->getResult();
