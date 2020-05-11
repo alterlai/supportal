@@ -16,4 +16,5 @@
 ###< symfony/phpunit-bridge ###
 
 .env
-
+data/
+.idea/
