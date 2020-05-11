@@ -49,6 +49,7 @@ easy_admin:
                     - floor
                     - building
                     - documentType
+                    - area
         Organisation:
             class: App\Entity\Organisation
 
