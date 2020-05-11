@@ -34,17 +34,23 @@ easy_admin:
             list:
                 fields:
                     - id
+                    - filename
                     - { property: file_name, label: 'filename' }
                     - { property: 'file_name', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%', label: 'Preview' }
                     - discipline
-                    - description
+                    - building
+                    - floor
             form:
                 fields:
                     - { property: 'file_content', type: 'vich_file' }
                     - discipline
                     - description
+                    - floor
+                    - building
+                    - documentType
         Organisation:
             class: App\Entity\Organisation
+
     design:
         form_theme:
             - 'form_div_layout.html.twig'
