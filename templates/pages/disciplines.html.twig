@@ -8,12 +8,12 @@
                 <div class="discipline-grid-container">
                     <div class="yellow">{{ building.location }}</div>
                     <div class="yellow g-span-2-3">{{ building.name }}</div>
-                    <a href="{{ path('documents', {buildingCode: building.code, disciplineCode: 'B'}) }}" class="antraciet">B</a>
+                    <a href="{{ path('documents', {buildingId: building.id, disciplineCode: 'B'}) }}" class="antraciet">B</a>
                     <div class="antraciet disabled">F</div>
                     <div class="antraciet disabled">HSE</div>
-                    <a href="{{ path('documents', {buildingCode: building.code, disciplineCode: 'W'}) }}" class="antraciet">W</a>
+                    <a href="{{ path('documents', {buildingId: building.id, disciplineCode: 'W'}) }}" class="antraciet">W</a>
                     <div class="antraciet disabled">MR</div>
-                    <a href="{{ path('documents', {buildingCode: building.code, disciplineCode: 'E'}) }}" class="antraciet">E</a>
+                    <a href="{{ path('documents', {buildingId: building.id, disciplineCode: 'E'}) }}" class="antraciet">E</a>
                 </div>
             </div>
             <div class="ml-10 d-inline-block">

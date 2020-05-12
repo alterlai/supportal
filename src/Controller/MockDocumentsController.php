@@ -12,19 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class MockDocumentsController extends AbstractController
 {
     /**
-     * @Route("/documents/{buildingCode}/{disciplineCode}", name="documents")
+     * @Route("/documents/{buildingId}/{disciplineCode}", name="documents")
      * @IsGranted("ROLE_USER")
-     * @param string $buildingCode
+     * @param int $buildingId
      * @param string $disciplineCode
+     * @param BuildingRepository $buildingRepository
+     * @param DocumentRepository $documentRepository
      * @return Response
      */
-    public function showDocuments(string $buildingCode, string $disciplineCode, BuildingRepository $buildingRepository, DocumentRepository $documentRepository)
+    public function showDocuments(int $buildingId, string $disciplineCode, DocumentRepository $documentRepository)
     {
         $documents = array();
-        if ($disciplineCode == 'B') $documents = $documentRepository->findByDisciplineRange(11, 50);
-        if ($disciplineCode == 'W') $documents = $documentRepository->findByDisciplineRange(51, 59);
-        if ($disciplineCode == 'E') $documents = $documentRepository->findByDisciplineRange(60, 70);
-        if ($disciplineCode == 'F') $documents = $documentRepository->findByDisciplineRange(70, 80);
+        if ($disciplineCode == 'B') $documents = $documentRepository->findByDisciplineRange(11, 50, $buildingId);
+        if ($disciplineCode == 'W') $documents = $documentRepository->findByDisciplineRange(51, 59, $buildingId);
+        if ($disciplineCode == 'E') $documents = $documentRepository->findByDisciplineRange(60, 70, $buildingId);
+        if ($disciplineCode == 'F') $documents = $documentRepository->findByDisciplineRange(70, 80, $buildingId);
         return $this->render("pages/documents.html.twig", ['documents' => $documents]);
     }
 }

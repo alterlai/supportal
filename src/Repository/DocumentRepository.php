@@ -29,15 +29,18 @@ class DocumentRepository extends ServiceEntityRepository
      * Find documents in a specific discipline range.
      * @param float $start
      * @param float $end
+     * @param int $buildingId
      * @return Document[] Returns an array of Document objects
      */
-    public function findByDisciplineRange(float $start, float $end)
+    public function findByDisciplineRange(float $start, float $end, int $buildingId)
     {
         return $this->createQueryBuilder('d')
             ->join('d.discipline', 'dp', 'WITH', 'd.discipline = dp.id')
             ->andWhere('dp.code BETWEEN :start AND :end')
+            ->andWhere('d.building = :buildingId')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
+            ->setParameter('buildingId', $buildingId)
             ->getQuery()
             ->getResult()
         ;
