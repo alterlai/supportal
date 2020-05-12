@@ -1,5 +1,7 @@
 $(document).ready(function() {
-   $('.dataTable').DataTable();
+   $('.dataTable').DataTable( {
+      "searching": false
+   });
 
    $('.addToCart').click(function () {
       alert("Document toegevoegd aan winkelmand");
