@@ -17,6 +17,6 @@ class DocumentNamer implements NamerInterface
 
     public function name($object, PropertyMapping $mapping): string
     {
-        return "testnaam.pdf";
+        return "testnaam2.pdf";
     }
 }
