@@ -78,6 +78,11 @@ class Document
      */
     private $documentType;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Issue", mappedBy="document", cascade={"persist", "remove"})
+     */
+    private $issue;
+
     public function __construct()
     {
         $this->documentHistories = new ArrayCollection();
@@ -269,6 +274,23 @@ class Document
     public function setDocumentType(?DocumentType $documentType): self
     {
         $this->documentType = $documentType;
+
+        return $this;
+    }
+
+    public function getIssue(): ?Issue
+    {
+        return $this->issue;
+    }
+
+    public function setIssue(Issue $issue): self
+    {
+        $this->issue = $issue;
+
+        // set the owning side of the relation if necessary
+        if ($issue->getDocument() !== $this) {
+            $issue->setDocument($this);
+        }
 
         return $this;
     }
