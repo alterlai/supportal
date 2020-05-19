@@ -8,8 +8,10 @@ use App\Repository\DisciplineRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\DocumentTypeRepository;
 use App\Service\DocumentFilterService;
+use App\Service\IssueHandlerService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\View;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -117,5 +119,37 @@ class DocumentController extends AbstractController
         return new JsonResponse($jsonData);
     }
 
+
+    /**
+     * This function handles file downloads. Either PDF or DWG.
+     * Also add the document to issues table.
+     * @Route("/download/{documentId}", name="document.download", methods={"GET"})
+     * @param int $documentId
+     * @param Request $request
+     * @param DocumentRepository $documentRepository
+     * @param IssueHandlerService $issueHandlerService
+     * @return Response
+     */
+    public function download(int $documentId, Request $request, DocumentRepository $documentRepository, IssueHandlerService $issueHandlerService)
+    {
+        $document = $documentRepository->find($documentId);
+
+        if (!$document)
+        {
+            return $this->render("pages/blank.html.twig", ['message' => "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator."]);
+        }
+
+        $requestType = $request->query->get("type");
+        $issue = $request->query->get("issue");
+
+        /** If the user is planning to return the document, we need to add it to the issue table */
+        if ($issue == true)
+        {
+            $issueHandlerService->addDocumentIssue($document, $this->getUser());
+        }
+
+        // Todo: Fetch the file and hand it over to the user.
+        return $this->render("pages/blank.html.twig", ["message" => "Uw download begint over enkele seconden..."]);
+    }
 
 }

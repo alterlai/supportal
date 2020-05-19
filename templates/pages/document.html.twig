@@ -60,9 +60,8 @@
                     </table>
                 </div>
                 <div id="buttonContainer">
-                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestPdf">PDF opvragen</button>
-                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG opvragen</button>
-                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#putDwg">DWG indienen</button>
+                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
+                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
                 </div>
                 <div id="historyContainer">
                     <h3>Geschiedenis</h3>
@@ -103,8 +102,8 @@
                     Aan deze actie zijn kosten verbonden. Wilt u doorgaan?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                     <button type="button" class="btn btn-info" data-dismiss="modal">Doorgaan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
             </div>
         </div>
@@ -121,11 +120,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Aan deze actie zijn kosten verbonden. Wilt u doorgaan?
+                    Bent u van plan dit document te updaten en uploaden?
+                    <br>
+                    Als u op "Ja" klikt, dient u voor de deadline het document ingeleverd te hebben.
+                    <br>
+                    Als u op "Nee" klikt, hoeft u niets in te leveren.
                 </div>
                 <div class="modal-footer">
+                    <a target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}"><button type="button" class="btn btn-info">Ja</button></a>
+                    <a target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}"><button type="button" class="btn btn-info">Nee</button></a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Doorgaan</button>
                 </div>
             </div>
         </div>
