@@ -19,7 +19,9 @@ class DocumentDraftType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add("file_content", FileType::class)
+            ->add("file_content", FileType::class, [
+                "label" => "Bestand selecteren"
+            ])
             ->add("submit", SubmitType::class)
         ;
     }

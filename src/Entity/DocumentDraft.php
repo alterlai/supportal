@@ -25,7 +25,13 @@ class DocumentDraft
     private $document;
 
     /**
-     * @Vich\UploadableField(mapping="documents", fileNameProperty="file_name")
+     * @ORM\Column(type="string", length=100)
+     * @var string
+     */
+    private $file_name;
+
+    /**
+     * @Vich\UploadableField(mapping="drafts", fileNameProperty="file_name")
      */
     private $file_content;
 
@@ -53,6 +59,18 @@ class DocumentDraft
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->file_name;
+    }
+
+    public function setFileName(?string $file_name): self
+    {
+        $this->file_name = $file_name;
+
+        return $this;
     }
 
     public function getDocument(): ?Document
@@ -127,11 +145,5 @@ class DocumentDraft
         $this->rejected_at = $rejected_at;
 
         return $this;
-    }
-
-    public function getFileName(): ?string
-    {
-        return $this->getDocument()->getFileName();
-        // TODO: add extension for draft.
     }
 }

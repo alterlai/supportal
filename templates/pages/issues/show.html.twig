@@ -7,10 +7,47 @@
     <div class="row pt-5">
         <div class="card w-100">
             <div class="card_head">
-                <h3 class="card_title">Document uploaden</h3>
+                <h3 class="card_title">Openstaand document uploaden</h3>
             </div>
             <div class="card_body">
-                {{ form(form) }}
+                {{  form_start(form) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.file_content) }}
+                <table class="pad_items">
+                    <tr>
+                        <td><span class="small_bold">Documentnaam</span></td>
+                        <td>{{ issue.document.documentName }}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="small_bold">Opgevraagd op</span></td>
+                        <td>{{ issue.issuedAt.format("d-m-Y H:m") }}</td>
+                        <td><span class="small_bold">Inlever deadline</span></td>
+                        <td>{{ issue.issueDeadline.format("d-m-Y H:m") }}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="small_bold">Locatie</span></td>
+                        <td>{{ issue.document.location }}</td>
+                        <td><span class="small_bold">Gebouw</span></td>
+                        <td>{{ issue.document.building }}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="small_bold">Verdieping</span></td>
+                        <td>{{ issue.document.floor }}</td>
+                        <td><span class="small_bold">Gebouwdeel</span></td>
+                        <td>{{ issue.document.area }}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="small_bold">Discipline</span></td>
+                        <td>{{ issue.document.discipline }}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="small_bold">Document type</span></td>
+                        <td>{{ issue.document.documentType }}</td>
+                    </tr>
+                </table>
+                <hr>
+                {{ form_row(form.submit, {'label': "Versturen", "attr": {"class": "btn-primary float-right"}}) }}
+                {{ form_end(form) }}
             </div>
 
         </div>

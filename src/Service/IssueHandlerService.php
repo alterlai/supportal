@@ -23,6 +23,7 @@ class IssueHandlerService
         $issue->setIssuedTo($user);
         $issue->setIssuedAt(new \DateTime("now"));
         $issue->setIssueDeadline(new \DateTime("now +2 weeks"));
+        $issue->setClosed(0);
         $this->entityManager->persist($issue);
         $this->entityManager->flush();
     }

@@ -17,7 +17,7 @@ class Issue
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Document", inversedBy="issue", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Document", inversedBy="issue")
      * @ORM\JoinColumn(nullable=false)
      */
     private $document;
@@ -37,6 +37,11 @@ class Issue
      * @ORM\JoinColumn(nullable=false)
      */
     private $issued_to;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $closed;
 
     public function getId(): ?int
     {
@@ -87,6 +92,18 @@ class Issue
     public function setIssuedTo(?User $issued_to): self
     {
         $this->issued_to = $issued_to;
+
+        return $this;
+    }
+
+    public function getClosed(): ?bool
+    {
+        return $this->closed;
+    }
+
+    public function setClosed(bool $closed): self
+    {
+        $this->closed = $closed;
 
         return $this;
     }

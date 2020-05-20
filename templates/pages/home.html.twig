@@ -34,12 +34,12 @@
                 <div class="card">
                     <h3>Openstaande tekeningen</h3>
                     {% for issue in issues %}
-                        <a href="{{ path('issue.show', {id: issue.id}) }}">
+                        <a href="{{ path('issue', {id: issue.id}) }}">
                             {{ issue.document }}
                             <br>
-                            {{ issue.issuedAt.format("d-m-Y h:m") }}
+                            {{ issue.issuedAt.format("d-m-Y H:m") }}
                             <br>
-                            {{ issue.issueDeadline.format("d-m-Y h:m") }}
+                            {{ issue.issueDeadline.format("d-m-Y H:m") }}
                         </a>
                     {% endfor %}
                 </div>
