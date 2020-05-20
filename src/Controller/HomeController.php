@@ -22,7 +22,9 @@ class HomeController extends AbstractController
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $locations = $currentUser->getOrganisation()->getLocations();
-        return $this->render("pages/home.html.twig", ['locations' => $locations]);
+        $issues = $currentUser->getIssues();
+
+        return $this->render("pages/home.html.twig", ['locations' => $locations, 'issues' => $issues]);
     }
 
 }

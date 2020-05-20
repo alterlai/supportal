@@ -56,10 +56,16 @@ class User implements UserInterface
      */
     private $issues;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DocumentDraft", mappedBy="uploaded_by", orphanRemoval=true)
+     */
+    private $documentDrafts;
+
     public function __construct()
     {
         $this->viewHistories = new ArrayCollection();
         $this->issues = new ArrayCollection();
+        $this->documentDrafts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +235,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($issue->getIssuedTo() === $this) {
                 $issue->setIssuedTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocumentDraft[]
+     */
+    public function getDocumentDrafts(): Collection
+    {
+        return $this->documentDrafts;
+    }
+
+    public function addDocumentDraft(DocumentDraft $documentDraft): self
+    {
+        if (!$this->documentDrafts->contains($documentDraft)) {
+            $this->documentDrafts[] = $documentDraft;
+            $documentDraft->setUploadedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentDraft(DocumentDraft $documentDraft): self
+    {
+        if ($this->documentDrafts->contains($documentDraft)) {
+            $this->documentDrafts->removeElement($documentDraft);
+            // set the owning side to null (unless already changed)
+            if ($documentDraft->getUploadedBy() === $this) {
+                $documentDraft->setUploadedBy(null);
             }
         }
 

@@ -8,28 +8,45 @@
             <li class="breadcrumb-item">Home /</li>
         </ol>
 
-        {% for location in locations %}
-            <div class="card location">
-                <div class="locationImage">
-                    {# Image location #}
-                </div>
-                <div class="locationText">
-                    <h4>{{ location.name }}</h4>
-                    <hr>
-                    <p>Beschrijving</p>
-                </div>
-            </div>
-            <div class="buildingContainer">
-                {% for building in location.buildings %}
-                    <a href="{{ path('documents', {buildingId: building.id}) }}">
-                        <div class="building">
+        <div class="row">
+            <div class="col-sm-8">
+                {% for location in locations %}
+                    <div class="card location">
+                        <div class="locationText">
+                            <h4>{{ location.name }}</h4>
+                            <hr>
+                            <p>
+                                {% for building in location.buildings %}
+                                    <a href="{{ path('documents', {buildingId: building.id}) }}">
+                                        <div class="building">
 
-                            {{ building.name }}
+                                            {{ building.name }}
 
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </p>
                         </div>
-                    </a>
+                    </div>
                 {% endfor %}
             </div>
-        {% endfor %}
+            <div class="issues-container col-sm-4">
+                <div class="card">
+                    <h3>Openstaande tekeningen</h3>
+                    {% for issue in issues %}
+                        <a href="{{ path('issue.show', {id: issue.id}) }}">
+                            {{ issue.document }}
+                            <br>
+                            {{ issue.issuedAt.format("d-m-Y h:m") }}
+                            <br>
+                            {{ issue.issueDeadline.format("d-m-Y h:m") }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 {% endblock %}
