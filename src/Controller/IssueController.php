@@ -8,6 +8,7 @@ use App\Form\DocumentDraftType;
 use App\Form\IssueType;
 use App\Repository\IssueRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -42,7 +43,7 @@ class IssueController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @throws \Exception
      */
-    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager)
+    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $issue = $issueRepository->find($id);
         $form = $this->createForm(DocumentDraftType::class);
@@ -52,7 +53,7 @@ class IssueController extends AbstractController
         {
             if ($form->isSubmitted() && $form->isValid())
             {
-                return $this->handleSubmission($issue, $form, $entityManager);
+                return $this->handleSubmission($issue, $form, $entityManager, $logger);
             }
 
             return $this->render("pages/issues/show.html.twig", [
@@ -76,13 +77,15 @@ class IssueController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager)
+    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $data = $form->getData();
 
         $draft = new DocumentDraft();
 
         $draft->setDocument($issue->getDocument());
+        $draft->setFileName($issue->getDocument()->getFileName());
+        $logger->info(implode("\n", $data));
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());

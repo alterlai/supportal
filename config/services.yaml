@@ -30,6 +30,8 @@ services:
 
     App\Service\DocumentNamer:
         public: true
+    App\Service\DraftNamer:
+        public: true
 
     App\Command\ImportDisciplinesCommand:
         class: App\Command\ImportDisciplinesCommand

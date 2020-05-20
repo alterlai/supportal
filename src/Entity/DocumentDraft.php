@@ -8,6 +8,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DocumentDraftRepository")
+ * @Vich\Uploadable
  */
 class DocumentDraft
 {
