@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DocumentDraftRepository")
@@ -20,7 +22,12 @@ class DocumentDraft
      * @ORM\ManyToOne(targetEntity="App\Entity\Document")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $document_id;
+    private $document;
+
+    /**
+     * @Vich\UploadableField(mapping="documents", fileNameProperty="file_name")
+     */
+    private $file_content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="documentDrafts")
@@ -48,16 +55,30 @@ class DocumentDraft
         return $this->id;
     }
 
-    public function getDocumentId(): ?Document
+    public function getDocument(): ?Document
     {
-        return $this->document_id;
+        return $this->document;
     }
 
-    public function setDocumentId(?Document $document_id): self
+    public function setDocument(?Document $document): self
     {
-        $this->document_id = $document_id;
+        $this->document = $document;
 
         return $this;
+    }
+
+    public function getFileContent()
+    {
+        return $this->file_content;
+    }
+
+    public function setFileContent($file_content = null): void
+    {
+        $this->file_content = $file_content;
+
+        if ($file_content) {
+            $this->uploaded_at = new \DateTime('now');
+        }
     }
 
     public function getUploadedBy(): ?User
@@ -106,5 +127,11 @@ class DocumentDraft
         $this->rejected_at = $rejected_at;
 
         return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->getDocument()->getFileName();
+        // TODO: add extension for draft.
     }
 }

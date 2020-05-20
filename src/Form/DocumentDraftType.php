@@ -14,12 +14,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class IssueType extends AbstractType
+class DocumentDraftType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add("file", FileType::class)
+            ->add("file_content", FileType::class)
             ->add("submit", SubmitType::class)
         ;
     }
