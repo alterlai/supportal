@@ -34,7 +34,6 @@
     padding: 10px;
 }
 
-
 /**
  * Documents page
  */
@@ -109,6 +108,18 @@
 #listing td { padding: 10px 5px;}
 
 #removeFilters {width: 100%;}
+
+.card {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 40, 100, 0.12)
+}
+.card .card_head {border-bottom: 1px solid rgba(0, 40, 100, 0.12)}
+.card .card_head, .card .card_body {
+    padding: 10px;
+    color: #666666;
+}
+
+
 
 
 

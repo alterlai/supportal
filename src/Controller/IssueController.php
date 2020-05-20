@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\DocumentDraftType;
 use App\Form\IssueType;
 use App\Repository\IssueRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ class IssueController extends AbstractController
 
         if ($issue)
         {
-            $form = $this->createForm(IssueType::class);
+            $form = $this->createForm(DocumentDraftType::class);
             return $this->render("pages/issues/show.html.twig", [
                 "issue" => $issue,
                 "action" => $this->generateUrl('issue.handle', ["id" => $issue->getId()]),

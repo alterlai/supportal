@@ -5,8 +5,10 @@
     --nav-size: 50px;
     --bt-drak: #2a2a2e;
     --bg-light: #e3e7ed;
+    --bg_light_blue: #F5F7FB;
     --yellow: #f6be00;
     --antraciet: #3f4444;
+    --title: #666666;
 }
 /*
  * General styles
@@ -16,7 +18,7 @@ body, html {
     width: 100%;
     position: absolute;
     top: 0;
-    background: var(--bg-light);
+    background: var(--bg_light_blue);
     padding-top: var(--nav-size);
     font-size: 15px;
 }
@@ -57,16 +59,7 @@ background {
 
 }
 
-.card {
-    background-color: #F7F7F7;
-    /* shadows and rounded borders */
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
+
 
 .profile-img-card {
     width: 96px;
