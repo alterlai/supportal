@@ -6,6 +6,7 @@
 parameters:
     app.path.documents: /documents
     app.path.drafts: /drafts
+    app.allowed_file_extensions: ['image/vnd.dwg']
 
 services:
     # default configuration for services in *this* file

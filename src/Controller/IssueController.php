@@ -80,6 +80,12 @@ class IssueController extends AbstractController
     public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $data = $form->getData();
+        $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
+
+        if (! in_array($data['file_content']->getMimeType(), $valid_file_extensions))
+        {
+            return $this->render("errors/error.html.twig", ['message'=> "Incorrecte file extensie. Alleen DWG bestanden zijn toegestaan."]);
+        }
 
         $draft = new DocumentDraft();
 
@@ -96,5 +102,6 @@ class IssueController extends AbstractController
 
         return $this->render("pages/blank.html.twig", ["message" => "Succesvol draft aangemaakt."]);
     }
+
 }
 

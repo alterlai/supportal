@@ -28,7 +28,8 @@ class DocumentNamer implements NamerInterface
         $floor = $object->getFloor();
         $discipline = $object->getDiscipline()->getCode();
         $doctype = $object->getDocumentType()->getCode();
+        $version = $object->getVersion();
 
-        return $building. "-". $floor. "-". $discipline.".". $doctype. "-000-1".".dwg";
+        return $building. "-". $floor. "-". $discipline.".". $doctype. "-000-".$version.".dwg";
     }
 }
