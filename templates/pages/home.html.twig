@@ -11,37 +11,40 @@
         <div class="row">
             <div class="col-sm-8">
                 {% for location in locations %}
-                    <div class="card location">
-                        <div class="locationText">
+                    <div class="card d-flex flex-column location">
+                        <div class="card_head">
                             <h4>{{ location.name }}</h4>
-                            <hr>
-                            <p>
-                                {% for building in location.buildings %}
-                                    <a href="{{ path('documents', {buildingId: building.id}) }}">
-                                        <div class="building">
+                        </div>
+                        <div class="card_body d-flex flex-column">
+                            {% for building in location.buildings %}
+                                <a href="{{ path('documents', {buildingId: building.id}) }}">
+                                    <div class="building">
 
-                                            {{ building.name }}
+                                        {{ building.name }}
 
-                                        </div>
-                                    </a>
-                                {% endfor %}
-                            </p>
+                                    </div>
+                                </a>
+                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
             </div>
             <div class="issues-container col-sm-4">
                 <div class="card">
-                    <h3>Openstaande tekeningen</h3>
-                    {% for issue in issues %}
-                        <a href="{{ path('issue', {id: issue.id}) }}">
-                            {{ issue.document }}
-                            <br>
-                            {{ issue.issuedAt.format("d-m-Y H:m") }}
-                            <br>
-                            {{ issue.issueDeadline.format("d-m-Y H:m") }}
-                        </a>
-                    {% endfor %}
+                    <div class="card_head">
+                        <h4 class="font-weight-bold">Openstaande tekeningen</h4>
+                    </div>
+                    <div class="card_body">
+                        {% for issue in issues %}
+                            <a href="{{ path('issue', {id: issue.id}) }}">
+                                {{ issue.document }}
+                                <br>
+                                {{ issue.issuedAt.format("d-m-Y H:m") }}
+                                <br>
+                                {{ issue.issueDeadline.format("d-m-Y H:m") }}
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -39,7 +39,7 @@ h3 {
 h4 {
     font-size: 1.125rem;
     line-height: 1.2;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 0;
 }
 
@@ -87,7 +87,7 @@ background {
 
 .card .card_head {border-bottom: 1px solid rgba(0, 40, 100, 0.12)}
 .card .card_head, .card .card_body {
-    padding: 25px;
+    padding: 20px;
     color: #666666;
 }
 
@@ -202,20 +202,8 @@ background {
 /**
  * Location CSS
  */
-.card.location {
-    display: flex;
-    flex-direction: row;
-    padding: 20px 25px 30px;
-    cursor: pointer;
-}
-.location {margin-top: 1rem;}
-.locationText { flex-grow: 1; padding-left: 15px;}
-.locationImage {
-    height: 200px;
-    width: 200px;
-    background: grey;
-    display: inline-block;
-}
+.location {margin-top: 1rem; }
+.location:first-child { margin-top: 0; }
 
 .buildingContainer {
     background: #f7f7f7;
@@ -317,6 +305,10 @@ background {
     padding-left: 25px;
 }
 
+.issues-container .card_body {
+    max-height: 400px;
+    overflow: auto;
+}
 
 
 

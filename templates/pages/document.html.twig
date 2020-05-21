@@ -61,7 +61,11 @@
                 </div>
                 <div id="buttonContainer">
                     <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
-                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                    {% if document.issue %}
+                        <button style="cursor: default" disabled type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                    {% else %}
+                        <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                    {% endif %}
                 </div>
                 <div id="historyContainer">
                     <h3>Geschiedenis</h3>

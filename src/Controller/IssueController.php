@@ -98,23 +98,3 @@ class IssueController extends AbstractController
     }
 }
 
-
-
-//$document = new Document();
-//
-//$form = $this->createForm(DocumentType::class, $document);
-//
-//$form->handleRequest($request);
-//if ($form->isSubmitted() && $form->isValid()) {
-//    $data = $form->getData();
-//    $entityManager->persist($data);
-//    $entityManager->flush();
-//
-//    return $this->render("pages/upload_success.html.twig");
-//}
-//
-//return $this->render('pages/upload.html.twig', [
-//    'form' => $form->createView(),
-//    'action' => $this->generateUrl('upload'),
-//    'method' => 'POST'
-//]);

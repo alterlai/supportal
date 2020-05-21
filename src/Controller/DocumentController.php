@@ -145,11 +145,16 @@ class DocumentController extends AbstractController
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($issue == true)
         {
+            /** If an issue already exists for this document, this is not possible. */
+            if ($document->getIssue())
+            {
+               return $this->render("errors/error.html.twig", ['message' => "Dit document is al uitgegeven."]);
+            }
             $issueHandlerService->addDocumentIssue($document, $this->getUser());
         }
 
         // Todo: Fetch the file and hand it over to the user.
-        return $this->render("pages/blank.html.twig", ["message" => "Uw download begint over enkele seconden..."]);
+        return $this->render("pages/download.html.twig", ["message" => "Uw download begint over enkele seconden..."]);
     }
 
 }
