@@ -50,6 +50,7 @@ easy_admin:
                     - building
                     - documentType
                     - area
+                    - version
         Organisation:
             class: App\Entity\Organisation
 

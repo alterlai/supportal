@@ -15,8 +15,19 @@ class DraftNamer implements NamerInterface
 //        $this->logger = $logger;
 //    }
 
+    /**
+     * @param object $object
+     * @param PropertyMapping $mapping
+     * @return string
+     */
     public function name($object, PropertyMapping $mapping): string
     {
-        return "testnaam2.pdf";
+        $building = $object->getBuilding()->getCode();
+        $floor = $object->getFloor();
+        $discipline = $object->getDiscipline()->getCode();
+        $doctype = $object->getDocumentType()->getCode();
+        $version = $object->getVersion();
+
+        return $building. "-". $floor. "-". $discipline.".". $doctype. "-000-". $version.".dwg";
     }
 }

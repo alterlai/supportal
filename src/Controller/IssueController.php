@@ -89,7 +89,7 @@ class IssueController extends AbstractController
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());
-        $entityManager->persist($draft);
+//        $entityManager->persist($draft);
         $entityManager->remove($issue);
         $entityManager->flush();
 

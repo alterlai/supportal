@@ -83,6 +83,12 @@ class Document
      */
     private $issue;
 
+    /**
+     * @ORM\Column("integer", nullable=false)
+     */
+    private $version;
+
+
     public function __construct()
     {
         $this->documentHistories = new ArrayCollection();
@@ -293,5 +299,21 @@ class Document
         }
 
         return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param integer $version
+     */
+    public function setVersion($version): void
+    {
+        $this->version = $version;
     }
 }
