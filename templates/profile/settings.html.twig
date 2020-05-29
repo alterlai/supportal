@@ -9,8 +9,8 @@
                 <div class="card">
                     <ul class="card-nav">
                         <a {% if app.request.get('_route') == 'profile' %} class="active"{% endif %} href="{{ path('profile') }}"><li>Profile</li></a>
-                        <a {% if app.request.get('_route') == 'issues' %} class="active"{% endif %} href="{{ path('issues') }}"><li>Openstaande aanvragen</li></a>
-                        <a {% if app.request.get('_route') == 'issues' %} class="active"{% endif %} href="{{ path('issues') }}"><li>Geuploade documenten</li></a>
+                        <a {% if app.request.get('_route') == 'issue.index' %} class="active"{% endif %} href="{{ path('issue.index') }}"><li>Openstaande aanvragen</li></a>
+                        <a {% if app.request.get('_route') == 'draft.index' %} class="active"{% endif %} href="{{ path('draft.index') }}"><li>Geuploade documenten</li></a>
                     </ul>
                 </div>
             </div>

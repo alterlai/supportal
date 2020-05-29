@@ -1,0 +1,33 @@
+{% extends 'profile/settings.html.twig' %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card_head">
+            <h4>Geuploade documenten</h4>
+        </div>
+        <div class="card_body no-padding">
+            <div id="listingContainer">
+                <table class="table dataTable cell-border" id="uploaded_documents">
+                    <thead>
+                    <tr>
+                        <th>STATUS</th>
+                        <th>NAAM</th>
+                        <th>INGELEVERD</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for draft in drafts %}
+                        <tr data-href="{{ path('draft.show', {id: draft.id}) }}" class="clickable-row">
+                            <td>Status</td>
+                            <td>{{ draft.document }}</td>
+                            <td>{{ draft.uploadedAt.format("d-m-Y H:m") }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

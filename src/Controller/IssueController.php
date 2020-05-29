@@ -21,7 +21,7 @@ class IssueController extends AbstractController
 {
     /**
      * List all open issues
-     * @Route("/issues", name="issues")
+     * @Route("/issues", name="issue.index")
      * @IsGranted("ROLE_USER")
      */
     public function index(IssueRepository $issueRepository)
@@ -29,7 +29,7 @@ class IssueController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $issues = $issueRepository->findBy(['issued_to' => $user->getId()]);
-        return $this->render('pages/issues/index.html.twig', ['issues' => $issues]);
+        return $this->render('issues/index.html.twig', ['issues' => $issues]);
     }
 
 
@@ -58,7 +58,7 @@ class IssueController extends AbstractController
                 return $this->handleSubmission($issue, $form, $entityManager, $logger);
             }
 
-            return $this->render("pages/issues/show.html.twig", [
+            return $this->render("issues/show.html.twig", [
                 "issue" => $issue,
                 "action" => $this->generateUrl('issue.show', ["id" => $issue->getId()]),
                 "form" => $form->createView(),
