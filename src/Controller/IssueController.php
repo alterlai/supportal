@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DocumentDraft;
 use App\Entity\Issue;
+use App\Entity\User;
 use App\Form\DocumentDraftType;
 use App\Form\IssueType;
 use App\Repository\IssueRepository;
@@ -20,21 +21,22 @@ class IssueController extends AbstractController
 {
     /**
      * List all open issues
-     * @Route("/issue", name="issue")
+     * @Route("/issues", name="issues")
      * @IsGranted("ROLE_USER")
      */
-    public function index()
+    public function index(IssueRepository $issueRepository)
     {
-        return $this->render('issue/index.html.twig', [
-            'controller_name' => 'IssueController',
-        ]);
+        /** @var User $user */
+        $user = $this->getUser();
+        $issues = $issueRepository->findBy(['issued_to' => $user->getId()]);
+        return $this->render('pages/issues/index.html.twig', ['issues' => $issues]);
     }
 
 
     /**
      * Show a specific issue with form.
      *
-     * @Route("/issue/{id}", name="issue", methods={"GET", "POST"})
+     * @Route("/issue/{id}", name="issue.show", methods={"GET", "POST"})
      * @param $id
      * @param IssueRepository $issueRepository
      * @param Request $request
@@ -58,7 +60,7 @@ class IssueController extends AbstractController
 
             return $this->render("pages/issues/show.html.twig", [
                 "issue" => $issue,
-                "action" => $this->generateUrl('issue', ["id" => $issue->getId()]),
+                "action" => $this->generateUrl('issue.show', ["id" => $issue->getId()]),
                 "form" => $form->createView(),
                 "method" => "POST"
             ]);
@@ -95,7 +97,7 @@ class IssueController extends AbstractController
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());
-//        $entityManager->persist($draft);
+        $entityManager->persist($draft);
         $entityManager->remove($issue);
         $entityManager->flush();
 

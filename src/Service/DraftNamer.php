@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Entity\Document;
+use App\Entity\DocumentDraft;
 use Psr\Log\LoggerInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\NamerInterface;
@@ -22,11 +24,13 @@ class DraftNamer implements NamerInterface
      */
     public function name($object, PropertyMapping $mapping): string
     {
-        $building = $object->getBuilding()->getCode();
-        $floor = $object->getFloor();
-        $discipline = $object->getDiscipline()->getCode();
-        $doctype = $object->getDocumentType()->getCode();
-        $version = $object->getVersion();
+        /** @var Document $document */
+        $document = $object->getDocument();
+        $building = $document->getBuilding()->getCode();
+        $floor = $document->getFloor();
+        $discipline = $document->getDiscipline()->getCode();
+        $doctype = $document->getDocumentType()->getCode();
+        $version = $document->getVersion();
 
         return $building. "-". $floor. "-". $discipline.".". $doctype. "-000-". $version.".dwg";
     }

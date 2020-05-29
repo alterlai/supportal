@@ -56,8 +56,8 @@
                     </div>
                 </div>
             </div>
-            <div id="listingContainer" class="col-md-10">
-                <table class="dataTable table-striped" id="listing">
+            <div class="col-md-10">
+                <table class="table dataTable row-border" id="listing">
                     <thead>
                     <tr>
                         <th>Bestandsnaam</th>
@@ -71,7 +71,7 @@
                     </thead>
                     <tbody>
                         {% for document in documents %}
-                            <tr>
+                            <tr data-href="{{ path('document', {documentId: document.id}) }}" class="clickable-row">
                                 <td>{{ document.documentName }}</td>
                                 <td>{{ document.documentType.name }}</td>
                                 <td>{{ document.discipline.description }}</td>

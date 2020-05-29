@@ -48,6 +48,8 @@ label, .small_bold {
     font-weight: 600;
     font-size: 1rem;
 }
+.green {color: green; }
+.red { color: red; }
 
 background {
     background-repeat: no-repeat;
@@ -90,6 +92,7 @@ background {
     padding: 20px;
     color: #666666;
 }
+.card .card_body.no-padding { padding: 20px 0;}
 
 .profile-img-card {
     width: 96px;
@@ -310,7 +313,24 @@ background {
     overflow: auto;
 }
 
+.clickable-row {
+    cursor: pointer;
+}
+.clickable-row:hover {
+    background: #e6e6e6;
+}
 
-
-
+.card .card-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.card .card-nav a {
+    color: rgb(102, 102, 102);
+    display: block;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+.card .card-nav li {padding-left: .75rem; display: inline-block; }
+.card .card-nav a.active { border-left: 3px solid orange; }
 

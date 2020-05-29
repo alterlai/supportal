@@ -3,6 +3,7 @@ $(document).ready(function() {
     /** DataTable object **/
    var table = $('.dataTable').DataTable();
 
+
     /**
      * Fetch document records using an AJAX request.
      */
@@ -30,6 +31,14 @@ $(document).ready(function() {
     $(".location").click(function () {
         $(this).next(".buildingContainer").toggle("fast");
     });
+
+    /**
+     * Make table rows clickable
+     */
+    $(".clickable-row").click(function () {
+        link = $(this).attr('data-href');
+        window.location.href = link;
+    })
 
     //
     // /**
@@ -122,6 +131,7 @@ $(document).ready(function() {
         table.clear();
         table.rows.add(tableData).draw();
     }
+
 
 
 });

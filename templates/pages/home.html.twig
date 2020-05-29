@@ -36,7 +36,7 @@
                     </div>
                     <div class="card_body">
                         {% for issue in issues %}
-                            <a href="{{ path('issue', {id: issue.id}) }}">
+                            <a href="{{ path('issue.show', {id: issue.id}) }}">
                                 {{ issue.document }}
                                 <br>
                                 {{ issue.issuedAt.format("d-m-Y H:m") }}
