@@ -42,13 +42,12 @@ class IssueController extends AbstractController
      * @param IssueRepository $issueRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param LoggerInterface $logger
      * @param DraftStatusRepository $draftStatusRepository
      * @return Response
      * @throws \Exception
      * @IsGranted("ROLE_USER")
      */
-    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, DraftStatusRepository $draftStatusRepository)
+    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository)
     {
         $issue = $issueRepository->find($id);
         $form = $this->createForm(DocumentDraftType::class);
@@ -58,7 +57,7 @@ class IssueController extends AbstractController
         {
             if ($form->isSubmitted() && $form->isValid())
             {
-                return $this->handleSubmission($issue, $form, $entityManager, $logger, $draftStatusRepository);
+                return $this->handleSubmission($issue, $form, $entityManager, $draftStatusRepository);
             }
 
             return $this->render("issues/show.html.twig", [
@@ -82,7 +81,7 @@ class IssueController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, LoggerInterface $logger, DraftStatusRepository $draftStatusRepository)
+    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository)
     {
         $data = $form->getData();
         $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
@@ -97,7 +96,6 @@ class IssueController extends AbstractController
 
         $draft->setDocument($issue->getDocument());
         $draft->setFileName($issue->getDocument()->getFileName());
-        $logger->info(implode("\n", $data));
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());

@@ -7,6 +7,9 @@
             <h4>Geuploade documenten</h4>
         </div>
         <div class="card_body no-padding">
+            {% if drafts == null %}
+                <h2 class="text-center">Geen openstaande concepten</h2>
+            {% else %}
             <div id="listingContainer">
                 <table class="table dataTable cell-border" id="uploaded_documents">
                     <thead>
@@ -48,6 +51,7 @@
                             <td>{{ draft.uploadedAt.format("d-m-Y H:m") }}</td>
                         </tr>
                     {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
