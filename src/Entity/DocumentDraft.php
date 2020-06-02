@@ -142,7 +142,7 @@ class DocumentDraft
         return $this;
     }
 
-    public function getCChangedAt(): ?\DateTimeInterface
+    public function getChangedAt(): ?\DateTimeInterface
     {
         return $this->changed_at;
     }

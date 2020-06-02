@@ -7,8 +7,8 @@
         <h4>Openstaande aanvragen</h4>
     </div>
     <div class="card_body no-padding">
-        {% if issues == null %}
-            <h2 class="text-center">Geen openstaande concepten</h2>
+        {% if issues is not defined or issues is empty %}
+            <h2 class="text-center">Geen openstaande aanvragen</h2>
         {% else %}
         <div id="listingContainer">
             <table class="table dataTable cell-border" id="uploaded_documents">

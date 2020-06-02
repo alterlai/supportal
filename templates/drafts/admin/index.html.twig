@@ -4,10 +4,10 @@
 
     <div class="card">
         <div class="card_head">
-            <h4>Geuploade documenten</h4>
+            <h4>Geuploade concepten</h4>
         </div>
         <div class="card_body no-padding">
-            {% if drafts == null %}
+            {% if drafts is not defined or drafts is empty %}
                 <h2 class="text-center">Geen openstaande concepten</h2>
             {% else %}
             <div id="listingContainer">
