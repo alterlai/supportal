@@ -104,8 +104,12 @@ class IssueController extends AbstractController
         $entityManager->remove($issue);
         $entityManager->flush();
 
+        $this->addFlash(
+            'success',
+            'Concept aangemaakt.'
+        );
 
-        return $this->render("pages/blank.html.twig", ["message" => "Succesvol draft aangemaakt."]);
+        return $this->render("drafts/index.html.twig");
     }
 
 }
