@@ -63,7 +63,7 @@ class Document
     private $location;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $floor;
 
@@ -134,12 +134,12 @@ class Document
         }
     }
 
-    public function getFloor(): ?int
+    public function getFloor(): ?string
     {
         return $this->floor;
     }
 
-    public function setFloor(?int $floor): self
+    public function setFloor(?string $floor): self
     {
         $this->floor = $floor;
 

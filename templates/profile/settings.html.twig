@@ -16,17 +16,19 @@
                         <a {% if app.request.get('_route') == 'draft.index' %} class="active"{% endif %} href="{{ path('draft.index') }}"><li>Geuploade documenten</li></a>
                     </ul>
                 </div>
-                <div class="card mt-3">
-                    <ul class="card-nav">
-                        <div class="card_head">
-                            <span class="small_bold">Admin</span>
-                        </div>
+                {% if app.user.role == "ROLE_ADMIN" %}
+                    <div class="card mt-3">
                         <ul class="card-nav">
-                            <a {% if app.request.get('_route') == 'draft.check' %} class="active"{% endif %} href="{{ path('draft.check') }}"><li>Concepten goedkeuren</li></a>
-                        </ul>
+                            <div class="card_head">
+                                <span class="small_bold">Admin</span>
+                            </div>
+                            <ul class="card-nav">
+                                <a {% if app.request.get('_route') == 'draft.check' %} class="active"{% endif %} href="{{ path('draft.check') }}"><li>Concepten goedkeuren</li></a>
+                            </ul>
 
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="col-md-9">
