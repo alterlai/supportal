@@ -19,7 +19,9 @@
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/fh-3.1.6/r-2.2.3/datatables.min.js"></script>
         {% block javascripts %}{% endblock %}
         <style>
-            .card {border-top: 3px solid {{ app.user.organisation.color}}}
+            {% if app.user %}
+                .card {border-top: 3px solid {{ app.user.organisation.color}}}
+            {% endif %}
         </style>
     </body>
 </html>

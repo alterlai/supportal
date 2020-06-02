@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\DocumentDraftRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,6 +13,9 @@ class DraftController extends AbstractController
 {
     /**
      * @Route("/drafts", name="draft.index")
+     * @param DocumentDraftRepository $documentDraftRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @IsGranted("ROLE_USER")
      */
     public function index(DocumentDraftRepository $documentDraftRepository)
     {
@@ -25,9 +30,14 @@ class DraftController extends AbstractController
 
     /**
      * @Route("/drafts/{id}", name="draft.show")
+     * @param int $id
+     * @param DocumentDraftRepository $documentDraftRepository
+     * @IsGranted("ROLE_USER")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show()
+    public function show(int $id, DocumentDraftRepository $documentDraftRepository)
     {
-
+        $draft = $documentDraftRepository->find($id);
+        return $this->render('drafts/show.html.twig', ['draft' => $draft]);
     }
 }
