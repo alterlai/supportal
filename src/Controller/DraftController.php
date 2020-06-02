@@ -40,4 +40,16 @@ class DraftController extends AbstractController
         $draft = $documentDraftRepository->find($id);
         return $this->render('drafts/show.html.twig', ['draft' => $draft]);
     }
+
+    /**
+     * @Route("/admin/drafts", name="draft.check")
+     * @param DocumentDraftRepository $documentDraftRepository
+     * @IsGranted("ROLE_ADMIN")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function check(DocumentDraftRepository $documentDraftRepository)
+    {
+        $openDrafts = $documentDraftRepository->findAll();
+        return $this->render('drafts/index_all.html.twig', ['drafts' => $openDrafts]);
+    }
 }

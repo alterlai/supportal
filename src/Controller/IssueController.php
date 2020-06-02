@@ -7,6 +7,7 @@ use App\Entity\Issue;
 use App\Entity\User;
 use App\Form\DocumentDraftType;
 use App\Form\IssueType;
+use App\Repository\DraftStatusRepository;
 use App\Repository\IssueRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -41,11 +42,13 @@ class IssueController extends AbstractController
      * @param IssueRepository $issueRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param LoggerInterface $logger
+     * @param DraftStatusRepository $draftStatusRepository
      * @return Response
-     * @IsGranted("ROLE_USER")
      * @throws \Exception
+     * @IsGranted("ROLE_USER")
      */
-    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger)
+    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger, DraftStatusRepository $draftStatusRepository)
     {
         $issue = $issueRepository->find($id);
         $form = $this->createForm(DocumentDraftType::class);
@@ -55,7 +58,7 @@ class IssueController extends AbstractController
         {
             if ($form->isSubmitted() && $form->isValid())
             {
-                return $this->handleSubmission($issue, $form, $entityManager, $logger);
+                return $this->handleSubmission($issue, $form, $entityManager, $logger, $draftStatusRepository);
             }
 
             return $this->render("issues/show.html.twig", [
@@ -79,10 +82,11 @@ class IssueController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, LoggerInterface $logger)
+    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, LoggerInterface $logger, DraftStatusRepository $draftStatusRepository)
     {
         $data = $form->getData();
         $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
+        $draftStatus = $draftStatusRepository->findOneBy(['name' => "In behandeling"]);
 
         if (! in_array($data['file_content']->getMimeType(), $valid_file_extensions))
         {
@@ -97,6 +101,7 @@ class IssueController extends AbstractController
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());
+        $draft->setDraftStatus($draftStatus);
         $entityManager->persist($draft);
         $entityManager->remove($issue);
         $entityManager->flush();

@@ -20,7 +20,8 @@
         {% block javascripts %}{% endblock %}
         <style>
             {% if app.user %}
-                .card {border-top: 3px solid {{ app.user.organisation.color}}}
+                .card {border-top: 3px solid {{ app.user.organisation.color}};}
+                .card .card-nav a.active { border-left: 3px solid {{ app.user.organisation.color}}; }
             {% endif %}
         </style>
     </body>

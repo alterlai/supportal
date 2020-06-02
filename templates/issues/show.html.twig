@@ -1,15 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'profile/settings.html.twig' %}
 
-{% block body %}
-{% include 'partials/navbar.html.twig' %}
+{% block content %}
 
 <div class="container">
-    <div class="row pt-5">
+    <div class="row">
         <div class="card w-100">
             <div class="card_head">
                 <h3 class="card_title">Openstaand document uploaden</h3>
             </div>
             <div class="card_body">
+                <p>
+                    Upload hier het openstaande tekeningen bestand in de een .DWG formaat.
+                </p>
                 {{  form_start(form) }}
                 {{ form_errors(form) }}
                 {{ form_row(form.file_content) }}

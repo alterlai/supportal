@@ -84,7 +84,7 @@ class Document
     private $issue;
 
     /**
-     * @ORM\Column("integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $version;
 

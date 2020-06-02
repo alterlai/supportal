@@ -55,7 +55,13 @@ class DocumentDraft
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $rejected_at;
+    private $changed_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DraftStatus", inversedBy="draft")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $draftStatus;
 
     public function getId(): ?int
     {
@@ -136,14 +142,26 @@ class DocumentDraft
         return $this;
     }
 
-    public function getRejectedAt(): ?\DateTimeInterface
+    public function getCChangedAt(): ?\DateTimeInterface
     {
-        return $this->rejected_at;
+        return $this->changed_at;
     }
 
-    public function setRejectedAt(?\DateTimeInterface $rejected_at): self
+    public function setChangedAt(?\DateTimeInterface $changed_at): self
     {
-        $this->rejected_at = $rejected_at;
+        $this->changed_at = $changed_at;
+
+        return $this;
+    }
+
+    public function getDraftStatus(): ?DraftStatus
+    {
+        return $this->draftStatus;
+    }
+
+    public function setDraftStatus(?DraftStatus $draftStatus): self
+    {
+        $this->draftStatus = $draftStatus;
 
         return $this;
     }
