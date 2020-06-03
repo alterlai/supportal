@@ -44,6 +44,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'file_content', type: 'vich_file'}
+                    - { property: 'pdf_file', type: 'vich_file'}
                     - description
                     - location
                     - building
@@ -54,6 +55,8 @@ easy_admin:
                     - version
         Organisation:
             class: App\Entity\Organisation
+        Draft:
+            class: App\Entity\DocumentDraft
 
     design:
         form_theme:

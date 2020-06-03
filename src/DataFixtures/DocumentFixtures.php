@@ -75,7 +75,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
 
     public function generateRandomFilename(Discipline $discipline, DocumentType $documentType, Building $randomBuilding, int $floor): string
     {
-        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $documentType, $floor , 1, ".pdf");
+        return $this->nameParser->generateFileNameFromEntities($randomBuilding, $discipline, $documentType, $floor , 1, ".dwg");
     }
 
     private function loadDocumentTypes(ObjectManager $manager)

@@ -8,7 +8,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav px-3 ml-auto">
                     <li class="nav-item">
-                        <span class="navbar-text username">{{ app.user.username }}</span>
+                        <a href="{{ path('profile') }}" class="navbar-text username">{{ app.user.username }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('logout') }}">Uitloggen</a>

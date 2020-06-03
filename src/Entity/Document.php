@@ -32,6 +32,17 @@ class Document
     private $file_content;
 
     /**
+     * @Vich\UploadableField(mapping="pdf", fileNameProperty="pdf_filename")
+     */
+    private $pdf_file;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @var string
+     */
+    private $pdf_filename;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="documents", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -120,6 +131,18 @@ class Document
         return $this;
     }
 
+    public function getPdfFilename()
+    {
+        return $this->pdf_filename;
+    }
+
+    public function setPdfFilename(?string $name)
+    {
+        $this->pdf_filename = $name;
+
+        return $this;
+    }
+
     public function getFileContent()
     {
         return $this->file_content;
@@ -130,6 +153,20 @@ class Document
         $this->file_content = $file_content;
 
         if ($file_content) {
+            $this->updated_at = new \DateTime('now');
+        }
+    }
+
+    public function getPdfFile()
+    {
+        return $this->pdf_file;
+    }
+
+    public function setPdfFile($pdf_file = null): void
+    {
+        $this->pdf_file = $pdf_file;
+
+        if ($pdf_file) {
             $this->updated_at = new \DateTime('now');
         }
     }
