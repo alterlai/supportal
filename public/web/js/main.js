@@ -35,9 +35,10 @@ $(document).ready(function() {
     /**
      * Make table rows clickable
      */
-    $(".clickable-row, .downloadContainer").click(function () {
+    $(".clickable-row, .downloadLink").click(function () {
         link = $(this).attr('data-href');
-        window.location.href = link;
+        // window.location.href = link;
+        window.open(link, '_blank')
     });
 
     //

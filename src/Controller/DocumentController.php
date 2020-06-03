@@ -153,8 +153,12 @@ class DocumentController extends AbstractController
             $issueHandlerService->addDocumentIssue($document, $this->getUser());
         }
 
-        // Todo: Fetch the file and hand it over to the user.
-        return $this->render("pages/download.html.twig", ["message" => "Uw download begint over enkele seconden..."]);
+        $basedir = $this->getParameter("app.path.documents");
+
+        return $this->render("pages/download.html.twig", [
+            "message" => "Uw download begint over enkele seconden...",
+            "downloadLink" => $basedir . "/" . $document->getFileName()
+        ]);
     }
 
 }

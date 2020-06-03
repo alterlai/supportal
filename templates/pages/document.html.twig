@@ -106,7 +106,7 @@
                     Aan deze actie zijn kosten verbonden. Wilt u doorgaan?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Doorgaan</button>
+                    <button type="button" class="btn btn-info downloadLink" data-href="{{ asset(document_directory ~ "/" ~ document.PdfFilename) }}" data-dismiss="modal">Doorgaan</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
             </div>
@@ -131,42 +131,14 @@
                     Als u op "Nee" klikt, hoeft u niets in te leveren.
                 </div>
                 <div class="modal-footer">
-                    <a target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}"><button type="button" class="btn btn-info">Ja</button></a>
-                    <a target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}"><button type="button" class="btn btn-info">Nee</button></a>
+                    <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}">
+                        <button type="button" class="btn btn-info">Ja</button>
+                    </a>
+                    <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
+                        <button type="button" class="btn btn-info">Nee</button>
+                    </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    {#    DWG indienen modal#}
-    <div class="modal fade" id="putDwg" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">DWG indienen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ path('document.update', {documentId: document.id}) }}" method="POST">
-                <div class="modal-body">
-                    <p>
-                        Gebruik dit formulier om een aangepaste tekening in te dienen.
-                        De tekening zal worden gekeurd voordat hij voor anderen zichtbaar is.
-                        <br><br>
-                        Zorg ervoor dat de bestandsnaam voldoet aan de NL/SfB standaard.
-                    </p>
-                    <h6 class="font-weight-bold">Bestand uploaden</h6>
-                    <label>
-                        <input type="file" class="form-control-file">
-                    </label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
-                    <button type="submit" class="btn btn-info">Doorgaan</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
