@@ -42,7 +42,7 @@ h4 {
     font-weight: 600;
     margin-bottom: 0;
 }
-table, .table {color: rgb(102, 102, 102);}
+table, .table, label {color: rgb(102, 102, 102);}
 label, .small_bold {
     margin-bottom: .375rem;
     font-weight: 600;

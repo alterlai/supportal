@@ -1,16 +1,18 @@
 $(document).ready(function() {
 
     /** DataTable object **/
-   var table = $('.dataTable').DataTable();
+   var table = $('.dataTable').DataTable({
+        'lengthMenu': [10, 25, 50, 100]
+    });
 
 
     /**
      * Fetch document records using an AJAX request.
      */
-   $('.filterOption input').change(function()
-   {
-       updateTable();
-   });
+   $('.filterOption input').change(function() {
+           updateTable();
+       }
+   );
 
     /**
      * Remove filters button action and update the table
@@ -35,11 +37,16 @@ $(document).ready(function() {
     /**
      * Make table rows clickable
      */
-    $(".clickable-row, .downloadLink").click(function () {
+    $(".dataTable").on("click", ".clickable-row", function () {
         link = $(this).attr('data-href');
-        // window.location.href = link;
+        window.location.href = link;
+    });
+
+    $(".downloadLink").click( function () {
+        link = $(this).attr('data-href');
         window.open(link, '_blank')
     });
+
 
     //
     // /**
@@ -131,6 +138,10 @@ $(document).ready(function() {
         // Clear table and insert new data.
         table.clear();
         table.rows.add(tableData).draw();
+
+        // Make the rows clickable again
+        $('tr').addClass('clickable-row');
+
     }
 
 
