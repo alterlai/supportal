@@ -11,7 +11,7 @@
         </ol>
         <div class="content row" id="documentContainer">
             <div id="pdfContainer" class="col-md-6">
-                <span>PDF container</span>
+                <embed src="{{ asset('documents/' ~ document.pdfFileName) }}" width="100%" height="100%">
             </div>
             <div id="detailsContainer" class="col-md-6 d-flex flex-column">
                 <div id="specificationContainer">
