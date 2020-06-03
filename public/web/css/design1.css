@@ -4,6 +4,7 @@
 .breadcrumb { margin-top: 15px;}
 
 .yellow { background: var(--yellow) }
+.yellow h4 { color: white; }
 .antraciet { background: var(--antraciet)}
 .content { padding-top: 50px; }
 
