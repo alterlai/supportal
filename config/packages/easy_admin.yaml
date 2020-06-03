@@ -43,13 +43,14 @@ easy_admin:
                     - documentType
             form:
                 fields:
-                    - { property: 'file_content', type: 'vich_file' }
-                    - discipline
+                    - { property: 'file_content', type: 'vich_file'}
                     - description
-                    - floor
+                    - location
                     - building
-                    - documentType
+                    - floor
                     - area
+                    - discipline
+                    - documentType
                     - version
         Organisation:
             class: App\Entity\Organisation
