@@ -110,17 +110,16 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ path('draft.accept', {id: draft.id}) }}" method="POST">
-                    <div class="modal-body">
+                {{ form_start(form) }}
+                <div class="modal-body">
                         <div class="form-group">
-                            <label for="draft_pdf">Upload een PDF van de nieuwe tekening.</label>
-                            <input type="file" id="draft_pdf" class="form-control">
+                            {{ form_row(form.pdfFile) }}
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Accepteren</button>
+                        {{ form_row(form.submit) }}
                     </div>
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
