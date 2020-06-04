@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DocumentHistoryRepository")
+ * @Vich\Uploadable
  */
 class DocumentHistory
 {
@@ -22,6 +24,17 @@ class DocumentHistory
     private $updated_at;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     * @var string
+     */
+    private $file_name;
+
+    /**
+     * @Vich\UploadableField(mapping="documents", fileNameProperty="file_name")
+     */
+    private $file_content;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $revision_description;
@@ -33,7 +46,7 @@ class DocumentHistory
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $updated_by;
 
@@ -50,6 +63,32 @@ class DocumentHistory
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updated_at;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->file_name;
+    }
+
+    public function setFileName(?string $file_name): self
+    {
+        $this->file_name = $file_name;
+
+        return $this;
+    }
+
+    public function getFileContent()
+    {
+        return $this->file_content;
+    }
+
+    public function setFileContent($file_content = null): void
+    {
+        $this->file_content = $file_content;
+
+        if ($file_content) {
+            $this->updated_at = new \DateTime('now');
+        }
     }
 
     public function setUpdatedAt(\DateTimeInterface $updated_at): self

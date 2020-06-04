@@ -22,6 +22,10 @@
             {% if app.user %}
                 .card {border-top: 3px solid {{ app.user.organisation.color}};}
                 .card .card-nav a.active { border-left: 3px solid {{ app.user.organisation.color}}; }
+                .card .card-nav a:hover {
+                    border-left: 3px solid {{ app.user.organisation.color}};
+                    transition: border-left .05s;
+                }
             {% endif %}
         </style>
     </body>

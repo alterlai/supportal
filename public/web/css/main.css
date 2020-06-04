@@ -335,7 +335,7 @@ background {
     background: #e6e6e6;
 }
 
-.downloadContainer {
+.downloadLink {
     width: 100px;
     height: 100px;
     display: flex;
@@ -343,7 +343,7 @@ background {
     align-items: center;
     cursor: pointer;
 }
-.downloadContainer svg {
+.downloadLink svg {
     width: 75px;
     height: 75px;
 }

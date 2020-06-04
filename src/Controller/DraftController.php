@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\DocumentHistory;
 use App\Entity\User;
 use App\Repository\DocumentDraftRepository;
+use App\Repository\DocumentHistoryRepository;
 use App\Repository\DraftStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -45,6 +47,7 @@ class DraftController extends AbstractController
     }
 
     /**
+     * Index all pending drafts
      * @Route("/admin/drafts", name="draft.check")
      * @param DocumentDraftRepository $documentDraftRepository
      * @param DraftStatusRepository $draftStatusRepository
@@ -59,6 +62,7 @@ class DraftController extends AbstractController
     }
 
     /**
+     * Show a draft
      * @Route("/admin/drafts/{id}", name="draft.approve")
      * @param int $id
      * @param DocumentDraftRepository $documentDraftRepository
@@ -74,6 +78,7 @@ class DraftController extends AbstractController
     }
 
     /**
+     * Deny the draft and set the description for rejection
      * @Route("/admin/drafts/{id}/deny", name="draft.deny", methods={"POST"})
      * @param int $id
      * @param Request $request
@@ -109,8 +114,48 @@ class DraftController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN")
      */
-    public function accept(int $id, DocumentDraftRepository $documentDraftRepository)
+    public function accept(int $id, DocumentDraftRepository $documentDraftRepository, EntityManagerInterface $entityManager)
     {
-        //todo
+        // Manier 1
+        // 1. voeg de draft toe aan document revisions
+        // move het bestand naar /archive
+        // pas de bestandsnaam aan.
+        // 2. Markeer de draft als geaccepteerd
+        // 3. Mail de user
+
+        // Manier 2 <--
+        // 1. maak een record aan in document history met de huidige info.
+        $draft = $documentDraftRepository->find($id);
+
+        if (!$draft)
+        {
+            return $this->render('errors/error.html.twig', ['message' => "Draft ID is unknown."]);
+        }
+        // todo: fix updateBy
+        $documentHistoryEntity = (new DocumentHistory())
+            ->setDocument($draft->getDocument())
+            ->setRevision($draft->getDocument()->getVersion())
+            ->setRevisionDescription($draft->getDocument()->getDescription())
+            ->setUpdatedAt($draft->getDocument()->getUpdatedAt())
+//            ->setUpdatedBy($draft->getUploadedBy())
+        ;
+
+        $entityManager->persist($documentHistoryEntity);
+
+        $entityManager->flush();
+
+        // 2. verander het huidige record naar de juiste bestandsnaam
+
+
+
+        // move het bestand naar /archive
+        // pas de bestandsnamen aan.
+        // 3. Markeer de draft als geaccepteerd
+        // 4. Mail de user
+
+        $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
+
+        return $this->render('drafts/admin/index.html.twig');
+
     }
 }
