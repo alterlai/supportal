@@ -7,7 +7,9 @@ use App\Entity\DocumentDraft;
 use App\Entity\DocumentHistory;
 use App\Repository\DocumentDraftRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use mysql_xdevapi\Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class VersioningService {
@@ -15,12 +17,14 @@ class VersioningService {
     private $entityManager;
     private $documentDraftRepository;
     private $documentNameParserService;
+    private $parameterBag;
 
-    public function __construct(EntityManagerInterface $entityManager, DocumentDraftRepository $documentDraftRepository, DocumentNameParserService $documentNameParserService)
+    public function __construct(EntityManagerInterface $entityManager, DocumentDraftRepository $documentDraftRepository, DocumentNameParserService $documentNameParserService, ParameterBagInterface $parameterBag)
     {
         $this->entityManager = $entityManager;
         $this->documentDraftRepository = $documentDraftRepository;
         $this->documentNameParserService = $documentNameParserService;
+        $this->parameterBag = $parameterBag;
     }
 
     public function archiveDocument(int $documentDraftId, UploadedFile $newPdfFile, string $directory)
@@ -32,6 +36,8 @@ class VersioningService {
         $this->createHistory($currentDocument);
 
         $this->saveNewPDF($newPdfFile, $currentDocument, $directory);
+
+        $this->moveFromDraftToDocumentDirectory($draft);
     }
 
     /**
@@ -62,6 +68,7 @@ class VersioningService {
      * @param Document $currentDocument
      * @param string $directory
      * @return string
+     * @throws Exception
      */
     private function saveNewPDF(UploadedFile $newPdfFile, Document $currentDocument, string $directory)
     {
@@ -77,5 +84,30 @@ class VersioningService {
         $newPdfFile->move($directory, $newFileName);
 
         return $newFileName;
+    }
+
+    private function moveFromDraftToDocumentDirectory(DocumentDraft $draft)
+    {
+        $draft_dir = $this->parameterBag->get('draft_upload_directory');
+        $document_dir = $this->parameterBag->get('document_upload_directory');
+        $currentDocument = $draft->getDocument();
+
+        $newFileName = $this->documentNameParserService->generateFileNameFromEntities(
+            $currentDocument->getBuilding(),
+            $currentDocument->getDiscipline(),
+            $currentDocument->getDocumentType(),
+            $currentDocument->getFloor(),
+            $currentDocument->getVersion() + 1, // +1 for the new revision
+            ".dwg"
+        );
+
+        $filesystem = new Filesystem();
+        try {
+            $filesystem->rename($draft_dir.$draft->getFileName(), $document_dir.$newFileName);
+        }
+        catch (\Exception $e) {
+            throw $e;
+        }
+
     }
 }

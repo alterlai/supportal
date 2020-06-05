@@ -90,7 +90,7 @@ class DraftController extends AbstractController
             return $this->render('errors/error.html.twig', ['message' => "Draft ID is unknown."]);
         }
 
-        $form = $this->createForm(PDFUpload::class);
+        $form = $this->createForm(PDFUpload::class, ['action' => $this->generateUrl('draft.approve', ['documentDraftId' => $draft->getId()]),]);
         $form->handleRequest($request);
 
         // Handle submitted draft form when the user clicks accept.
@@ -110,12 +110,11 @@ class DraftController extends AbstractController
 
             $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
 
-            return $this->render('drafts/admin/index.html.twig');
+            return $this->redirectToRoute('draft.check');
         }
 
         return $this->render('drafts/admin/show.html.twig', [
             'draft' => $draft,
-            'action' => $this->generateUrl('draft.approve', ['documentDraftId' => $draft->getId()]),
             'form' => $form->createView(),
         ]);
     }
@@ -161,7 +160,7 @@ class DraftController extends AbstractController
     private function accept(int $documentDraftId, $data, DocumentNameParserService $documentNameParserService, VersioningService $versioningService)
     {
         // 1. Make a new DocumentHistory object with current document values.
-        
+
         // pas de bestandsnamen aan.
         // 3. Markeer de draft als geaccepteerd
         // 4. Mail de user

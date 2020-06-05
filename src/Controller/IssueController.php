@@ -9,6 +9,8 @@ use App\Form\DocumentDraftType;
 use App\Form\IssueType;
 use App\Repository\DraftStatusRepository;
 use App\Repository\IssueRepository;
+use App\Service\DocumentNameParserService;
+use App\Service\DocumentNamer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -43,11 +45,12 @@ class IssueController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param DraftStatusRepository $draftStatusRepository
+     * @param DocumentNameParserService $documentNameParserService
      * @return Response
      * @throws \Exception
      * @IsGranted("ROLE_USER")
      */
-    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository)
+    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository, DocumentNameParserService $documentNameParserService)
     {
         $issue = $issueRepository->find($id);
         $form = $this->createForm(DocumentDraftType::class);
@@ -57,7 +60,7 @@ class IssueController extends AbstractController
         {
             if ($form->isSubmitted() && $form->isValid())
             {
-                return $this->handleSubmission($issue, $form, $entityManager, $draftStatusRepository);
+                return $this->handleSubmission($issue, $form, $entityManager, $draftStatusRepository, $documentNameParserService);
             }
 
             return $this->render("issues/show.html.twig", [
@@ -78,10 +81,12 @@ class IssueController extends AbstractController
      * @param Issue $issue
      * @param FormInterface $form
      * @param EntityManagerInterface $entityManager
+     * @param DraftStatusRepository $draftStatusRepository
+     * @param DocumentNameParserService $documentNameParserService
      * @return Response
      * @throws \Exception
      */
-    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository)
+    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository, DocumentNameParserService $documentNameParserService)
     {
         $data = $form->getData();
         $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
@@ -92,14 +97,23 @@ class IssueController extends AbstractController
             return $this->render("errors/error.html.twig", ['message'=> "Incorrecte file extensie. Alleen DWG bestanden zijn toegestaan."]);
         }
 
+        $newFileName = $documentNameParserService->generateFileNameFromEntities(
+            $issue->getDocument()->getBuilding(),
+            $issue->getDocument()->getDiscipline(),
+            $issue->getDocument()->getDocumentType(),
+            $issue->getDocument()->getFloor(),
+            ($issue->getDocument()->getVersion()),
+            ".dwg"
+        );
         $draft = new DocumentDraft();
 
         $draft->setDocument($issue->getDocument());
-        $draft->setFileName($issue->getDocument()->getFileName());
         $draft->setFileContent($data['file_content']);
         $draft->setUploadedAt(new \DateTime("now"));
         $draft->setUploadedBy($issue->getIssuedTo());
         $draft->setDraftStatus($draftStatus);
+
+        $draft->setFileName("test.dwg");
         $entityManager->persist($draft);
         $entityManager->remove($issue);
         $entityManager->flush();
