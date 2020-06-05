@@ -27,7 +27,7 @@ class VersioningService {
         $this->parameterBag = $parameterBag;
     }
 
-    public function archiveDocument(int $documentDraftId, UploadedFile $newPdfFile, string $directory)
+    public function archiveDocument(int $documentDraftId, UploadedFile $newPdfFile)
     {
         $draft = $this->documentDraftRepository->find($documentDraftId);
 
@@ -35,7 +35,7 @@ class VersioningService {
 
         $this->createHistory($currentDocument);
 
-        $this->saveNewPDF($newPdfFile, $currentDocument, $directory);
+        $this->saveNewPDF($newPdfFile, $currentDocument);
 
         $this->moveFromDraftToDocumentDirectory($draft);
     }
@@ -70,8 +70,10 @@ class VersioningService {
      * @return string
      * @throws Exception
      */
-    private function saveNewPDF(UploadedFile $newPdfFile, Document $currentDocument, string $directory)
+    private function saveNewPDF(UploadedFile $newPdfFile, Document $currentDocument)
     {
+        $directory = $this->parameterBag->get('document_upload_directory');
+
         $newFileName = $this->documentNameParserService->generateFileNameFromEntities(
             $currentDocument->getBuilding(),
             $currentDocument->getDiscipline(),

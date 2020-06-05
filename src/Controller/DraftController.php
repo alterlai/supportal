@@ -98,7 +98,6 @@ class DraftController extends AbstractController
         {
             /** @var UploadedFile $newPdfFile */
             $newPdfFile = $form->get('pdfFile')->getData();
-            $directory = $this->getParameter('document_upload_directory');
 
             if (!$newPdfFile)
             {
@@ -106,7 +105,7 @@ class DraftController extends AbstractController
                     ['message' => "PDF file cannot be empty"]);
             }
 
-            $versioningService->archiveDocument($documentDraftId, $newPdfFile, $directory);
+            $versioningService->archiveDocument($documentDraftId, $newPdfFile);
 
             $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
 
