@@ -23,7 +23,7 @@
                     <tbody>
 
                         {% for draft in drafts %}
-                            <tr data-href="{{ path('draft.approve', {id: draft.id}) }}" class="clickable-row">
+                            <tr data-href="{{ path('draft.approve', {documentDraftId: draft.id}) }}" class="clickable-row">
                                 <td>
                                     {% if draft.draftStatus.name == "Afgekeurd" %}
                                         <svg class="red bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

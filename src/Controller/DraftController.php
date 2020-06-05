@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Document;
 use App\Entity\DocumentHistory;
 use App\Entity\User;
+use App\Form\PDFUpload;
 use App\Repository\DocumentDraftRepository;
 use App\Repository\DraftStatusRepository;
 use App\Service\DocumentNameParserService;
+use App\Service\VersioningService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,46 +71,55 @@ class DraftController extends AbstractController
     }
 
     /**
-     * Show a draft
-     * @Route("/admin/drafts/{id}", name="draft.approve")
-     * @param int $id
+     * Show a draft and handle the accept.
+     * @Route("/admin/drafts/{documentDraftId}", name="draft.approve")
+     * @param int $documentDraftId
+     * @param Request $request
      * @param DocumentDraftRepository $documentDraftRepository
-     * @param FormBuilderInterface $formBuilder
+     * @param VersioningService $versioningService
      * @return Response
      * @IsGranted("ROLE_ADMIN")
      */
-    public function approve(int $id, DocumentDraftRepository $documentDraftRepository)
+    public function approve(int $documentDraftId, Request $request, DocumentDraftRepository $documentDraftRepository, VersioningService $versioningService)
     {
-        $draft = $documentDraftRepository->find($id);
+        $draft = $documentDraftRepository->find($documentDraftId);
 
-        $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('draft.accept', ['id' => $id]))
-            ->setMethod("POST")
-            ->add("pdfFile", FileType::class, [
-                'label' => "PDF File",
-                'required' => true,
-                'mapped' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
-                    ])
-                ]
-            ])
-            ->add("submit", SubmitType::class, [
-                    'label' => "Accepteren",
-                    'attr' => ["class" => "btn btn-success"]
-        ])->getForm();
+        // Error handling
+        if (!$draft)
+        {
+            return $this->render('errors/error.html.twig', ['message' => "Draft ID is unknown."]);
+        }
+
+        $form = $this->createForm(PDFUpload::class);
+        $form->handleRequest($request);
+
+        // Handle submitted draft form when the user clicks accept.
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            /** @var UploadedFile $newPdfFile */
+            $newPdfFile = $form->get('pdfFile')->getData();
+            $directory = $this->getParameter('document_upload_directory');
+
+            if (!$newPdfFile)
+            {
+                return $this->render('errors/error.html.twig',
+                    ['message' => "PDF file cannot be empty"]);
+            }
+
+            $versioningService->archiveDocument($documentDraftId, $newPdfFile, $directory);
+
+            $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
+
+            return $this->render('drafts/admin/index.html.twig');
+        }
 
         return $this->render('drafts/admin/show.html.twig', [
             'draft' => $draft,
+            'action' => $this->generateUrl('draft.approve', ['documentDraftId' => $draft->getId()]),
             'form' => $form->createView(),
         ]);
     }
+
 
     /**
      * Deny the draft and set the description for rejection
@@ -141,94 +152,20 @@ class DraftController extends AbstractController
     }
 
     /**
-     * @Route("/admin/drafts/{id}/accept", name="draft.accept", methods={"POST"})
-     * @param int $id
-     * @param Request $request
-     * @param DocumentDraftRepository $documentDraftRepository
-     * @param EntityManagerInterface $entityManager
+     * @param int $documentDraftId
+     * @param mixed $data
      * @param DocumentNameParserService $documentNameParserService
+     * @param VersioningService $versioningService
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      */
-    public function accept(int $id, Request $request, DocumentDraftRepository $documentDraftRepository, EntityManagerInterface $entityManager, DocumentNameParserService $documentNameParserService)
+    private function accept(int $documentDraftId, $data, DocumentNameParserService $documentNameParserService, VersioningService $versioningService)
     {
         // 1. Make a new DocumentHistory object with current document values.
-        $draft = $documentDraftRepository->find($id);
-
-        $currentDocument = $draft->getDocument();
-
-        // Error handling
-        if (!$draft)
-        {
-            return $this->render('errors/error.html.twig', ['message' => "Draft ID is unknown."]);
-        }
-        // todo: fix updateBy
-        $documentHistoryEntity = (new DocumentHistory())
-            ->setDocument($currentDocument)
-            ->setRevision($currentDocument->getVersion())
-            ->setRevisionDescription($currentDocument->getDescription())
-            ->setUpdatedAt($currentDocument->getUpdatedAt())
-            ->setFileName($currentDocument->getFileName());
-//            ->setUpdatedBy($draft->getUploadedBy())
-        ;
-
-        $entityManager->persist($documentHistoryEntity);
-
-        $entityManager->flush();
-
-        /** @var UploadedFile $pdfFile */
-        $pdfFile = $request->files->get("form['pdfFile']");
-
-        if (!$pdfFile)
-        {
-            return $this->render('errors/error.html.twig',
-                ['message' => "PDF file cannot be empty"]);
-        }
-
-        try {
-            $newPdfFileName = $this->saveNewPdfFileAndReturnFilename($documentNameParserService, $currentDocument, $pdfFile);
-        }catch (FileException $e)
-        {
-            return $this->render('errors/error.html.twig',
-                ['message' => "An error occured while moving the PDF file. Please try again or contact an administrator."]
-            );
-        }
-
-        // move het bestand naar /archive
+        
         // pas de bestandsnamen aan.
         // 3. Markeer de draft als geaccepteerd
         // 4. Mail de user
 
-        $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
-
-        return $this->render('drafts/admin/index.html.twig');
-
     }
 
-    /**
-     * Save a PDF file on disk with new revision number.
-     * @param DocumentNameParserService $documentNameParserService
-     * @param Document $currentDocument
-     * @param UploadedFile $pdfFile
-     * @return string new file name
-     */
-    private function saveNewPdfFileAndReturnFilename(DocumentNameParserService $documentNameParserService, Document $currentDocument, UploadedFile $pdfFile)
-    {
-
-        $newFileName = $documentNameParserService->generateFileNameFromEntities(
-            $currentDocument->getBuilding(),
-            $currentDocument->getDiscipline(),
-            $currentDocument->getDocumentType(),
-            $currentDocument->getFloor(),
-            $currentDocument->getVersion() + 1, // +1 for the new revision
-            "pdf"
-        );
-
-        $pdfFile->move(
-            $this->getParameter('app.path.documents'),
-            $newFileName
-        );
-
-        return $newFileName;
-    }
 }
