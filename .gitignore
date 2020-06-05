@@ -18,3 +18,5 @@
 .env
 data/
 .idea/
+public/documents
+public/drafts
