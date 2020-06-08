@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Document;
 use App\Entity\DocumentDraft;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,6 +18,18 @@ class DocumentDraftRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DocumentDraft::class);
+    }
+
+    public function getOpenDocumentDraftsByDocument(Document $document)
+    {
+        return $this->createQueryBuilder('draft')
+            ->innerJoin('draft.draftStatus', 'status', 'WITH', 'status.id = draft.draftStatus')
+            ->where('draft.document = :document')
+            ->andWhere('status.name = :status')
+            ->setParameter("document", $document)
+            ->setParameter("status", "In behandeling")
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

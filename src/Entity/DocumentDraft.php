@@ -165,4 +165,9 @@ class DocumentDraft
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getDocument()->getFileName();
+    }
 }

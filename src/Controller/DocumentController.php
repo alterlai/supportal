@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Document;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
+use App\Repository\DocumentDraftRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\DocumentTypeRepository;
 use App\Service\DocumentFilterService;
@@ -49,11 +50,13 @@ class DocumentController extends AbstractController
     /**
      * @Route("/document/", name="document", methods={"GET"})
      * @param Request $request
+     * @param DocumentRepository $documentRepository
+     * @param DocumentDraftRepository $documentDraftRepository
      * @return Response
      * @throws \Exception
      * @IsGranted("ROLE_USER")
      */
-    public function show(Request $request, DocumentRepository $documentRepository)
+    public function show(Request $request, DocumentRepository $documentRepository, DocumentDraftRepository $documentDraftRepository)
     {
         if (!$id = $request->query->get("documentId"))
         {
@@ -61,12 +64,19 @@ class DocumentController extends AbstractController
         }
         $document = $documentRepository->find($id);
         $history = $document->getDocumentHistories();
+        $canDoRevision = true;
+        if (
+            $documentDraftRepository->getOpenDocumentDraftsByDocument($document) || $document->getIssue())
+        {
+            $canDoRevision = false;
+        }
+
         if (!$document)
         {
             throw new \Exception("Unknown document number");
         }
 
-        return $this->render('pages/document.html.twig', ['document' => $document, 'documentHistory' => $history]);
+        return $this->render('pages/document.html.twig', ['document' => $document, 'documentHistory' => $history, 'canDoRevision' => $canDoRevision]);
     }
 
     /**

@@ -99,6 +99,11 @@ class Document
      */
     private $version;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DocumentDraft", mappedBy="document")
+     */
+    private $documentDrafts;
+
 
     public function __construct()
     {
@@ -303,6 +308,37 @@ class Document
             // set the owning side to null (unless already changed)
             if ($documentHistory->getDocument() === $this) {
                 $documentHistory->setDocument(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocumentDraft[]
+     */
+    public function getDocumentDrafts(): Collection
+    {
+        return $this->documentDrafts;
+    }
+
+    public function addDocumentDrafts(DocumentDraft $documentDraft): self
+    {
+        if (!$this->documentDrafts->contains($documentDraft)) {
+            $this->documentDrafts[] = $documentDraft;
+            $documentDraft->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentDrafts(DocumentDraft $documentDraft): self
+    {
+        if ($this->documentDrafts->contains($documentDraft)) {
+            $this->documentDrafts->removeElement($documentDraft);
+            // set the owning side to null (unless already changed)
+            if ($documentDraft->getDocument() === $this) {
+                $documentDraft->setDocument(null);
             }
         }
 
