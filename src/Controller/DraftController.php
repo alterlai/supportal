@@ -11,6 +11,7 @@ use App\Repository\DraftStatusRepository;
 use App\Service\DocumentNameParserService;
 use App\Service\VersioningService;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -79,6 +80,7 @@ class DraftController extends AbstractController
      * @param VersioningService $versioningService
      * @return Response
      * @IsGranted("ROLE_ADMIN")
+     * @throws \Exception
      */
     public function approve(int $documentDraftId, Request $request, DocumentDraftRepository $documentDraftRepository, VersioningService $versioningService)
     {
@@ -105,7 +107,13 @@ class DraftController extends AbstractController
                     ['message' => "PDF file cannot be empty"]);
             }
 
-            $versioningService->archiveDocument($documentDraftId, $newPdfFile);
+            try {
+                $versioningService->archiveDocument($documentDraftId, $newPdfFile);
+            }
+            catch (\Exception $e)
+            {
+                return $this->render("errors/error.html.twig", ['message' => $e]);
+            }
 
             $this->addFlash("success", "Concept goedgekeurd. Het concept is verwerkt in de database.");
 

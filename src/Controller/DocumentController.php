@@ -60,12 +60,13 @@ class DocumentController extends AbstractController
             throw new \Exception("Invalid document");
         }
         $document = $documentRepository->find($id);
+        $history = $document->getDocumentHistories();
         if (!$document)
         {
             throw new \Exception("Unknown document number");
         }
 
-        return $this->render('pages/document.html.twig', ['document' => $document]);
+        return $this->render('pages/document.html.twig', ['document' => $document, 'documentHistory' => $history]);
     }
 
     /**

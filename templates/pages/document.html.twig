@@ -28,6 +28,10 @@
                             <td>{{ document.discipline }}</td>
                         </tr>
                         <tr>
+                            <td>Revisie #</td>
+                            <td>{{ document.version }}</td>
+                        </tr>
+                        <tr>
                             <td>Laatst geupdate</td>
                             <td>{{ document.updatedAt.format("d-m-Y") }}</td>
                         </tr>
@@ -73,18 +77,22 @@
                         <thead>
                             <tr>
                                 <th>Versie</th>
-                                <th>Datum</th>
+                                <th>Geupload op</th>
                                 <th>Door</th>
                                 <th>Acties</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% if documentHistory is defined %}
+                            {% for history in documentHistory %}
                             <tr>
-                                <td>TODO</td>
-                                <td>TODO</td>
-                                <td>TODO</td>
-                                <td>TODO</td>
+                                <td>{{ history.revision }}</td>
+                                <td>{{ history.updatedAt.format("d-m-Y") }}</td>
+                                <td>{{ history.updatedBy }}</td>
+                                <td>Bekijk</td>
                             </tr>
+                            {% endfor %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>

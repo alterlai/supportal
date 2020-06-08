@@ -6,8 +6,8 @@ use App\Entity\Document;
 use App\Entity\DocumentDraft;
 use App\Entity\DocumentHistory;
 use App\Repository\DocumentDraftRepository;
+use App\Repository\DraftStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use mysql_xdevapi\Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,26 +18,45 @@ class VersioningService {
     private $documentDraftRepository;
     private $documentNameParserService;
     private $parameterBag;
+    private $draftStatusRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, DocumentDraftRepository $documentDraftRepository, DocumentNameParserService $documentNameParserService, ParameterBagInterface $parameterBag)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        DocumentDraftRepository $documentDraftRepository,
+        DocumentNameParserService $documentNameParserService,
+        ParameterBagInterface $parameterBag,
+        DraftStatusRepository $draftStatusRepository
+    )
     {
         $this->entityManager = $entityManager;
         $this->documentDraftRepository = $documentDraftRepository;
         $this->documentNameParserService = $documentNameParserService;
         $this->parameterBag = $parameterBag;
+        $this->draftStatusRepository = $draftStatusRepository;
     }
 
+
+    /**
+     * @param int $documentDraftId
+     * @param UploadedFile $newPdfFile
+     * @throws \Exception
+     */
     public function archiveDocument(int $documentDraftId, UploadedFile $newPdfFile)
     {
         $draft = $this->documentDraftRepository->find($documentDraftId);
 
         $currentDocument = $draft->getDocument();
 
+        $newFilename = $this->moveFromDraftToDocumentDirectory($draft);
+
+        $newPdfFilename = $this->saveNewPDF($newPdfFile, $currentDocument);
+
         $this->createHistory($currentDocument);
 
-        $this->saveNewPDF($newPdfFile, $currentDocument);
+        $this->changeVersionInformation($draft, $newPdfFilename, $newFilename);
 
-        $this->moveFromDraftToDocumentDirectory($draft);
+        $this->markDraftAsAccepted($draft);
+
     }
 
     /**
@@ -68,7 +87,7 @@ class VersioningService {
      * @param Document $currentDocument
      * @param string $directory
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     private function saveNewPDF(UploadedFile $newPdfFile, Document $currentDocument)
     {
@@ -88,6 +107,11 @@ class VersioningService {
         return $newFileName;
     }
 
+    /**
+     * @param DocumentDraft $draft
+     * @return string
+     * @throws \Exception
+     */
     private function moveFromDraftToDocumentDirectory(DocumentDraft $draft)
     {
         $draft_dir = $this->parameterBag->get('draft_upload_directory');
@@ -110,6 +134,31 @@ class VersioningService {
         catch (\Exception $e) {
             throw $e;
         }
+        return $newFileName;
+    }
 
+    private function markDraftAsAccepted(DocumentDraft $draft)
+    {
+        $succesStatus = $this->draftStatusRepository->findOneBy(["name" => "Geaccepteerd"]);
+
+        $draft->setDraftStatus($succesStatus);
+
+        $this->entityManager->persist($draft);
+        $this->entityManager->flush();
+    }
+
+
+    private function changeVersionInformation(DocumentDraft $draft, string $newPdfFilename, string $newFilename)
+    {
+        $document = $draft->getDocument();
+
+        $document->setUpdatedAt($draft->getUploadedAt());
+        $document->setFileName($draft->getUploadedBy());
+        $document->setPdfFilename($newPdfFilename);
+        $document->setFileName($newFilename);
+        $document->setVersion($document->getVersion() + 1);
+
+        $this->entityManager->persist($document);
+        $this->entityManager->flush();
     }
 }
