@@ -43,16 +43,16 @@ easy_admin:
                     - documentType
             form:
                 fields:
-                    - { property: 'file_content', type: 'vich_file', required: true}
-                    - { property: 'pdf_file', type: 'vich_file', required: true}
+                    - { property: 'file_content', type: 'vich_file', type_options: { required: true }}
+                    - { property: 'pdf_file', type: 'vich_file', type_options: { required: true }}
                     - description
                     - location
                     - building
                     - floor
                     - area
-                    - { property: 'discipline', required: true }
-                    - { property: 'documentType', required: true }
-                    - { property: 'version', required: true }
+                    - { property: 'discipline', type_options: { required: true } }
+                    - { property: 'documentType', type_options: { required: true } }
+                    - { property: 'version', type_options: { required: true } }
         Organisation:
             class: App\Entity\Organisation
         Draft:
