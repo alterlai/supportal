@@ -83,6 +83,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>{{ document.version }}</td>
+                            <td>{{ document.updatedAt.format("d-m-Y") }}</td>
+                            <td>{{ document.uploadedBy }}</td>
+                            <td>Bekijk</td>
+                        </tr>
                         {% if documentHistory is defined %}
                             {% for history in documentHistory %}
                             <tr>

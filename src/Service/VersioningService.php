@@ -65,15 +65,13 @@ class VersioningService {
      */
     private function createHistory(Document $currentDocument)
     {
-        // todo: fix updateBy
         $documentHistoryEntity = (new DocumentHistory())
             ->setDocument($currentDocument)
             ->setRevision($currentDocument->getVersion())
             ->setRevisionDescription($currentDocument->getDescription())
             ->setUpdatedAt($currentDocument->getUpdatedAt())
-            ->setFileName($currentDocument->getFileName());
-//            ->setUpdatedBy($draft->getUploadedBy())
-        ;
+            ->setFileName($currentDocument->getFileName())
+            ->setUpdatedBy($currentDocument->getUploadedBy());
 
         $this->entityManager->persist($documentHistoryEntity);
 

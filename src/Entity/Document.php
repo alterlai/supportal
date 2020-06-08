@@ -80,6 +80,7 @@ class Document
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DocumentHistory", mappedBy="document")
+     * @ORM\OrderBy({"revision" = "DESC"})
      */
     private $documentHistories;
 
