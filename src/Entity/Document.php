@@ -104,6 +104,11 @@ class Document
      */
     private $documentDrafts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $uploadedBy;
+
 
     public function __construct()
     {
@@ -388,5 +393,17 @@ class Document
     public function setVersion($version): void
     {
         $this->version = $version;
+    }
+
+    public function getUploadedBy(): ?User
+    {
+        return $this->uploadedBy;
+    }
+
+    public function setUploadedBy(?User $uploadedBy): self
+    {
+        $this->uploadedBy = $uploadedBy;
+
+        return $this;
     }
 }
