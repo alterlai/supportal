@@ -6,6 +6,7 @@ use App\Entity\Document;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AdminController
@@ -35,6 +36,15 @@ class AdminController extends EasyAdminController
         $user->setPassword($encodedPassword);
 
         parent::updateEntity($user);
+    }
+
+    protected function persistDocumentEntity(Document $document)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $document->setUploadedBy($user);
+
+        parent::persistEntity($document);
     }
 
 

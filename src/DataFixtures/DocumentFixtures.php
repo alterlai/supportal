@@ -8,6 +8,7 @@ use App\Entity\Document;
 use App\Entity\DocumentType;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
+use App\Repository\UserRepository;
 use App\Service\DocumentNameParserService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -22,11 +23,13 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     private $nameParser;
     private $documentTypes = array();
     private $disciplines = array();
+    private $userRepository;
 
-    public function __construct(DisciplineRepository $dr, BuildingRepository $br)
+    public function __construct(DisciplineRepository $dr, BuildingRepository $br, UserRepository $userRepository)
     {
         $this->buildings = $br->findAll();
         $this->nameParser = new DocumentNameParserService();
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -36,6 +39,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     {
         $this->loadDocumentTypes($manager);
         $this->loadDisciplines($manager);
+        $adminUser = $this->userRepository->findOneBy(["username" => "admin"]);
         $loader = new NativeLoader();
         /** @var Document[] $objectset */
         $objectset = $loader->loadData(
@@ -66,6 +70,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
             $object->setLocation($this->getReference(LocationFixtures::GRONINGEN));
             $object->setFileName($this->generateRandomFilename($randomDiscipline, $randomDocumentType, $randomBuilding, $randomFloor));
             $object->setPdfFilename("");
+            $object->setUploadedBy($adminUser);
             $object->setVersion(1);
 
             $manager->persist($object);
