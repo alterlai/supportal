@@ -25,14 +25,15 @@ class DownloadController extends AbstractController
     public function download(int $documentId, Request $request, DocumentRepository $documentRepository, IssueHandlerService $issueHandlerService)
     {
         $document = $documentRepository->find($documentId);
+        $basedir = $this->getParameter("app.path.documents");
+        $requestType = $request->query->get("type");
+        $issue = $request->query->get("issue");
+        $filename = "";
 
         if (!$document)
         {
             return $this->render("pages/blank.html.twig", ['message' => "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator."]);
         }
-
-        $requestType = $request->query->get("type");
-        $issue = $request->query->get("issue");
 
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($issue == true)
@@ -45,11 +46,22 @@ class DownloadController extends AbstractController
             $issueHandlerService->addDocumentIssue($document, $this->getUser());
         }
 
-        $basedir = $this->getParameter("app.path.documents");
+        // Get correct file from request type
+        switch (strtolower($requestType))
+        {
+            case "dwg":
+                $filename = $document->getFileName();
+                break;
+            case "pdf":
+                $filename = $document->getPdfFilename();
+                break;
+            default:
+                return $this->render("errors/error.html.twig", ['message' => "Geen geldig bestandstype. Probeer het opnieuw."]);
+        }
 
         return $this->render("pages/download.html.twig", [
             "message" => "Uw download begint over enkele seconden...",
-            "downloadLink" => $basedir . "/" . $document->getFileName()
+            "downloadLink" => $basedir . "/" . $filename
         ]);
     }
 }
