@@ -34,6 +34,7 @@
                             </div>
                             <ul class="card-nav">
                                 <a {% if app.request.get('_route') == 'draft.check' %} class="active"{% endif %} href="{{ path('draft.check') }}"><li>Concepten goedkeuren</li></a>
+                                <a {% if app.request.get('_route') == 'admin.reporting' %} class="active"{% endif %} href="{{ path('admin.reporting') }}"><li>Klantrapportage</li></a>
                                 <a href="{{ path('easyadmin') }}"><li>Entiteiten beheer</li></a>
                             </ul>
 

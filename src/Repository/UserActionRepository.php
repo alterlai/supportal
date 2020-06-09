@@ -19,6 +19,31 @@ class UserActionRepository extends ServiceEntityRepository
         parent::__construct($registry, UserAction::class);
     }
 
+    /**
+     * @return UserAction[]
+     * SELECT user.username, COUNT(file_type), file_type
+    FROM user_action
+    INNER JOIN user ON user_action.user_id = user.id
+    GROUP BY user_id, file_type
+     */
+    public function getGroupedByUser()
+    {
+        return $this->createQueryBuilder('action')
+            ->join('action.user', 'user', 'WITH', 'action.user = user.id')
+            ->select("user.username, COUNT(action.fileType) as total, action.fileType")
+            ->groupBy('action.user, action.fileType')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     *
+     */
+    public function getGroupedByOrganisation()
+    {
+
+    }
+
     // /**
     //  * @return UserAction[] Returns an array of UserAction objects
     //  */

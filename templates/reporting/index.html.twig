@@ -1,0 +1,9 @@
+{% extends 'profile/settings.html.twig' %}
+
+{% block content %}
+<div class="card">
+    {% for user in data %}
+        {{ user.total }}{{ user.fileType }}
+    {% endfor %}
+</div>
+{% endblock %}
