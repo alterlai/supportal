@@ -42,11 +42,6 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewHistory", mappedBy="user_id", orphanRemoval=false)
-     */
-    private $viewHistories;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="users")
      */
     private $organisation;
@@ -61,11 +56,16 @@ class User implements UserInterface
      */
     private $documentDrafts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserAction", mappedBy="user")
+     */
+    private $userActions;
+
     public function __construct()
     {
-        $this->viewHistories = new ArrayCollection();
         $this->issues = new ArrayCollection();
         $this->documentDrafts = new ArrayCollection();
+        $this->userActions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,37 +162,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|ViewHistory[]
-     */
-    public function getViewHistories(): Collection
-    {
-        return $this->viewHistories;
-    }
-
-    public function addViewHistory(ViewHistory $viewHistory): self
-    {
-        if (!$this->viewHistories->contains($viewHistory)) {
-            $this->viewHistories[] = $viewHistory;
-            $viewHistory->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeViewHistory(ViewHistory $viewHistory): self
-    {
-        if ($this->viewHistories->contains($viewHistory)) {
-            $this->viewHistories->removeElement($viewHistory);
-            // set the owning side to null (unless already changed)
-            if ($viewHistory->getUserId() === $this) {
-                $viewHistory->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getOrganisation(): ?organisation
     {
         return $this->organisation;
@@ -266,6 +235,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($documentDraft->getUploadedBy() === $this) {
                 $documentDraft->setUploadedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserAction[]
+     */
+    public function getUserActions(): Collection
+    {
+        return $this->userActions;
+    }
+
+    public function addUserAction(UserAction $userAction): self
+    {
+        if (!$this->userActions->contains($userAction)) {
+            $this->userActions[] = $userAction;
+            $userAction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAction(UserAction $userAction): self
+    {
+        if ($this->userActions->contains($userAction)) {
+            $this->userActions->removeElement($userAction);
+            // set the owning side to null (unless already changed)
+            if ($userAction->getUser() === $this) {
+                $userAction->setUser(null);
             }
         }
 

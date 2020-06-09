@@ -80,19 +80,6 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("/document/update/{documentId}", name="document.update", methods={"POST"})
-     * @param int $documentId
-     * @param Request $request
-     * @return Response
-     * @IsGranted("ROLE_USER")
-     */
-    public function updateDocument(int $documentId, Request $request)
-    {
-        // todo: logica voor uploaden bestand.
-        return $this->render('pages/blank.html.twig', ['message' => "Het document is verstuurd voor goedkeuring."]);
-    }
-
-    /**
      * @Route("/ajax/documents/{buildingId}", name="ajax.documents", methods={"GET"})
      * @param Request $request
      * @param int $buildingId

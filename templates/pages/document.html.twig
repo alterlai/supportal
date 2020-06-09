@@ -134,7 +134,7 @@
                     Aan deze actie zijn kosten verbonden. Wilt u doorgaan?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info downloadLink" data-href="{{ asset(document_directory ~ "/" ~ document.PdfFilename) }}" data-dismiss="modal">Doorgaan</button>
+                    <button type="button" class="btn btn-info downloadLink" data-href="{{ path('document.download', {documentId: document.id, type: "pdf", issue: false}) }}" data-dismiss="modal">Doorgaan</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
             </div>

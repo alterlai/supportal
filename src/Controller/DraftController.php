@@ -145,6 +145,7 @@ class DraftController extends AbstractController
         $deniedStatus = $draftStatusRepository->findOneBy(['name' => "Afgekeurd"]);
         $draft = $documentDraftRepository->find($id);
         $denyDescription = $request->query->get("denyDescription");
+        // todo: werktn iet
 
         $draft->setDraftStatus($deniedStatus);
         $draft->setRejectionDescription($denyDescription);

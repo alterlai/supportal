@@ -16,13 +16,13 @@ class IssueHandlerService
         $this->entityManager = $entityManager;
     }
 
-    public function addDocumentIssue(Document $document, UserInterface $user)
+    public function addDocumentIssue(Document $document, UserInterface $user, \DateTimeImmutable $deadline)
     {
         $issue = new Issue();
         $issue->setDocument($document);
         $issue->setIssuedTo($user);
-        $issue->setIssuedAt(new \DateTime("now"));
-        $issue->setIssueDeadline(new \DateTime("now +2 weeks"));
+        $issue->setIssuedAt(new \DateTimeImmutable("now"));
+        $issue->setIssueDeadline($deadline);
         $issue->setClosed(0);
         $this->entityManager->persist($issue);
         $this->entityManager->flush();

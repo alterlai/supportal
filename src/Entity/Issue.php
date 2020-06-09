@@ -28,7 +28,7 @@ class Issue
     private $issued_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $issue_deadline;
 
