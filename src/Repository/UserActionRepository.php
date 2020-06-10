@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserAction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -21,12 +22,6 @@ class UserActionRepository extends ServiceEntityRepository
 
     /**
      * @return UserAction[]
-     * SELECT user.username, COUNT(file_type), file_type
-    FROM user_action
-    INNER JOIN user ON user_action.user_id = user.id
-    GROUP BY user_id, file_type
-
-    SELECT SUM(DATEDIFF(deadline, downloaded_at)) FROM `user_action`
      */
     public function getGroupedByUser(\DateTime $from, \DateTime $to)
     {
@@ -43,6 +38,34 @@ class UserActionRepository extends ServiceEntityRepository
             ->groupBy('action.user, action.fileType')
             ->setParameter("from", $from)
             ->setParameter("to", $to)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     *  Get User actions corresponding to a single user.
+     * @param User $user
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return mixed
+     */
+    public function getFromUser(User $user, \DateTime $from, \DateTime $to)
+    {
+        return $this->createQueryBuilder('action')
+            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
+            ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
+            ->select("user.username as username")
+            ->addSelect("COUNT(action.fileType) as downloads")
+            ->addSelect("action.fileType")
+            ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
+            ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
+            ->addSelect("o.name as organisation")
+            ->where("action.downloadedAt BETWEEN :from AND :to")
+            ->andWhere("user.id = :userId")
+            ->groupBy('action.fileType')
+            ->setParameter("from", $from)
+            ->setParameter("to", $to)
+            ->setParameter("userId", $user->getId())
             ->getQuery()
             ->getResult();
     }

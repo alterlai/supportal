@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Exception\InvalidReportGroupingException;
 use App\Repository\UserActionRepository;
+use App\Repository\UserRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,18 +20,19 @@ class ReportingService
     /** @var Environment */
     private $templating;
     private $report_dir;
+    private $userRepository;
 
     public function __construct(UserActionRepository $userActionRepository,
-                                ContainerInterface $containerInterface,
                                 ParameterBagInterface $parameterBag,
-                                Environment $twig
+                                Environment $twig,
+                                UserRepository $userRepository
     )
     {
         $this->userActionRepository = $userActionRepository;
-//        $this->templating = $containerInterface->get('templating');
         $this->templating = $twig;
         $this->paramterbag = $parameterBag;
         $this->report_dir = $this->paramterbag->get("report_directory");
+        $this->userRepository = $userRepository;
     }
 
 
@@ -47,9 +49,16 @@ class ReportingService
      */
     public function generateReportFile(\DateTime $from, \DateTime $to, string $grouping)
     {
+        $tempdir = $this->generateTempDirectory();
+
         if ($grouping == "user")
         {
-            $data = $this->userActionRepository->getGroupedByUser($from, $to);
+            $allUsers = $this->userRepository->findAll();
+            foreach ($allUsers as $user)
+            {
+                $data = $this->userActionRepository->getFromUser($user, $from, $to);
+                $this->generatePDFFile($tempdir, $data);
+            }
         }
         elseif ($grouping == "org")
         {
@@ -60,9 +69,7 @@ class ReportingService
             throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
 
-        $tempdir = $this->generateTempDirectory();
-
-        return $this->generatePDFFile($tempdir, $data);
+        return $tempdir;
     }
 
     /**
@@ -81,7 +88,7 @@ class ReportingService
 
         $pdf = new Dompdf($pdfOptions);
 
-        $html = $this->templating->render("pdf/user_report.html.twig", ['title' => "test pdf"]);
+        $html = $this->templating->render("pdf/user_report.html.twig", ['data' => $data]);
 
         $pdf->loadHtml($html);
 
@@ -107,7 +114,7 @@ class ReportingService
 
     /**
      * Generate a random temporary directory to put the files in.
-     * @return string
+     * @return string absolute directory path
      * @throws \Exception
      */
     private function generateTempDirectory()

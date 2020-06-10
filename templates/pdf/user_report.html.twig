@@ -5,7 +5,28 @@
     <title>Title of the PDF</title>
 </head>
 <body>
-    <h4>{{ title }}</h4>
-    <p>Lorem Ipsum</p>
+    <table>
+    <thead>
+        <tr>
+            <td>Gebruikersnaam</td>
+            <td>Organisatie</td>
+            <td># Downloads</td>
+            <td>Bestandstype</td>
+            <td>Totaal aantal reservaties (dagen)</td>
+            <td>Totale tijd uitgeleend (dagen)</td>
+        </tr>
+    </thead>
+
+        {% for line in data %}
+            <tr>
+                <td>{{ line.username }}</td>
+                <td>{{ line.organisation }}</td>
+                <td>{{ line.downloads }}</td>
+                <td>{{ line.fileType }}</td>
+                <td>{{ line.gereserveerd }}</td>
+                <td>{{ line.uitgeleend }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
