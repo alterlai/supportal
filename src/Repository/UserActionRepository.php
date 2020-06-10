@@ -28,26 +28,29 @@ class UserActionRepository extends ServiceEntityRepository
 
     SELECT SUM(DATEDIFF(deadline, downloaded_at)) FROM `user_action`
      */
-    public function getGroupedByUser()
+    public function getGroupedByUser(\DateTime $from, \DateTime $to)
     {
         return $this->createQueryBuilder('action')
-            ->join('action.user', 'user', 'WITH', 'action.user = user.id')
+            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
+            ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
             ->select("user.username as username")
             ->addSelect("COUNT(action.fileType) as total")
             ->addSelect("action.fileType")
             ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
             ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
+            ->addSelect("o.name as organisation")
+            ->where("action.downloadedAt BETWEEN :from AND :to")
             ->groupBy('action.user, action.fileType')
+            ->setParameter("from", $from)
+            ->setParameter("to", $to)
             ->getQuery()
             ->getResult();
     }
 
-    /**
-     *
-     */
+
     public function getGroupedByOrganisation()
     {
-
+        // TODO
     }
 
     // /**

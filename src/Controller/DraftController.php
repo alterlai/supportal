@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Document;
-use App\Entity\DocumentHistory;
 use App\Entity\User;
 use App\Form\PDFUpload;
 use App\Repository\DocumentDraftRepository;
@@ -11,18 +9,12 @@ use App\Repository\DraftStatusRepository;
 use App\Service\DocumentNameParserService;
 use App\Service\VersioningService;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\File;
 
 class DraftController extends AbstractController
 {

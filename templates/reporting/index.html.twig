@@ -2,28 +2,12 @@
 
 {% block content %}
 <div class="card">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <td>Username</td>
-                <td>Totaal aantal downloads</td>
-                <td>Filetype</td>
-                <td>Dagen gereserveerd</td>
-                <td>Dagen uitgeleend</td>
-            </tr>
-            </thead>
-            <tbody>
-            {% for line in data %}
-                <tr>
-                    <td>{{ line.username }}</td>
-                    <td>{{ line.total }}</td>
-                    <td>{{ line.fileType }}</td>
-                    <td>{{ line.gereserveerd }}</td>
-                    <td>{{ line.uitgeleend }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+    <div class="card_head">
+        <h4>Klantrapportage</h4>
+    </div>
+    <div class="card_body">
+        <p>Download een archief bestand met activiteiten van gebruikers over de gespecificeerde periode.</p>
+        {{ form(form) }}
+    </div>
 </div>
 {% endblock %}
