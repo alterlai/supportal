@@ -2,8 +2,28 @@
 
 {% block content %}
 <div class="card">
-    {% for user in data %}
-        {{ user.total }}{{ user.fileType }}
-    {% endfor %}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td>Username</td>
+                <td>Totaal aantal downloads</td>
+                <td>Filetype</td>
+                <td>Dagen gereserveerd</td>
+                <td>Dagen uitgeleend</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for line in data %}
+                <tr>
+                    <td>{{ line.username }}</td>
+                    <td>{{ line.total }}</td>
+                    <td>{{ line.fileType }}</td>
+                    <td>{{ line.gereserveerd }}</td>
+                    <td>{{ line.uitgeleend }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
 </div>
 {% endblock %}
