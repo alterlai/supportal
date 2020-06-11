@@ -1,32 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title of the PDF</title>
+    <link rel="stylesheet" href="{{ projectdir ~ '/public/web/css/bootstrap.min.css' }}" type="text/css" media="all">
+    <style>
+        p {font-size: 12px; padding-top: 20px;}
+        td {
+            font-size: 12px;
+            padding-left: 20px;
+        }
+        td:first-child{padding-left: 0;}
+        .clear-top {padding-top: 100px;}
+        .description {padding-top: 50px;}
+    </style>
 </head>
 <body>
-    <table>
-    <thead>
-        <tr>
-            <td>Gebruikersnaam</td>
-            <td>Organisatie</td>
-            <td># Downloads</td>
-            <td>Bestandstype</td>
-            <td>Totaal aantal reservaties (dagen)</td>
-            <td>Totale tijd uitgeleend (dagen)</td>
-        </tr>
-    </thead>
+    <div class="container-fluid">
+        <div class="">
+            <img class="" src="{{ imgdir ~ 'iqlogo.svg' }}" alt="">
+            <h2 class="float-right">Klantrapportage</h2>
+        </div>
 
-        {% for line in data %}
-            <tr>
-                <td>{{ line.username }}</td>
-                <td>{{ line.organisation }}</td>
-                <td>{{ line.downloads }}</td>
-                <td>{{ line.fileType }}</td>
-                <td>{{ line.gereserveerd }}</td>
-                <td>{{ line.uitgeleend }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <div class="description">
+            <table>
+                <tbody>
+                <tr>
+                    <td><b>Gebruiker</b></td>
+                    <td>{{ data[0].username }}</td>
+                </tr>
+                <tr>
+                    <td><b>Organisatie</b></td>
+                    <td>{{ data[0].organisation }}</td>
+                </tr>
+                <tr>
+                    <td><b>&nbsp;</b></td>
+                </tr>
+                <tr>
+                    <td><b>Van</b></td>
+                    <td>{{ from.format('d-m-Y') }}</td>
+                </tr>
+                <tr>
+                    <td><b>Tot</b></td>
+                    <td>{{ to.format('d-m-Y') }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p>Klantrapport gegenereerd op: {{ "now"|date("d-m-Y") }}</p>
+        </div>
+
+        <div class="clear-top">
+            <table class="table table-striped table-bordered w-auto" >
+            <thead>
+                <tr>
+                    <td>Bestandstype</td>
+                    <td># Downloads</td>
+                    <td>Totaal aantal reservaties (dagen)</td>
+                    <td>Totale tijd uitgeleend (dagen)</td>
+                </tr>
+            </thead>
+                <tbody>
+                    {% for line in data %}
+                        <tr>
+                            <td>{{ line.fileType|upper }}</td>
+                            <td>{{ line.downloads }}</td>
+                            <td>{{ line.gereserveerd }}</td>
+                            <td>{{ line.uitgeleend }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

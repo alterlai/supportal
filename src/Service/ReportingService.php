@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Exception\InvalidReportGroupingException;
 use App\Repository\UserActionRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -41,11 +43,12 @@ class ReportingService
      * @param \DateTime $from
      * @param \DateTime $to
      * @param string $grouping
-     * @return string
+     * @return Response
      * @throws InvalidReportGroupingException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     * @throws \Exception
      */
     public function generateReportFile(\DateTime $from, \DateTime $to, string $grouping)
     {
@@ -56,8 +59,12 @@ class ReportingService
             $allUsers = $this->userRepository->findAll();
             foreach ($allUsers as $user)
             {
-                $data = $this->userActionRepository->getFromUser($user, $from, $to);
-                $this->generatePDFFile($tempdir, $data);
+                $userData = $this->userActionRepository->getFromUser($user, $from, $to);
+                // If there is actual userdata
+                if($userData)
+                {
+                    $this->generatePDFFile($tempdir, $userData, $from, $to);
+                }
             }
         }
         elseif ($grouping == "org")
@@ -81,14 +88,23 @@ class ReportingService
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generatePDFFile(string $location, $data)
+    public function generatePDFFile(string $location, array $userData, DateTime $from, DateTime $to)
     {
         $pdfOptions = new Options();
         $pdfOptions->set("defaultFont", "Arial");
+        $abs_img = $this->paramterbag->get("absolute_image_directory");
+        $abs_proj = $this->paramterbag->get("kernel.project_dir");
+
 
         $pdf = new Dompdf($pdfOptions);
 
-        $html = $this->templating->render("pdf/user_report.html.twig", ['data' => $data]);
+        $html = $this->templating->render("pdf/user_report.html.twig", [
+            'data' => $userData,
+            'imgdir' => $abs_img,
+            'projectdir' => $abs_proj,
+            'from' => $from,
+            'to' => $to
+        ]);
 
         $pdf->loadHtml($html);
 
@@ -101,8 +117,9 @@ class ReportingService
         // Store PDF Binary Data
         $output = $pdf->output();
 
-        $pdfFilepath =  $location . '/mypdf.pdf';
-        // TODO: change filename to username.
+        $username = $userData[0]["username"];
+
+        $pdfFilepath =  $location . '/'.$username.'.pdf';
 
         // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
@@ -119,7 +136,6 @@ class ReportingService
      */
     private function generateTempDirectory()
     {
-
         $dirname = uniqid();
 
         $fs = new Filesystem();
