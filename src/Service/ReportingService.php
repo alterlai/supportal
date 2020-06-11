@@ -23,6 +23,7 @@ class ReportingService
     private $templating;
     private $report_dir;
     private $userRepository;
+    private $generatedFiles;
 
     public function __construct(UserActionRepository $userActionRepository,
                                 ParameterBagInterface $parameterBag,
@@ -35,6 +36,7 @@ class ReportingService
         $this->paramterbag = $parameterBag;
         $this->report_dir = $this->paramterbag->get("report_directory");
         $this->userRepository = $userRepository;
+        $this->generatedFiles = [];
     }
 
 
@@ -52,6 +54,7 @@ class ReportingService
      */
     public function generateReportFile(\DateTime $from, \DateTime $to, string $grouping)
     {
+        // Temporary directory for PDF files
         $tempdir = $this->generateTempDirectory();
 
         if ($grouping == "user")
@@ -76,19 +79,21 @@ class ReportingService
             throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
 
+        $this->createArchive($tempdir);
+
         return $tempdir;
     }
 
     /**
      * Generate a PDF file in a given location from provided data
-     * @param string $location file location
+     * @param string $absolutePDFDirectory file location
      * @param $data
      * @return string
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generatePDFFile(string $location, array $userData, DateTime $from, DateTime $to)
+    public function generatePDFFile(string $absolutePDFDirectory, array $userData, DateTime $from, DateTime $to)
     {
         $pdfOptions = new Options();
         $pdfOptions->set("defaultFont", "Arial");
@@ -119,12 +124,14 @@ class ReportingService
 
         $username = $userData[0]["username"];
 
-        $pdfFilepath =  $location . '/'.$username.'.pdf';
+        $pdfFilepath =  $absolutePDFDirectory . '/'.$username.'.pdf';
+
+        // Save the filename to generate a ZIP later
+        array_push($this->generatedFiles, $username.".pdf");
 
         // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
 
-        // Send some text response
         return $pdfFilepath;
 
     }
@@ -143,5 +150,29 @@ class ReportingService
         $fs->mkdir($this->report_dir.$dirname);
 
         return $this->report_dir.$dirname;
+    }
+
+    /**
+     * Create a zip archive for download.
+     * @param string pdf file directory
+     * @return string filename of created zip file
+     */
+    private function createArchive(string $absolutePDFDirectory)
+    {
+        $filename = $absolutePDFDirectory."/archive.zip";
+        $zip = new \ZipArchive();
+
+        // https://www.php.net/manual/en/zip.examples.php
+        if ($zip->open($filename, \ZipArchive::CREATE)!==TRUE) {
+            exit("cannot open <$filename>\n");
+        }
+
+        foreach ($this->generatedFiles as $localPDFFileName)
+        {
+            $zip->addFile($absolutePDFDirectory."/$localPDFFileName", $localPDFFileName);
+        }
+        $zip->close();
+
+        return $filename;
     }
 }
