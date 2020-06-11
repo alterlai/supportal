@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Organisation;
 use App\Entity\User;
 use App\Entity\UserAction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,28 +19,6 @@ class UserActionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserAction::class);
-    }
-
-    /**
-     * @return UserAction[]
-     */
-    public function getGroupedByUser(\DateTime $from, \DateTime $to)
-    {
-        return $this->createQueryBuilder('action')
-            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
-            ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
-            ->select("user.username as username")
-            ->addSelect("COUNT(action.fileType) as total")
-            ->addSelect("action.fileType")
-            ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
-            ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
-            ->addSelect("o.name as organisation")
-            ->where("action.downloadedAt BETWEEN :from AND :to")
-            ->groupBy('action.user, action.fileType')
-            ->setParameter("from", $from)
-            ->setParameter("to", $to)
-            ->getQuery()
-            ->getResult();
     }
 
     /**
@@ -71,10 +50,60 @@ class UserActionRepository extends ServiceEntityRepository
     }
 
 
-    public function getGroupedByOrganisation()
+    /**
+     * SELECT user.username, organisation.name, COUNT(action.file_type) as total_downloads, action.file_type
+        FROM user_action as action
+        INNER JOIN user ON user.id = action.user_id
+        INNER JOIN organisation ON organisation.id = user.organisation_id
+        GROUP BY action.file_type, organisation.name
+     * @param Organisation $organisation
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return mixed
+     */
+    public function getGroupedByOrganisation(Organisation $organisation, \DateTime $from, \DateTime $to)
     {
-        // TODO
+        return $this->createQueryBuilder('action')
+            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
+            ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
+            ->select("user.username as username")
+            ->addSelect("COUNT(action.fileType) as downloads")
+            ->addSelect("action.fileType")
+            ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
+            ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
+            ->addSelect("o.name as organisation")
+            ->where("action.downloadedAt BETWEEN :from AND :to")
+            ->andWhere("o.id = :organisationId")
+            ->groupBy('action.fileType, o.name')
+            ->setParameter("from", $from)
+            ->setParameter("to", $to)
+            ->setParameter("organisationId", $organisation->getId())
+            ->getQuery()
+            ->getResult();
     }
+
+
+    //    /**
+//     * @return UserAction[]
+//     */
+//    public function getGroupedByUser(\DateTime $from, \DateTime $to)
+//    {
+//        return $this->createQueryBuilder('action')
+//            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
+//            ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
+//            ->select("user.username as username")
+//            ->addSelect("COUNT(action.fileType) as total")
+//            ->addSelect("action.fileType")
+//            ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
+//            ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
+//            ->addSelect("o.name as organisation")
+//            ->where("action.downloadedAt BETWEEN :from AND :to")
+//            ->groupBy('action.user, action.fileType')
+//            ->setParameter("from", $from)
+//            ->setParameter("to", $to)
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     // /**
     //  * @return UserAction[] Returns an array of UserAction objects

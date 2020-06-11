@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Exception\InvalidReportGroupingException;
+use App\Repository\OrganisationRepository;
 use App\Repository\UserActionRepository;
 use App\Repository\UserRepository;
 use DateTime;
@@ -24,12 +25,9 @@ class ReportingService
     private $report_dir;
     private $userRepository;
     private $generatedFiles;
+    private $organisationRepository;
 
-    public function __construct(UserActionRepository $userActionRepository,
-                                ParameterBagInterface $parameterBag,
-                                Environment $twig,
-                                UserRepository $userRepository
-    )
+    public function __construct(UserActionRepository $userActionRepository, ParameterBagInterface $parameterBag, Environment $twig, UserRepository $userRepository, OrganisationRepository $organisationRepository)
     {
         $this->userActionRepository = $userActionRepository;
         $this->templating = $twig;
@@ -37,6 +35,7 @@ class ReportingService
         $this->report_dir = $this->paramterbag->get("report_directory");
         $this->userRepository = $userRepository;
         $this->generatedFiles = [];
+        $this->organisationRepository = $organisationRepository;
     }
 
 
@@ -66,50 +65,106 @@ class ReportingService
                 // If there is actual userdata
                 if($userData)
                 {
-                    $this->generatePDFFile($tempdir, $userData, $from, $to);
+                    $this->generateUserHTMLTemplate($userData, $from, $to, $tempdir);
                 }
             }
         }
         elseif ($grouping == "org")
         {
-            $data = $this->userActionRepository->getGroupedByOrganisation($from, $to);
+            $allOrganisations = $this->organisationRepository->findAll();
+            foreach ($allOrganisations as $organisation)
+            {
+                $organisationData = $this->userActionRepository->getGroupedByOrganisation($organisation, $from, $to);
+                // If there is actual userdata
+                if($organisationData)
+                {
+                    $this->generateOrganisationHTMLTemplate($organisationData, $from, $to, $tempdir);
+                }
+            }
         }
         else
         {
             throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
 
-        $zipFile = $this->createArchive($tempdir);
-
-        return $zipFile;
+        return $this->createArchive($tempdir);
     }
 
     /**
-     * Generate a PDF file in a given location from provided data
+     * Generate User HTML template and call PDf generation function
+     * @param array $data
+     * @param DateTime $from
+     * @param DateTime $to
      * @param string $absolutePDFDirectory file location
-     * @param $data
      * @return string
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generatePDFFile(string $absolutePDFDirectory, array $userData, DateTime $from, DateTime $to)
+    public function generateUserHTMLTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
     {
-        $pdfOptions = new Options();
-        $pdfOptions->set("defaultFont", "Arial");
         $abs_img = $this->paramterbag->get("absolute_image_directory");
+
         $abs_proj = $this->paramterbag->get("kernel.project_dir");
 
-
-        $pdf = new Dompdf($pdfOptions);
+        $filename = ($data[0]['username']).".pdf";
 
         $html = $this->templating->render("pdf/user_report.html.twig", [
-            'data' => $userData,
+            'data' => $data,
             'imgdir' => $abs_img,
             'projectdir' => $abs_proj,
             'from' => $from,
             'to' => $to
         ]);
+
+        return $this->generatePDFFile($html, $absolutePDFDirectory, $filename);
+    }
+
+    /**
+     * Generate Organisation HTML template and call PDf generation function
+     * @param array $data
+     * @param DateTime $from
+     * @param DateTime $to
+     * @param string $absolutePDFDirectory
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function generateOrganisationHTMLTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
+    {
+        $abs_img = $this->paramterbag->get("absolute_image_directory");
+
+        $abs_proj = $this->paramterbag->get("kernel.project_dir");
+
+        $filename = $data[0]['organisation'].".pdf";
+
+        $html =  $this->templating->render("pdf/organisation_report.html.twig", [
+            'data' => $data,
+            'imgdir' => $abs_img,
+            'projectdir' => $abs_proj,
+            'from' => $from,
+            'to' => $to
+        ]);
+
+        return $this->generatePDFFile($html, $absolutePDFDirectory, $filename);
+    }
+
+
+    /**
+     * Generate PDF files on disk with given template.
+     * @param $html
+     * @param $absolutePDFDirectory
+     * @param $filename
+     * @return string
+     */
+    private function generatePDFFile($html, $absolutePDFDirectory, $filename)
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set("defaultFont", "Arial");
+
+
+        $pdf = new Dompdf($pdfOptions);
 
         $pdf->loadHtml($html);
 
@@ -122,18 +177,15 @@ class ReportingService
         // Store PDF Binary Data
         $output = $pdf->output();
 
-        $username = $userData[0]["username"];
-
-        $pdfFilepath =  $absolutePDFDirectory . '/'.$username.'.pdf';
+        $pdfFilepath =  $absolutePDFDirectory.'/'.$filename;
 
         // Save the filename to generate a ZIP later
-        array_push($this->generatedFiles, $username.".pdf");
+        array_push($this->generatedFiles, $filename);
 
         // Write file to the desired path
         file_put_contents($pdfFilepath, $output);
 
         return $pdfFilepath;
-
     }
 
     /**
