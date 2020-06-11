@@ -45,7 +45,7 @@ class ReportingService
      * @param \DateTime $from
      * @param \DateTime $to
      * @param string $grouping
-     * @return Response
+     * @return string absolute filepath to generated zip file.
      * @throws InvalidReportGroupingException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -79,9 +79,9 @@ class ReportingService
             throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
 
-        $this->createArchive($tempdir);
+        $zipFile = $this->createArchive($tempdir);
 
-        return $tempdir;
+        return $zipFile;
     }
 
     /**
