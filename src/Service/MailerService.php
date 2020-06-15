@@ -14,7 +14,7 @@ class MailerService
     public function __construct(\Swift_Mailer $mailer, ParameterBagInterface $parameterBag, Environment $twig)
     {
         $this->mailer = $mailer;
-        $this->fromAddress = $parameterBag->get('no-replyAddress');
+        $this->fromAddress = $parameterBag->get('no-reply_address');
         $this->twig = $twig;
     }
 
