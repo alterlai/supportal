@@ -78,13 +78,10 @@
                             </table>
                         </div>
                     </div>
-                    <div id="buttonContainer" class="card_body">
+                    <hr>
+                    <div id="buttonContainer" class="p-3 pt-0!">
                         <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
-                        {% if canDoRevision %}
-                            <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
-                        {% else %}
-                            <button style="cursor: default" disabled type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
-                        {% endif %}
+                        <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
                     </div>
                 </div>
             </div>
@@ -178,18 +175,28 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bent u van plan dit document te updaten en uploaden?
+                    <span class="small_bold">Bent u van plan dit document te updaten en uploaden?</span>
                     <br>
-                    Als u op "Ja" klikt, dient u voor de deadline het document ingeleverd te hebben.
+                    <ul>
+                        <li><span class="small_bold">Ja</span> Het document gaat in revisie en u dient de nieuwe revisie binnen de afgesproken tijd in te leveren.</li>
+                        <li><span class="small_bold">Nee</span> U kunt de DWG downloaden voor eigen gebruik.</li>
+                    </ul>
+
                     <br>
-                    Als u op "Nee" klikt, hoeft u niets in te leveren.
+
                 </div>
                 <div class="modal-footer">
-                    <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}">
-                        <button type="button" class="btn btn-info">Ja</button>
-                    </a>
+                    {% if canDoRevision %}
+                        <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}">
+                            <button type="button" class="btn btn-info">Met revisie</button>
+                        </a>
+                    {% else %}
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="Dit document is momenteel in revisie en kan pas opnieuw aangevraagd worden als dit is afgerond.">
+                            <button disabled style="pointer-events: none;" type="button" class="btn btn-info">Met revisie</button>
+                        </span>
+                    {% endif %}
                     <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
-                        <button type="button" class="btn btn-info">Nee</button>
+                        <button type="button" class="btn btn-info">Zonder revisie</button>
                     </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>

@@ -47,6 +47,11 @@ $(document).ready(function() {
         window.open(link, '_blank')
     });
 
+    // Trigger all tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
 
     //
     // /**
