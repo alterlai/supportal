@@ -32,7 +32,7 @@ class ReportingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             $data = $form->getdata();
-            $file = $reportingService->generateReportFile($data['from'], $data['to'], $data['grouping']);
+            $file = $reportingService->GenerateReport($data['from'], $data['to'], $data['grouping']);
         }
         else {
             return $this->render('reporting/index.html.twig', [

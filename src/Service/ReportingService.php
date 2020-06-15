@@ -51,7 +51,7 @@ class ReportingService
      * @throws \Twig\Error\SyntaxError
      * @throws \Exception
      */
-    public function generateReportFile(\DateTime $from, \DateTime $to, string $grouping)
+    public function GenerateReport(\DateTime $from, \DateTime $to, string $grouping)
     {
         // Temporary directory for PDF files
         $tempdir = $this->generateTempDirectory();
@@ -65,7 +65,7 @@ class ReportingService
                 // If there is actual userdata
                 if($userData)
                 {
-                    $this->generateUserHTMLTemplate($userData, $from, $to, $tempdir);
+                    $this->generateWithUserTemplate($userData, $from, $to, $tempdir);
                 }
             }
         }
@@ -78,7 +78,7 @@ class ReportingService
                 // If there is actual userdata
                 if($organisationData)
                 {
-                    $this->generateOrganisationHTMLTemplate($organisationData, $from, $to, $tempdir);
+                    $this->generateWithOrganisationTemplate($organisationData, $from, $to, $tempdir);
                 }
             }
         }
@@ -101,7 +101,7 @@ class ReportingService
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generateUserHTMLTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
+    private function generateWithUserTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
     {
         $abs_img = $this->paramterbag->get("absolute_image_directory");
 
@@ -131,7 +131,7 @@ class ReportingService
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generateOrganisationHTMLTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
+    private function generateWithOrganisationTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
     {
         $abs_img = $this->paramterbag->get("absolute_image_directory");
 
