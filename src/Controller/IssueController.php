@@ -10,18 +10,24 @@ use App\Form\IssueType;
 use App\Repository\DraftStatusRepository;
 use App\Repository\IssueRepository;
 use App\Service\DocumentNameParserService;
-use App\Service\DocumentNamer;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IssueController extends AbstractController
 {
+    private $mailerService;
+
+    public function __construct(MailerService $mailerService)
+    {
+        $this->mailerService = $mailerService;
+    }
+
     /**
      * List all open issues
      * @Route("/issues", name="issue.index")
@@ -122,6 +128,10 @@ class IssueController extends AbstractController
             'success',
             'Concept aangemaakt.'
         );
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $this->mailerService->sendUploadSuccessMail($user->getEmail(), $draft->getDocument()->getDocumentName());
 
         return $this->render("drafts/index.html.twig");
     }

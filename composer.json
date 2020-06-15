@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-zip": "*",
         "dompdf/dompdf": "^0.8.5",
         "easycorp/easyadmin-bundle": "^2.3",
         "sensio/framework-extra-bundle": "^5.5",
@@ -18,7 +19,6 @@
         "symfony/framework-bundle": "5.0.*",
         "symfony/http-client": "5.0.*",
         "symfony/intl": "5.0.*",
-        "symfony/mailer": "5.0.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/notifier": "5.0.*",
         "symfony/orm-pack": "^1.0",
@@ -26,13 +26,13 @@
         "symfony/security-bundle": "5.0.*",
         "symfony/serializer-pack": "*",
         "symfony/string": "5.0.*",
+        "symfony/swiftmailer-bundle": "^3.4",
         "symfony/translation": "5.0.*",
         "symfony/twig-pack": "*",
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
         "symfony/yaml": "5.0.*",
-        "vich/uploader-bundle": "^1.13",
-        "ext-zip": "*"
+        "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",

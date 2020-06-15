@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ReportType;
+use App\Service\MailerService;
 use App\Service\ReportingService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,5 +42,4 @@ class ReportingController extends AbstractController
 
         return $this->file($file);
     }
-
 }
