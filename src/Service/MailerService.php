@@ -8,13 +8,13 @@ use Twig\Environment;
 class MailerService
 {
     private $mailer;
-    private $fromAddress;
+    private $no_replyAddress;
     private $twig;
 
     public function __construct(\Swift_Mailer $mailer, ParameterBagInterface $parameterBag, Environment $twig)
     {
         $this->mailer = $mailer;
-        $this->fromAddress = $parameterBag->get('no-reply_address');
+        $this->no_replyAddress = $parameterBag->get('no-reply_address');
         $this->twig = $twig;
     }
 
@@ -28,7 +28,7 @@ class MailerService
     public function sendUploadSuccessMail(string $to, string $documentName)
     {
         $mail = (new \Swift_Message())
-            ->setFrom($this->fromAddress)
+            ->setFrom($this->no_replyAddress)
             ->setTo($to)
             ->setSubject("Bevestiging document upload IQSupport BV.")
             ->setBody($this->twig->render(
@@ -37,6 +37,24 @@ class MailerService
             ),
                 'text/html'
             );
+
+        $this->mailer->send($mail);
+    }
+
+    /**
+     * Send monthly user report files.
+     * @param string $to
+     * @param string $reportFilePath
+     * @throws \Exception
+     */
+    public function sendUserReportMail(string $to, string $reportFilePath)
+    {
+        $today = (new \DateTime("now"))->format("d-m-Y");
+        $mail = (new \Swift_Message())
+            ->setFrom($this->no_replyAddress)
+            ->setTo($to)
+            ->setSubject("Klantrapportage Tekeningen Portaal | $today")
+            ->attach(\Swift_Attachment::fromPath($reportFilePath));
 
         $this->mailer->send($mail);
     }
