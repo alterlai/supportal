@@ -38,7 +38,7 @@ class DownloadController extends AbstractController
 
         if (!$document)
         {
-            return $this->render("pages/blank.html.twig", ['message' => "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator."]);
+            return $this->render("errors/error.html.twig", ['message' => "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator."]);
         }
 
 
@@ -47,6 +47,10 @@ class DownloadController extends AbstractController
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($issue == true)
         {
+            // If the user doesn't have the correct permissions
+            if(!$this->isGranted("ROLE_LEVERANCIER"))
+                return $this->render("errors/error.html.twig", ['message', "Incorrect permissions"]);
+
             /** If an issue already exists for this document, this is not possible. */
             if ($document->getIssue())
             {
