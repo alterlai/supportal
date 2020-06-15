@@ -31,8 +31,11 @@ class MailerService
             ->setFrom($this->fromAddress)
             ->setTo($to)
             ->setSubject("Bevestiging document upload IQSupport BV.")
-            ->setBody($this->twig->render('email/upload_success.html.twig',
-                ['documentName' => $documentName])
+            ->setBody($this->twig->render(
+                'email/upload_success.html.twig',
+                ['documentName' => $documentName]
+            ),
+                'text/html'
             );
 
         $this->mailer->send($mail);
