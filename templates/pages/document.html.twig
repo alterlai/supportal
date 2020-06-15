@@ -81,7 +81,14 @@
                     <hr>
                     <div id="buttonContainer" class="p-3 pt-0!">
                         <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
-                        <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                        {# Alleen leveranciers en + mogen revisie doen#}
+                        {% if is_granted("ROLE_LEVERANCIER") %}
+                            <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                        {% else %}
+                            <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
+                                <button type="button" class="btn btn-info">DWG downloaden</button>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
