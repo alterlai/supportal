@@ -3,84 +3,106 @@
 {% block body %}
     {% include 'partials/navbar.html.twig' %}
     <div class="container">
-        <ol class="breadcrumb shadow-sm bg-white">
-            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ document.building.location.name }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('documents', {buildingId: document.building.id}) }}">{{document.building}}</a></li>
-            <li class="breadcrumb-item active">{{ document.documentName }}</li>
-        </ol>
-        <div class="content row" id="documentContainer">
-            <div id="pdfContainer" class="col-md-6">
-                <embed src="{{ asset('documents/' ~ document.pdfFileName) }}" width="100%" height="100%">
+        <div class="col-md-12">
+            <ol class="breadcrumb shadow-sm bg-white">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ document.building.location.name }}</a></li>
+                <li class="breadcrumb-item"><a
+                            href="{{ path('documents', {buildingId: document.building.id}) }}">{{ document.building }}</a>
+                </li>
+                <li class="breadcrumb-item active">{{ document.documentName }}</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="pdfContainer" class="col-md-12 no-padding">
+                    <embed src="{{ asset('documents/' ~ document.pdfFileName) }}" width="100%" height="100%">
+                </div>
             </div>
-            <div id="detailsContainer" class="col-md-6 d-flex flex-column">
-                <div id="specificationContainer">
-                    <h3>Specificaties</h3>
-                    <div class="well">{{ document.description }}</div>
-                    <table class="table table-striped">
-                        <tbody>
-                        <tr>
-                            <td>Naam</td>
-                            <td>{{ document.documentName }}</td>
-                        </tr>
-                        <tr>
-                            <td>Discipline</td>
-                            <td>{{ document.discipline }}</td>
-                        </tr>
-                        <tr>
-                            <td>Revisie #</td>
-                            <td>{{ document.version }}</td>
-                        </tr>
-                        <tr>
-                            <td>Laatst geupdate</td>
-                            <td>{{ document.updatedAt.format("d-m-Y") }}</td>
-                        </tr>
-                        <tr>
-                            <td>Organisatie</td>
-                            <td>{{ document.location.organisation }}</td>
-                        </tr>
-                        <tr>
-                            <td>Locatie</td>
-                            <td>{{ document.location }}</td>
-                        </tr>
-                        <tr>
-                            <td>Gebouw</td>
-                            <td>{{ document.building ? document.building : "N.V.T." }}</td>
-                        </tr>
-                        <tr>
-                            <td>Gebouwdeel</td>
-                            <td>{{ document.area ? document.area : "N.V.T." }}</td>
-                        </tr>
-                        <tr>
-                            <td>Verdieping</td>
-                            <td>{{ document.floor is not empty ? document.floor : "N.V.T." }}</td>
-                        </tr>
-                        <tr>
-                            <td>Document type</td>
-                            <td>{{ document.documentType ? document.documentType : "N.V.T." }}</td>
-                        </tr>
+            <div class=" col-md-6">
+                <div id="detailsContainer" class="card">
+                    <div id="specificationContainer">
+                        <div class="card_head">
+                            <h4>Specificaties</h4>
+                        </div>
+                        <div class="card_body">
+                            <p>
+                                {{ document.description }}
+                            </p>
+                        </div>
+                        <div class="no-padding">
+                            <table class="table align table-striped">
+                                <tbody>
+                                <tr>
+                                    <td>Naam</td>
+                                    <td>{{ document.documentName }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Discipline</td>
+                                    <td>{{ document.discipline }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Revisie #</td>
+                                    <td>{{ document.version }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Laatst geupdate</td>
+                                    <td>{{ document.updatedAt.format("d-m-Y") }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Organisatie</td>
+                                    <td>{{ document.location.organisation }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Locatie</td>
+                                    <td>{{ document.location }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gebouw</td>
+                                    <td>{{ document.building ? document.building : "N.V.T." }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gebouwdeel</td>
+                                    <td>{{ document.area ? document.area : "N.V.T." }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Verdieping</td>
+                                    <td>{{ document.floor is not empty ? document.floor : "N.V.T." }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Document type</td>
+                                    <td>{{ document.documentType ? document.documentType : "N.V.T." }}</td>
+                                </tr>
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="buttonContainer" class="card_body">
+                        <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
+                        {% if canDoRevision %}
+                            <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                        {% else %}
+                            <button style="cursor: default" disabled type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                        {% endif %}
+                    </div>
                 </div>
-                <div id="buttonContainer">
-                    <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
-                    {% if canDoRevision %}
-                        <button type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
-                    {% else %}
-                        <button style="cursor: default" disabled type="button" class="btn d-inline-block btn-outline-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
-                    {% endif %}
-                </div>
-                <div id="historyContainer">
-                    <h3>Geschiedenis</h3>
+            </div>
+        </div>
+        <div class="col-md-6 offset-6 mt-3">
+            <div class="card">
+                <div >
+                    <div class="card_head">
+                        <h4>Geschiedenis</h4>
+                    </div>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>Versie</th>
-                                <th>Geupload op</th>
-                                <th>Door</th>
-                                <th>Acties</th>
-                            </tr>
+                        <tr>
+                            <th>Versie</th>
+                            <th>Geupload op</th>
+                            <th>Door</th>
+                            <th>Acties</th>
+                        </tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -88,29 +110,33 @@
                             <td>{{ document.updatedAt.format("d-m-Y") }}</td>
                             <td>{{ document.uploadedBy }}</td>
                             <td>
-                                <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
+                                <a class="closemodal" target="_blank"
+                                   href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
                                     DWG
                                 </a>
-                                <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
+                                <a class="closemodal" target="_blank"
+                                   href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
                                     PDF
                                 </a>
                             </td>
                         </tr>
                         {% if documentHistory is defined %}
                             {% for history in documentHistory %}
-                            <tr>
-                                <td>{{ history.revision }}</td>
-                                <td>{{ history.updatedAt.format("d-m-Y") }}</td>
-                                <td>{{ history.updatedBy }}</td>
-                                <td>
-                                    <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
-                                        DWG
-                                    </a>
-                                    <a class="closemodal" target="_blank" href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
-                                        PDF
-                                    </a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{ history.revision }}</td>
+                                    <td>{{ history.updatedAt.format("d-m-Y") }}</td>
+                                    <td>{{ history.updatedBy }}</td>
+                                    <td>
+                                        <a class="closemodal" target="_blank"
+                                           href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
+                                            DWG
+                                        </a>
+                                        <a class="closemodal" target="_blank"
+                                           href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
+                                            PDF
+                                        </a>
+                                    </td>
+                                </tr>
                             {% endfor %}
                         {% endif %}
                         </tbody>

@@ -15,7 +15,10 @@
  */
 body, html {
     height: 100%;
+    min-height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     background: var(--bg_light_blue);
@@ -51,6 +54,8 @@ label, .small_bold {
 .green {color: green; }
 .red { color: red; }
 .pl-25 { padding-left: .75rem; }
+.pl-20px { padding-left: 20px; }
+.no-padding {padding: 0;}
 
 background {
     background-repeat: no-repeat;
@@ -113,6 +118,7 @@ background {
 }
 .card .card-nav li {padding-left: .75rem; display: inline-block; }
 .card .card-nav a.active { border-left: 3px solid orange; }
+.card table.align td:first-child { padding-left: 20px; }
 
 .profile-img-card {
     width: 96px;
@@ -249,8 +255,10 @@ background {
 }
 #pdfContainer {
     width: 100%;
-    outline: 1px solid black;
-    background: darkgrey;
+    height: 100%;
+    border: 1px solid rgba(0, 40, 100, 0.12);
+    transition: box-shadow .25s, -webkit-box-shadow .25s;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
 }
 #historyContainer { margin-top: 25px; }
 #filterContainer {
@@ -348,4 +356,19 @@ background {
     height: 75px;
 }
 
+/****************************
+*********** Footer **********
+ ****************************/
+
+.footer-container{
+    margin-top: auto;
+    clear: both;
+    width: 100%;
+}
+.footer-content {
+    margin-top: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: var(--antraciet);
+}
 
