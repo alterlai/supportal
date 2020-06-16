@@ -151,6 +151,7 @@ class VersioningService {
         $document = $draft->getDocument();
 
         $document->setUpdatedAt($draft->getUploadedAt());
+        $document->setUploadedBy($draft->getUploadedBy());
         $document->setFileName($draft->getUploadedBy());
         $document->setPdfFilename($newPdfFilename);
         $document->setFileName($newFilename);

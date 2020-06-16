@@ -20,7 +20,7 @@ class DocumentDraft
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document", inversedBy="documentDrafts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $document;

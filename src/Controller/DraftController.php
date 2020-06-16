@@ -150,21 +150,4 @@ class DraftController extends AbstractController
         return $this->render('drafts/admin/index.html.twig');
     }
 
-    /**
-     * @param int $documentDraftId
-     * @param mixed $data
-     * @param DocumentNameParserService $documentNameParserService
-     * @param VersioningService $versioningService
-     * @return Response
-     */
-    private function accept(int $documentDraftId, $data, DocumentNameParserService $documentNameParserService, VersioningService $versioningService)
-    {
-        // 1. Make a new DocumentHistory object with current document values.
-
-        // pas de bestandsnamen aan.
-        // 3. Markeer de draft als geaccepteerd
-        // 4. Mail de user
-
-    }
-
 }
