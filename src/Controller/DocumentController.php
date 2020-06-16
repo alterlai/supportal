@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\User;
 use App\Repository\BuildingRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\DocumentDraftRepository;
 use App\Repository\DocumentRepository;
 use App\Repository\DocumentTypeRepository;
+use App\Repository\LocationRepository;
 use App\Service\DocumentFilterService;
 use App\Service\IssueHandlerService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,6 +46,35 @@ class DocumentController extends AbstractController
             'documentTypes' => $documentTypes,
             'buildingId' => $buildingId,
             'disciplineGroups' => $disciplines
+        ]);
+    }
+
+    /**
+     * @Route("/documents/", name="new.documents")
+     * @param BuildingRepository $buildingRepository
+     * @param DocumentTypeRepository $documentTypeRepository
+     * @param DisciplineRepository $disciplineRepository
+     * @param DocumentRepository $documentRepository
+     * @return Response
+     */
+    public function index_new(LocationRepository $locationRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository, DocumentRepository $documentRepository)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $locations = $locationRepository->findBy(['organisation' => $user->getOrganisation()]);
+
+        $documents = $documentRepository->findByCurrentUser($user);
+
+        $documentTypes = $documentTypeRepository->findAllAsArray();
+
+        $disciplines = $disciplineRepository->findAllAsGroupedArray();
+
+        return $this->render('documents/index.html.twig', [
+            'documents' => $documents,
+            'documentTypes' => $documentTypes,
+            'disciplineGroups' => $disciplines,
+            'locations' => $locations
         ]);
     }
 

@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+{% block body %}
+    {% include 'partials/navbar.html.twig' %}
+
+    <div class="container-fluid">
+        <ol class="breadcrumb shadow-sm bg-white">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a> /</li>
+        </ol>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Filters</h3>
+            </div>
+        </div>
+
+        <div class="row"> <!-- Document filters -->
+            <div class="col-md-2">
+                <div class="card" id="DocumentTypeFilter"> <!-- Building filter -->
+                    <div class="card_head">
+                        <h4>Gebouw</h4>
+                    </div>
+                    <div class="card_body">
+                        {% for location in locations %}
+                            <span class="subgroupTitle toggleBtn">{{ location.name }}</span>
+                            <ul class="list-group list-unstyled subfilter">
+                                {% for building in location.buildings %}
+                                    <label>
+                                        <input type="checkbox" name="documentTypes" value="{{ building.code }}">
+                                        {{ building.name }}
+                                    </label>
+                                {% endfor %}
+                                {# <div class="show-more">Meer zien</div>#}
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div> <!-- end document type filter -->
+
+                <div class="card mt-3" id="DocumentTypeFilter"> <!-- Document Type filter -->
+                    <div class="card_head">
+                        <h4>Document type</h4>
+                    </div>
+                    <div class="card_body">
+                        {% for documentTypeGroup in documentTypes %}
+                            <span class="subgroupTitle toggleBtn">{{ documentTypeGroup[0].name }}</span>
+                            <ul class="list-group list-unstyled subfilter">
+                                {% for documentType in documentTypeGroup %}
+                                    <label>
+                                        <input type="checkbox" name="documentTypes" value="{{ documentType.code }}">
+                                        {{ documentType.name }}
+                                    </label>
+                                {% endfor %}
+                                {# <div class="show-more">Meer zien</div>#}
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div> <!-- end document type filter -->
+
+                <div class="card mt-3" id="disciplineFilter"> <!-- Discipline filter -->
+                    <div class="card_head">
+                        <h4>Discipline</h4>
+                    </div>
+                    <div class="card_body">
+                        {% for disciplineGroup in disciplineGroups %}
+                            <span class="subgroupTitle toggleBtn">[{{ disciplineGroup[0].code * 10 }}...{{ disciplineGroup[0].code * 10 + 10 }}] {{ disciplineGroup[0].description|lower }}</span>
+                            <ul class="list-group list-unstyled subfilter">
+                                {% for discipline in disciplineGroup %}
+                                    <label>
+                                        <input type="checkbox" class="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
+                                        [{{ discipline.code }}] {{ discipline.description|lower }}
+                                    </label>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div> <!-- Einde Disciplinefilter -->
+
+                <div class="card mt-3">
+                    <div class="card_head">
+                        <h4>Verdieping</h4>
+                    </div>
+                    <div class="card_body">
+                        <div class="input-group">
+                            <label>
+                                <input type="number" class="form-control" name="floor" id="floorInput" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- filter container -->
+
+            <div class="col-md-10 no-padding">
+                <div class="card pt-2 pb-2">
+                    <table class="table dataTable row-border" id="listing">
+                        <thead>
+                        <tr>
+                            <th>Bestandsnaam</th>
+                            <th>Revisie</th>
+                            <th>Document type</th>
+                            <th>Discipline omschrijving</th>
+                            <th>Discipline code</th>
+                            <th>Gebouw</th>
+                            <th>Verdieping</th>
+                            <th>Gebouwdeel</th>
+                            <th>Acties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for document in documents %}
+                            <tr data-href="{{ path('document', {documentId: document.id}) }}" class="clickable-row">
+                                <td>{{ document.documentName }}</td>
+                                <td>{{ document.version }}</td>
+                                <td>{{ document.documentType.name }}</td>
+                                <td>{{ document.discipline.description }}</td>
+                                <td>{{ document.discipline.code }}</td>
+                                <td>{{ document.building }}</td>
+                                <td>{{ document.floor }}</td>
+                                <td>{{ document.area }}</td>
+                                <td><a href="{{ path('document', {documentId: document.id}) }}">Bekijk</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
