@@ -5,10 +5,12 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.path.documents: /documents
+    app.path.pdf: /pdf
     app.path.drafts: /drafts
+    pdf_upload_directory: '%kernel.project_dir%/public/pdf/'
     app.allowed_file_extensions: ['image/vnd.dwg']
-    document_upload_directory: '%kernel.project_dir%/public/documents/'
-    draft_upload_directory: '%kernel.project_dir%/public/drafts/'
+    document_upload_directory: '%kernel.project_dir%/data/documents/'
+    draft_upload_directory: '%kernel.project_dir%/data/drafts/'
     report_directory: '%kernel.project_dir%/var/cache/reports/'
     absolute_image_directory: '%kernel.project_dir%/public/web/img/'
     no-reply_address: 'no-reply@iqsupportbv.nl'

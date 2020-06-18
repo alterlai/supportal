@@ -31,7 +31,6 @@ class DownloadController extends AbstractController
     public function download(int $documentId, Request $request, DocumentRepository $documentRepository, IssueHandlerService $issueHandlerService, UserActionService $userActionService)
     {
         $document = $documentRepository->find($documentId);
-        $basedir = $this->getParameter("app.path.documents");
         $requestType = $request->query->get("type");
         $issue = $request->query->get("issue");
         $deadline = new \DateTimeImmutable("now +2 weeks");
@@ -42,7 +41,29 @@ class DownloadController extends AbstractController
         }
 
 
-//        $viewHistory->
+        // Get correct file from request type
+        switch (strtolower($requestType))
+        {
+            case "dwg":
+                $filename = $document->getFileName();
+                $basedir = $this->getParameter("document_upload_directory");
+                $userActionService->createUserAction($this->getUser(), $document, $deadline, "dwg");
+                break;
+            case "pdf":
+                $filename = $document->getPdfFilename();
+                $basedir = $this->getParameter("pdf_upload_directory");
+                $userActionService->createUserAction($this->getUser(), $document, null, "pdf");
+                break;
+            default:
+                return $this->render("errors/error.html.twig", ['message' => "Geen geldig bestandstype. Probeer het opnieuw."]);
+        }
+
+        /* Stop if the file doesn't exist. */
+        if (!file_exists($basedir . $filename) || $filename == null)
+        {
+            $this->addFlash("danger", "The file you requested doesn't exist.");
+            return $this->redirectToRoute("document", ['documentId' => $documentId]);
+        }
 
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($issue == true)
@@ -59,24 +80,7 @@ class DownloadController extends AbstractController
             $issueHandlerService->addDocumentIssue($document, $this->getUser(), $deadline);
         }
 
-        // Get correct file from request type
-        switch (strtolower($requestType))
-        {
-            case "dwg":
-                $filename = $document->getFileName();
-                $userActionService->createUserAction($this->getUser(), $document, $deadline, "dwg");
-                break;
-            case "pdf":
-                $filename = $document->getPdfFilename();
-                $userActionService->createUserAction($this->getUser(), $document, null, "pdf");
-                break;
-            default:
-                return $this->render("errors/error.html.twig", ['message' => "Geen geldig bestandstype. Probeer het opnieuw."]);
-        }
+        return $this->file($basedir . $filename);
 
-        return $this->render("pages/download.html.twig", [
-            "message" => "Uw download begint over enkele seconden...",
-            "downloadLink" => $basedir . "/" . $filename
-        ]);
     }
 }
