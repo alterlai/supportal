@@ -6,10 +6,6 @@
         <div class="col-md-12">
             <ol class="breadcrumb shadow-sm bg-white">
                 <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ document.building.location.name }}</a></li>
-                <li class="breadcrumb-item"><a
-                            href="{{ path('documents', {buildingId: document.building.id}) }}">{{ document.building }}</a>
-                </li>
                 <li class="breadcrumb-item active">{{ document.documentName }}</li>
             </ol>
         </div>

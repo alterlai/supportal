@@ -16,18 +16,18 @@
         </div>
 
         <div class="row"> <!-- Document filters -->
-            <div class="col-md-2">
+            <div class="col-lg-2">
                 <div class="card" id="DocumentTypeFilter"> <!-- Building filter -->
                     <div class="card_head">
                         <h4>Gebouw</h4>
                     </div>
-                    <div class="card_body">
+                    <div class="card_body filter">
                         {% for location in locations %}
                             <span class="subgroupTitle toggleBtn">{{ location.name }}</span>
                             <ul class="list-group list-unstyled subfilter">
                                 {% for building in location.buildings %}
                                     <label>
-                                        <input type="checkbox" name="documentTypes" value="{{ building.code }}">
+                                        <input type="checkbox" name="buildings" value="{{ building.id }}">
                                         {{ building.name }}
                                     </label>
                                 {% endfor %}
@@ -41,7 +41,7 @@
                     <div class="card_head">
                         <h4>Document type</h4>
                     </div>
-                    <div class="card_body">
+                    <div class="card_body filter">
                         {% for documentTypeGroup in documentTypes %}
                             <span class="subgroupTitle toggleBtn">{{ documentTypeGroup[0].name }}</span>
                             <ul class="list-group list-unstyled subfilter">
@@ -61,7 +61,7 @@
                     <div class="card_head">
                         <h4>Discipline</h4>
                     </div>
-                    <div class="card_body">
+                    <div class="card_body filter">
                         {% for disciplineGroup in disciplineGroups %}
                             <span class="subgroupTitle toggleBtn">[{{ disciplineGroup[0].code * 10 }}...{{ disciplineGroup[0].code * 10 + 10 }}] {{ disciplineGroup[0].description|lower }}</span>
                             <ul class="list-group list-unstyled subfilter">
@@ -80,10 +80,10 @@
                     <div class="card_head">
                         <h4>Verdieping</h4>
                     </div>
-                    <div class="card_body">
+                    <div class="card_body filter">
                         <div class="input-group">
                             <label>
-                                <input type="number" class="form-control" name="floor" id="floorInput" />
+                                <input type="text" class="form-control" name="floor" id="floorInput" />
                             </label>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
 
             </div> <!-- filter container -->
 
-            <div class="col-md-10 no-padding">
+            <div class="col-lg-10 no-padding">
                 <div class="card pt-2 pb-2">
                     <table class="table dataTable row-border" id="listing">
                         <thead>

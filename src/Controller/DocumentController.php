@@ -25,39 +25,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DocumentController extends AbstractController
 {
-    /**
-     * @Route("/documents/{buildingId}", name="documents", methods={"GET"})
-     * @param integer $buildingId
-     * @param BuildingRepository $buildingRepository
-     * @param DocumentTypeRepository $documentTypeRepository
-     * @return Response
-     * @IsGranted("ROLE_USER")
-     */
-    public function index(int $buildingId, BuildingRepository $buildingRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository)
-    {
-        $documents = ($buildingRepository->find($buildingId))->getDocuments();
-
-        $documentTypes = $documentTypeRepository->findAllAsArray();
-
-        $disciplines = $disciplineRepository->findAllAsGroupedArray();
-
-        return $this->render('pages/documents.html.twig', [
-            'documents' => $documents,
-            'documentTypes' => $documentTypes,
-            'buildingId' => $buildingId,
-            'disciplineGroups' => $disciplines
-        ]);
-    }
 
     /**
-     * @Route("/documents/", name="new.documents")
-     * @param BuildingRepository $buildingRepository
+     * @Route("/documents/", name="documents.index")
+     * @param LocationRepository $locationRepository
      * @param DocumentTypeRepository $documentTypeRepository
      * @param DisciplineRepository $disciplineRepository
      * @param DocumentRepository $documentRepository
      * @return Response
      */
-    public function index_new(LocationRepository $locationRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository, DocumentRepository $documentRepository)
+    public function index(LocationRepository $locationRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository, DocumentRepository $documentRepository)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -111,38 +88,40 @@ class DocumentController extends AbstractController
     }
 
     /**
-     * @Route("/ajax/documents/{buildingId}", name="ajax.documents", methods={"GET"})
+     * @Route("/ajax/documents/", name="ajax.documents", methods={"GET"})
      * @param Request $request
-     * @param int $buildingId
      * @param DocumentRepository $documentRepository
      * @return JsonResponse|Response
      * @IsGranted("ROLE_USER")
      */
-    public function ajax_filter_documents(Request $request, int $buildingId, DocumentRepository $documentRepository)
+    public function ajax_filter_documents(Request $request, DocumentRepository $documentRepository)
     {
         // Deny non-ajax requests
         if (!$request->isXmlHttpRequest()) {
             return $this->render("pages/blank.html.twig", ['message' => "This page doesn't exist"]);
         }
 
+        $buildings = $request->query->get('buildings');
         $disciplineGroups = $request->query->get("disciplineGroup");
         $documentTypes = $request->query->get("documentTypes");
         $floor = $request->query->get('floor');
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findWithFilter($this->getUser(), $buildingId, $disciplineGroups, $floor, $documentTypes);
+        $documents = $documentRepository->findWithFilter($this->getUser(), $buildings, $disciplineGroups, $floor, $documentTypes);
 
         $jsonData = array();
 
         foreach ($documents as $document){
             array_push($jsonData, [
                 'naam' => $document->getDocumentName(),
+                'version' => $document->getVersion(),
                 'discipline' => $document->getDiscipline()->getCode(),
                 'omschrijving' => $document->getDiscipline()->getDescription(),
                 'gebouw' => $document->getBuilding()->getName(),
                 'verdieping' => $document->getFloor(),
                 'documentId' => $document->getId(),
-                'documentType' => $document->getDocumentType()->getName()
+                'documentType' => $document->getDocumentType()->getName(),
+                'area' => $document->getArea()
             ]);
         }
         return new JsonResponse($jsonData);

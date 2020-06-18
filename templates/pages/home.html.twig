@@ -10,24 +10,7 @@
 
         <div class="row">
             <div class="col-sm-8">
-                {% for location in locations %}
-                    <div class="card d-flex flex-column location">
-                        <div class="card_head">
-                            <h4>{{ location.name }}</h4>
-                        </div>
-                        <div class="card_body d-flex flex-column">
-                            {% for building in location.buildings %}
-                                <a href="{{ path('documents', {buildingId: building.id}) }}">
-                                    <div class="building">
-
-                                        {{ building.name }}
-
-                                    </div>
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
+                <a href="{{ path("documents.index") }}">Documenten</a>
             </div>
             <div class="issues-container col-sm-4">
                 <div class="card">

@@ -91,7 +91,7 @@ class DocumentRepository extends ServiceEntityRepository
     }
     */
 
-    public function findWithFilter(UserInterface $user, int $buildingId, array $disciplines = null, $floor = null, array $documentTypes = null)
+    public function findWithFilter(UserInterface $user, array $buildings = null, array $disciplines = null, $floor = null, array $documentTypes = null)
     {
 
         // Get documents related to the current user
@@ -103,6 +103,14 @@ class DocumentRepository extends ServiceEntityRepository
             ->innerJoin('d.documentType', 'dt', 'WITH', 'd.documentType = dt.id')
         ;
 
+        if ($buildings)
+        {
+            foreach($buildings as $i => $buildingId)
+            {
+                $query->orWhere("d.building = :building$i")
+                    ->setParameter("building$i", $buildingId."%");
+            }
+        }
 
         // If disciplines filter is set, apply filter
         if ($disciplines)
@@ -133,9 +141,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         // And filter on User id
         return $query->andWhere('u.id = :userid')
-            ->andWhere('d.building = :buildingId')
             ->setParameter('userid', $user->getId())
-            ->setParameter('buildingId', $buildingId)
             ->getQuery()
             ->getResult();
     }

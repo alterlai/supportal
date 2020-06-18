@@ -9,7 +9,7 @@ $(document).ready(function() {
     /**
      * Fetch document records using an AJAX request.
      */
-   $('.filterOption input').change(function() {
+   $('.filter input').change(function() {
            updateTable();
        }
    );
@@ -75,7 +75,7 @@ $(document).ready(function() {
    {
        parameters = getFilterOptions();
        $.ajax({
-           url: "/ajax/documents/"+parameters['buildingId'],
+           url: "/ajax/documents/",
            type: "GET",
            dataType: 'json',
            async: true,
@@ -84,7 +84,7 @@ $(document).ready(function() {
                updateDocumentTable(result)
            },
            error: function(result, message) {
-               alert("Er is iets fout gegaan. Neem contact op met een administrator.");
+               alert("Er is iets fout gegaan bij het toepassen van het filter. Probeer het later opnieuw.");
                console.log(result);
            },
        });
@@ -131,11 +131,13 @@ $(document).ready(function() {
         for (var i = 0; i < data.length; i++) {
             tableData.push([
                 data[i].naam,
+                data[i].version,
                 data[i].documentType,
                 data[i].omschrijving,
                 data[i].discipline,
                 data[i].gebouw,
                 data[i].verdieping,
+                data[i].area,
                 "<a href='/document/?documentId="+data[i].documentId+"'>Bekijk</a>"
             ]);
         }
