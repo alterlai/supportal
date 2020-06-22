@@ -25,6 +25,34 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DocumentController extends AbstractController
 {
+    /**
+     * @Route("documents/oud", name="document.oud")
+     * @param LocationRepository $locationRepository
+     * @param DocumentTypeRepository $documentTypeRepository
+     * @param DisciplineRepository $disciplineRepository
+     * @param DocumentRepository $documentRepository
+     * @return Response
+     */
+    public function index_oud(LocationRepository $locationRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository, DocumentRepository $documentRepository)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $locations = $locationRepository->findBy(['organisation' => $user->getOrganisation()]);
+
+        $documents = $documentRepository->findByCurrentUser($user);
+
+        $documentTypes = $documentTypeRepository->findAllAsArray();
+
+        $disciplines = $disciplineRepository->findAllAsGroupedArray();
+
+        return $this->render('pages/documents.html.twig', [
+            'documents' => $documents,
+            'documentTypes' => $documentTypes,
+            'disciplineGroups' => $disciplines,
+            'locations' => $locations
+        ]);
+    }
 
     /**
      * @Route("/documents/", name="documents.index")

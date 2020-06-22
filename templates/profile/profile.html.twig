@@ -1,0 +1,38 @@
+{% extends 'profile/settings.html.twig' %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card_head">
+            <h4>Profiel</h4>
+        </div>
+        <div class="card_body no-padding">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="border-top-0">Gebruikersnaam</td>
+                        <td class="border-top-0">{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Organisatie</td>
+                        <td>{{ user.organisation }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card_head">
+            <h4>Password reset</h4>
+        </div>
+        <div class="card_body">
+            {{ form(form) }}
+        </div>
+    </div>
+
+{% endblock %}

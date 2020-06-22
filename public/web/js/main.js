@@ -18,8 +18,9 @@ $(document).ready(function() {
      * Remove filters button action and update the table
      */
     $("#removeFilters").click(function () {
-        $(".filterOption input:checked").prop("checked", false);
+        $("input:checked").prop("checked", false);
         updateTable();
+
     });
 
     $('.subfilter').hide();
@@ -114,7 +115,6 @@ $(document).ready(function() {
             previousName = selectedFilters[i].name;
         }
         output['floor'] = $('#floorInput').val();
-        output['buildingId'] = $('#buildingId').val();
 
         console.log(output);
         return output;
