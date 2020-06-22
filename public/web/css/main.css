@@ -22,7 +22,6 @@ body, html {
     position: absolute;
     top: 0;
     background: var(--bg_light_blue);
-    padding-top: var(--nav-size);
     font-size: 15px;
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -70,7 +69,10 @@ background {
 /*
  * Navbar
  */
-.navbar { height: var(--nav-size) }
+.navbar {
+    top: 0;
+    width: 100%;
+}
 .navbar .username { color: ghostwhite; }
 .navbar a.current {color: white !important; font-weight: 600;}
 .navbar a:hover {transition: .2s; color: white;}
@@ -215,11 +217,7 @@ background {
     color: rgb(12, 97, 33);
 }
 
-.navbar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
+
 .breadcrumb { margin-top: 1rem; }
 .row {margin-left: 0; margin-right: 0;}
 

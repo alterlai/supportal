@@ -1,13 +1,13 @@
 {% block navbar %}
-    <nav class="navbar navbar-dark bg-dark  flex-md-nowrap shadow navbar-expand-sm">
+    <nav class="navbar navbar-dark bg-dark  flex-md-nowrap shadow navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand col-sm-3 col-md-2" href="{{ path('home') }}">{{ app.user.organisation }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="{{ path('home') }}">{{ app.user.organisation }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#pageNav"
+                    aria-controls="pageNav" aria-expanded="false" aria-label="Navigatie">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse">
-                <div class="align-items-center">
+            <div class="collapse navbar-collapse" id="pageNav">
+                <div class="align-items-center flex-grow-1">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link {% if app.request.get('_route') == 'home' %}current{% endif %}"
@@ -31,7 +31,7 @@
                     </ul>
                 </div>
 
-                <ul class="navbar-nav px-3 ml-auto">
+                <ul class="navbar-nav px-3">
                     <li class="nav-item">
                         <a href="{{ path('profile') }}" class="navbar-text username">{{ app.user.username }}</a>
                     </li>

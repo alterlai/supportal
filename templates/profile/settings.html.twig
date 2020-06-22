@@ -3,10 +3,10 @@
 {% block body %}
     {% include 'partials/navbar.html.twig' %}
 
-    <div class="container pt-3">
+    <div class="container-xl pt-3">
         {% include 'partials/flashbag.html.twig' %}
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="card">
                     <div class="card_head">
                         <span class="small_bold">Instellingen</span>
@@ -34,7 +34,7 @@
                 {% endif %}
             </div>
 
-            <div class="col-md-9">
+            <div class="col-lg-9">
                 {% block content %}
                 {% endblock %}
             </div>
