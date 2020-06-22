@@ -4,7 +4,7 @@
     <background></background>
         <div class="container">
             <div class="card card-container">
-                <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                <img id="profile-img" class="profile-img-card" src="{{ asset('/web/img/iqlogo.svg') }}" />
                 <p id="profile-name" class="profile-name-card"></p>
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
