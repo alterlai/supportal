@@ -187,6 +187,11 @@ class User implements UserInterface
         return $this->issues;
     }
 
+    public function getIssueCount(): int
+    {
+        return sizeof($this->issues);
+    }
+
     public function addIssue(Issue $issue): self
     {
         if (!$this->issues->contains($issue)) {

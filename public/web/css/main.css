@@ -59,8 +59,6 @@ label, .small_bold {
 .pt-0\!{padding-top: 0 !important;}
 
 background {
-    background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
     background: var(--bg-light);
     height: 100%;
     width: 100%;
@@ -74,6 +72,8 @@ background {
  */
 .navbar { height: var(--nav-size) }
 .navbar .username { color: ghostwhite; }
+.navbar a.current {color: white !important; font-weight: 600;}
+.navbar a:hover {transition: .2s; color: white;}
 
 /*
  * Card component
