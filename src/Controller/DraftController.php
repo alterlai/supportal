@@ -133,11 +133,9 @@ class DraftController extends AbstractController
      */
     public function deny(int $id, Request $request, DocumentDraftRepository $documentDraftRepository, DraftStatusRepository $draftStatusRepository, EntityManagerInterface $entityManager)
     {
-        //TODO mail versturen
         $deniedStatus = $draftStatusRepository->findOneBy(['name' => "Afgekeurd"]);
         $draft = $documentDraftRepository->find($id);
-        $denyDescription = $request->query->get("denyDescription");
-        // todo: werktn iet
+        $denyDescription = $request->get("denyDescription");
 
         $draft->setDraftStatus($deniedStatus);
         $draft->setRejectionDescription($denyDescription);

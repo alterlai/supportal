@@ -56,6 +56,7 @@ label, .small_bold {
 .pl-20px { padding-left: 20px; }
 .no-padding {padding: 0;}
 .pt-0\!{padding-top: 0 !important;}
+.overflow-scroll {overflow: auto; overflow-y: hidden;}
 
 background {
     background: var(--bg-light);
@@ -300,6 +301,7 @@ background {
 .subfilter {
     /*margin-left: 10px;*/
     /*padding: 10px;*/
+    display: none;
 }
 
 #listing { width: 100%;}

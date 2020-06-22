@@ -40,6 +40,13 @@ $(document).ready(function() {
      */
     $(".dataTable").on("click", ".clickable-row", function () {
         link = $(this).attr('data-href');
+        if (!link)
+            link = ($(this)
+                .last())    //row
+                .find(">:last-child")   //td
+                .find(">:last-child")   // <a>
+                .attr('href');
+
         window.location.href = link;
     });
 

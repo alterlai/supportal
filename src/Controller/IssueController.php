@@ -100,7 +100,8 @@ class IssueController extends AbstractController
 
         if (! in_array($data['file_content']->getMimeType(), $valid_file_extensions))
         {
-            return $this->render("errors/error.html.twig", ['message'=> "Incorrecte file extensie. Alleen DWG bestanden zijn toegestaan."]);
+            $this->addFlash("danger", "Incorrect bestandstype. Alleen DWG bestanden zijn toegestaan.");
+            return $this->redirectToRoute("issue.show", ['id' => $issue->getId()]);
         }
 
         $newFileName = $documentNameParserService->generateFileNameFromEntities(
