@@ -2,74 +2,99 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="card w-100">
-            <div class="card_head">
-                <h3 class="card_title">Openstaand document uploaden</h3>
-            </div>
-            <div class="card_body">
-                <b>Download DWG</b>
-                <div class="downloadLink downloadButtonContainer" data-href="{{ document_directory }}/{{ issue.document.filename }}">
-                    <svg class="bi bi-file-earmark-arrow-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
-                        <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
-                        <path fill-rule="evenodd" d="M5.646 9.146a.5.5 0 0 1 .708 0L8 10.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708z"/>
-                        <path fill-rule="evenodd" d="M8 6a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4A.5.5 0 0 1 8 6z"/>
-                    </svg>
+    <div class="container">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card_head">
+                    <h3 class="card_title">Openstaand document uploaden</h3>
                 </div>
-                </p>
-                <hr>
-                <p>
-                    Upload hier het openstaande tekeningen bestand in de een .DWG formaat.
-                </p>
-                {{  form_start(form) }}
-                {{ form_errors(form) }}
-                {{ form_row(form.file_content) }}
-                <table class="pad_items">
-                    <tr>
-                        <td><span class="small_bold">Documentnaam</span></td>
-                        <td>{{ issue.document.documentName }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="small_bold">Opgevraagd op</span></td>
-                        <td>{{ issue.issuedAt.format("d-m-Y H:m") }}</td>
-                        <td><span class="small_bold">Inlever deadline</span></td>
-                        <td>{{ issue.issueDeadline.format("d-m-Y H:m") }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="small_bold">Locatie</span></td>
-                        <td>{{ issue.document.location }}</td>
-                        <td><span class="small_bold">Gebouw</span></td>
-                        <td>{{ issue.document.building }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="small_bold">Verdieping</span></td>
-                        <td>{{ issue.document.floor }}</td>
-                        <td><span class="small_bold">Gebouwdeel</span></td>
-                        <td>{{ issue.document.area }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="small_bold">Discipline</span></td>
-                        <td>{{ issue.document.discipline }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="small_bold">Document type</span></td>
-                        <td>{{ issue.document.documentType }}</td>
-                    </tr>
-                </table>
-                <hr>
-                <button class="btn btn-danger float-left mr-2"><svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>&nbsp; Concept verwijderen</button>
-                {{ form_row(form.submit, {'label': "Versturen", "attr": {"class": "btn-primary float-right"}}) }}
-                {{ form_end(form) }}
+                <div class="card_body">
+                    <b>Download DWG</b>
+                    <div class="downloadLink downloadButtonContainer" data-href="{{ document_directory }}/{{ issue.document.filename }}">
+                        <svg class="bi bi-file-earmark-arrow-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                            <path fill-rule="evenodd" d="M5.646 9.146a.5.5 0 0 1 .708 0L8 10.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708z"/>
+                            <path fill-rule="evenodd" d="M8 6a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4A.5.5 0 0 1 8 6z"/>
+                        </svg>
+                    </div>
+                    </p>
+                    <hr>
+                    <p>
+                        Upload hier het openstaande tekeningen bestand in de een .DWG formaat.
+                    </p>
+                    {{  form_start(form) }}
+                    {{ form_errors(form) }}
+                    {{ form_row(form.file_content) }}
+                    <table class="pad_items">
+                        <tr>
+                            <td><span class="small_bold">Documentnaam</span></td>
+                            <td>{{ issue.document.documentName }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="small_bold">Opgevraagd op</span></td>
+                            <td>{{ issue.issuedAt.format("d-m-Y H:m") }}</td>
+                            <td><span class="small_bold">Inlever deadline</span></td>
+                            <td>{{ issue.issueDeadline.format("d-m-Y H:m") }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="small_bold">Locatie</span></td>
+                            <td>{{ issue.document.location }}</td>
+                            <td><span class="small_bold">Gebouw</span></td>
+                            <td>{{ issue.document.building }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="small_bold">Verdieping</span></td>
+                            <td>{{ issue.document.floor }}</td>
+                            <td><span class="small_bold">Gebouwdeel</span></td>
+                            <td>{{ issue.document.area }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="small_bold">Discipline</span></td>
+                            <td>{{ issue.document.discipline }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="small_bold">Document type</span></td>
+                            <td>{{ issue.document.documentType }}</td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <button type="button" class="btn btn-danger float-left mr-2" data-target="#deleteIssueModal" data-toggle="modal"><svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>&nbsp; Concept verwijderen
+                    </button>
+                    {{ form_row(form.submit, {'label': "Versturen", "attr": {"class": "btn-primary float-right"}}) }}
+                    {{ form_end(form) }}
+                </div>
             </div>
-
         </div>
-
     </div>
-</div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteIssueModal" tabindex="-1" role="dialog" aria-labelledby="deleteIssueModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Concept verwijderen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Weet je zeker dat je deze aanvraag wilt verwijderen?
+
+                    <ul>
+                        <li>Gereserveerde uren worden nog steeds gefactureerd.</li>
+                        <li>Je moet opnieuw een aanvraag doen om een revisie uit te voeren op dit document.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+                    <a href="{{ path("issue.delete", {"issueId": issue.id}) }}"><button type="button" class="btn btn-danger">Verwijderen</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

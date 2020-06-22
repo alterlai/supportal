@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\DocumentDraft;
 use App\Entity\Issue;
 use App\Entity\User;
+use App\Entity\UserAction;
 use App\Form\DocumentDraftType;
 use App\Form\IssueType;
 use App\Repository\DraftStatusRepository;
 use App\Repository\IssueRepository;
+use App\Repository\UserActionRepository;
 use App\Service\DocumentNameParserService;
 use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -135,6 +137,42 @@ class IssueController extends AbstractController
         $this->mailerService->sendUploadSuccessMail($user->getEmail(), $draft->getDocument()->getDocumentName());
 
         return $this->render("drafts/index.html.twig");
+    }
+
+    /**
+     * Delete an issue.
+     * @Route("/issue/{issueId}/delete", name="issue.delete")
+     * @param int $issueId
+     * @param IssueRepository $issueRepository
+     * @param EntityManagerInterface $entityManager
+     * @param UserActionRepository $userActionRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function delete(int $issueId, IssueRepository $issueRepository, EntityManagerInterface $entityManager, UserActionRepository $userActionRepository)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $issue = $issueRepository->findOneBy(['id' => $issueId, 'issued_to' => $user->getId()]);
+
+        if (!$issue)
+        {
+            $this->addFlash("danger", "issue not found or does not belong to this user.");
+            $this->redirectToRoute('issue.index');
+        }
+
+        // Set user action delivery date to today. User has reserved the document until this point
+        $user_action = $userActionRepository->findLastByUserAndDocument($user, $issue->getDocument());
+
+        $user_action->setReturnedAt(new \DateTime("now"));
+
+        $entityManager->remove($issue);
+
+        $entityManager->flush();
+
+        $this->addFlash("success", "Concept succesvol verwijderd.");
+
+        return $this->redirectToRoute("issue.index");
     }
 
 }

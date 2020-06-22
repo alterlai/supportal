@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Document;
 use App\Entity\Organisation;
 use App\Entity\User;
 use App\Entity\UserAction;
@@ -80,6 +81,27 @@ class UserActionRepository extends ServiceEntityRepository
             ->setParameter("organisationId", $organisation->getId())
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Find the last user action given a user and a document. When delivering a concept or deleting one, the latest user
+     * action regarding the document and user should by definition be the corresponding user action
+     * @param User $user
+     * @param Document $document
+     * @return UserAction $userAction
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findLastByUserAndDocument(User $user, Document $document)
+    {
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :userId')
+            ->andWhere('ua.document = :documentId')
+            ->setParameter("userId", $user->getId())
+            ->setParameter("documentId", $document->getId())
+            ->orderBy("ua.downloadedAt", 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 
