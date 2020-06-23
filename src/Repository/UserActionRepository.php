@@ -91,11 +91,12 @@ class UserActionRepository extends ServiceEntityRepository
      * @return UserAction $userAction
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findLastByUserAndDocument(User $user, Document $document)
+    public function findLastDWGByUserAndDocument(User $user, Document $document)
     {
         return $this->createQueryBuilder('ua')
             ->where('ua.user = :userId')
             ->andWhere('ua.document = :documentId')
+            ->andWhere("ua.fileType = 'dwg'")
             ->setParameter("userId", $user->getId())
             ->setParameter("documentId", $document->getId())
             ->orderBy("ua.downloadedAt", 'DESC')

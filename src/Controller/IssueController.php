@@ -45,7 +45,7 @@ class IssueController extends AbstractController
 
 
     /**
-     * Show a specific issue with form.
+     * Show a specific issue with form. and handle an issue submission. When handling an issue submission, create a new draft and save the document.
      *
      * @Route("/issue/{id}", name="issue.show", methods={"GET", "POST"})
      * @param $id
@@ -58,7 +58,7 @@ class IssueController extends AbstractController
      * @throws \Exception
      * @IsGranted("ROLE_USER")
      */
-    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository, DocumentNameParserService $documentNameParserService)
+    public function show($id, IssueRepository $issueRepository, Request $request, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository, DocumentNameParserService $documentNameParserService, UserActionRepository $userActionRepository)
     {
         $issue = $issueRepository->find($id);
         $form = $this->createForm(DocumentDraftType::class);
@@ -68,7 +68,52 @@ class IssueController extends AbstractController
         {
             if ($form->isSubmitted() && $form->isValid())
             {
-                return $this->handleSubmission($issue, $form, $entityManager, $draftStatusRepository, $documentNameParserService);
+                $data = $form->getData();
+                $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
+                $draftStatus = $draftStatusRepository->findOneBy(['name' => "In behandeling"]);
+
+                if (! in_array($data['file_content']->getMimeType(), $valid_file_extensions))
+                {
+                    $this->addFlash("danger", "Incorrect bestandstype. Alleen DWG bestanden zijn toegestaan.");
+                    return $this->redirectToRoute("issue.show", ['id' => $issue->getId()]);
+                }
+
+                $newFileName = $documentNameParserService->generateFileNameFromEntities(
+                    $issue->getDocument()->getBuilding(),
+                    $issue->getDocument()->getDiscipline(),
+                    $issue->getDocument()->getDocumentType(),
+                    $issue->getDocument()->getFloor(),
+                    ($issue->getDocument()->getVersion()),
+                    ".dwg"
+                );
+                $draft = new DocumentDraft();
+
+                $draft->setDocument($issue->getDocument());
+                $draft->setFileContent($data['file_content']);
+                $draft->setUploadedAt(new \DateTime("now"));
+                $draft->setUploadedBy($issue->getIssuedTo());
+                $draft->setDraftStatus($draftStatus);
+
+                $draft->setFileName("test.dwg");
+                $entityManager->persist($draft);
+                $entityManager->remove($issue);
+
+                // Add submission to user action
+                $userAction = $userActionRepository->findLastDWGByUserAndDocument($issue->getIssuedTo(), $issue->getDocument());
+                $userAction->setReturnedAt(new \DateTime("now"));
+
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Concept aangemaakt.'
+                );
+
+                /** @var User $user */
+                $user = $this->getUser();
+                $this->mailerService->sendUploadSuccessMail($user->getEmail(), $draft->getDocument()->getDocumentName());
+
+                return $this->render("drafts/index.html.twig");
             }
 
             return $this->render("issues/show.html.twig", [
@@ -85,61 +130,6 @@ class IssueController extends AbstractController
     }
 
     /**
-     * Handle the form submission of an issue.
-     * @param Issue $issue
-     * @param FormInterface $form
-     * @param EntityManagerInterface $entityManager
-     * @param DraftStatusRepository $draftStatusRepository
-     * @param DocumentNameParserService $documentNameParserService
-     * @return Response
-     * @throws \Exception
-     */
-    public function handleSubmission(Issue $issue, FormInterface $form, EntityManagerInterface $entityManager, DraftStatusRepository $draftStatusRepository, DocumentNameParserService $documentNameParserService)
-    {
-        $data = $form->getData();
-        $valid_file_extensions = $this->getParameter('app.allowed_file_extensions');
-        $draftStatus = $draftStatusRepository->findOneBy(['name' => "In behandeling"]);
-
-        if (! in_array($data['file_content']->getMimeType(), $valid_file_extensions))
-        {
-            $this->addFlash("danger", "Incorrect bestandstype. Alleen DWG bestanden zijn toegestaan.");
-            return $this->redirectToRoute("issue.show", ['id' => $issue->getId()]);
-        }
-
-        $newFileName = $documentNameParserService->generateFileNameFromEntities(
-            $issue->getDocument()->getBuilding(),
-            $issue->getDocument()->getDiscipline(),
-            $issue->getDocument()->getDocumentType(),
-            $issue->getDocument()->getFloor(),
-            ($issue->getDocument()->getVersion()),
-            ".dwg"
-        );
-        $draft = new DocumentDraft();
-
-        $draft->setDocument($issue->getDocument());
-        $draft->setFileContent($data['file_content']);
-        $draft->setUploadedAt(new \DateTime("now"));
-        $draft->setUploadedBy($issue->getIssuedTo());
-        $draft->setDraftStatus($draftStatus);
-
-        $draft->setFileName("test.dwg");
-        $entityManager->persist($draft);
-        $entityManager->remove($issue);
-        $entityManager->flush();
-
-        $this->addFlash(
-            'success',
-            'Concept aangemaakt.'
-        );
-
-        /** @var User $user */
-        $user = $this->getUser();
-        $this->mailerService->sendUploadSuccessMail($user->getEmail(), $draft->getDocument()->getDocumentName());
-
-        return $this->render("drafts/index.html.twig");
-    }
-
-    /**
      * Delete an issue.
      * @Route("/issue/{issueId}/delete", name="issue.delete")
      * @param int $issueId
@@ -147,6 +137,7 @@ class IssueController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param UserActionRepository $userActionRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function delete(int $issueId, IssueRepository $issueRepository, EntityManagerInterface $entityManager, UserActionRepository $userActionRepository)
     {
@@ -162,7 +153,7 @@ class IssueController extends AbstractController
         }
 
         // Set user action delivery date to today. User has reserved the document until this point
-        $user_action = $userActionRepository->findLastByUserAndDocument($user, $issue->getDocument());
+        $user_action = $userActionRepository->findLastDWGByUserAndDocument($user, $issue->getDocument());
 
         $user_action->setReturnedAt(new \DateTime("now"));
 
