@@ -1,7 +1,23 @@
 {% block footer %}
     <div class="footer-container">
-        <div class="footer-content">
-
+        <div class="footer-content d-flex container">
+            <div>
+                <img src="{{ asset("web/img/iqlogo-wit.svg") }}" alt="">
+            </div>
+            <div class="flex-grow-1">
+                <ul>
+                    <li><a href="{{ path('home') }}">Home</a></li>
+                    <li><a href="{{ path('documents.index') }}">Documenten</a></li>
+                    <li><a href="{{ path('issue.index') }}">Openstaande tekeningen</a></li>
+                    <li><a href="{{ path('draft.index') }}">Geuploade bestanden</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="https://www.linkedin.com/company/iq-support-b.v./">
+                    <img src="{{ "web/img/ico-linkedin.svg" }}" alt="">
+                </a>
+                <span id="copyright">Alle rechten voorbehouden {{ "now"|date("Y") }}</span>
+            </div>
         </div>
     </div>
 {% endblock %}
