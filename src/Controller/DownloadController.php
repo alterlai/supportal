@@ -32,7 +32,7 @@ class DownloadController extends AbstractController
     public function download(int $documentId, Request $request, DocumentRepository $documentRepository, IssueHandlerService $issueHandlerService, UserActionService $userActionService)
     {
         $document = $documentRepository->find($documentId);
-        $requestType = $request->query->get("type");
+        $requestType = strtolower($request->query->get("type"));
         $withIssue = $request->query->get("issue");
         $deadline = new \DateTimeImmutable("now +2 weeks");
 
@@ -40,19 +40,17 @@ class DownloadController extends AbstractController
             $this->addFlash("danger", "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator.");
             return $this->redirectToRoute("document", ['documentId' => $documentId]);
         }
-
-
+        
         // Get correct file from request type
-        switch (strtolower($requestType)) {
+        switch ($requestType) {
             case "dwg":
                 $filename = $document->getFileName();
                 $basedir = $this->getParameter("document_upload_directory");
-                $userActionService->createUserAction($this->getUser(), $document, $deadline, "dwg", $withIssue);
                 break;
             case "pdf":
                 $filename = $document->getPdfFilename();
                 $basedir = $this->getParameter("pdf_upload_directory");
-                $userActionService->createUserAction($this->getUser(), $document, null, "pdf", $withIssue);
+                $deadline = null;
                 break;
             default:
                 return $this->render("errors/error.html.twig", ['message' => "Geen geldig bestandstype. Probeer het opnieuw."]);
@@ -63,6 +61,9 @@ class DownloadController extends AbstractController
             $this->addFlash("danger", "The file you requested doesn't exist.");
             return $this->redirectToRoute("document", ['documentId' => $documentId]);
         }
+
+        // Only add user action after the file is available
+        $userActionService->createUserAction($this->getUser(), $document, null, $requestType, $withIssue);
 
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($withIssue) {
@@ -92,6 +93,7 @@ class DownloadController extends AbstractController
     public function downloadRevision(int $revisionId, string $fileType, DocumentHistoryRepository $documentHistoryRepository, UserActionService $userActionService)
     {
         $documentVersion = $documentHistoryRepository->findOneBy(['id' => $revisionId]);
+        $fileType = strtolower($fileType);
 
         if (!$documentVersion) {
             $this->addFlash("danger", "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator.");
@@ -99,16 +101,14 @@ class DownloadController extends AbstractController
         }
 
         // Get correct file from request type
-        switch (strtolower($fileType)) {
+        switch ($fileType) {
             case "dwg":
                 $filename = $documentVersion->getFileName();
                 $basedir = $this->getParameter("document_upload_directory");
-                $fileType = "dwg";
                 break;
             case "pdf":
                 $filename = $documentVersion->getPdfFilename();
                 $basedir = $this->getParameter("pdf_upload_directory");
-                $fileType = "pdf";
                 break;
             default:
                 $this->addFlash("danger", "Geen geldig bestandstype. Probeer het opnieuw.");
