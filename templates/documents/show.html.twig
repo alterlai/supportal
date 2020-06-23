@@ -223,7 +223,7 @@
                     <div class="modal-body">
                         <p>Wanneer wordt de revisie uiterlijk opgeleverd?</p>
                         <label>
-                            Datum: <input type="date" name="deadlineInput" required>
+                            Datum: <input type="date" name="deadlineInput" min="{{ minDeadlineDate.format('Y-m-d') }}" max="{{ maxDeadlineDate.format('Y-m-d') }}" required>
                         </label>
                         <input type="hidden" name="type" value="dwg">
                         <input type="hidden" name="issue" value="true">

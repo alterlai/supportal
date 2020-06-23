@@ -99,8 +99,14 @@ class DocumentController extends AbstractController
             throw new \Exception("Invalid document");
         }
         $document = $documentRepository->find($id);
+
         $history = $document->getDocumentHistories();
+
         $canDoRevision = true;
+
+        $maxDeadlineDate = new \DateTime($this->getParameter("max_revision_time"));
+        $minDeadlineDate = new \DateTime("now +1 day");
+
         if (
             $documentDraftRepository->getOpenDocumentDraftsByDocument($document) || $document->getIssue())
         {
@@ -112,7 +118,13 @@ class DocumentController extends AbstractController
             throw new \Exception("Unknown document number");
         }
 
-        return $this->render('documents/show.html.twig', ['document' => $document, 'documentHistory' => $history, 'canDoRevision' => $canDoRevision]);
+        return $this->render('documents/show.html.twig', [
+            'document' => $document,
+            'documentHistory' => $history,
+            'canDoRevision' => $canDoRevision,
+            'maxDeadlineDate' => $maxDeadlineDate,
+            'minDeadlineDate' => $minDeadlineDate
+        ]);
     }
 
     /**
