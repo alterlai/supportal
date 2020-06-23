@@ -67,6 +67,7 @@ class VersioningService {
     {
         $documentHistoryEntity = (new DocumentHistory())
             ->setDocument($currentDocument)
+            ->setPdfFilename($currentDocument->getPdfFilename())
             ->setRevision($currentDocument->getVersion())
             ->setRevisionDescription($currentDocument->getDescription())
             ->setUpdatedAt($currentDocument->getUpdatedAt())

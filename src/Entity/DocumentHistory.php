@@ -55,6 +55,11 @@ class DocumentHistory
      */
     private $document;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $pdf_filename;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,6 +147,18 @@ class DocumentHistory
     public function setDocument(?Document $document): self
     {
         $this->document = $document;
+
+        return $this;
+    }
+
+    public function getPdfFilename(): ?string
+    {
+        return $this->pdf_filename;
+    }
+
+    public function setPdfFilename(string $pdf_filename): self
+    {
+        $this->pdf_filename = $pdf_filename;
 
         return $this;
     }

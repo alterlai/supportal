@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\DocumentHistoryRepository;
 use App\Repository\DocumentRepository;
 use App\Service\IssueHandlerService;
 use App\Service\UserActionService;
@@ -17,14 +18,16 @@ class DownloadController extends AbstractController
     /**
      * This function handles file downloads. Either PDF or DWG.
      * Also add the document to issues table.
+     * Only the latest version of the specified document
      * @Route("/download/{documentId}", name="document.download", methods={"GET"})
      * @param int $documentId
      * @param Request $request
      * @param DocumentRepository $documentRepository
      * @param IssueHandlerService $issueHandlerService
+     * @param UserActionService $userActionService
      * @return Response
-     * @IsGranted("ROLE_USER")
      * @throws \Exception
+     * @IsGranted("ROLE_USER")
      */
     public function download(int $documentId, Request $request, DocumentRepository $documentRepository, IssueHandlerService $issueHandlerService, UserActionService $userActionService)
     {
@@ -33,15 +36,14 @@ class DownloadController extends AbstractController
         $withIssue = $request->query->get("issue");
         $deadline = new \DateTimeImmutable("now +2 weeks");
 
-        if (!$document)
-        {
-            return $this->render("errors/error.html.twig", ['message' => "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator."]);
+        if (!$document) {
+            $this->addFlash("danger", "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator.");
+            return $this->redirectToRoute("document", ['documentId' => $documentId]);
         }
 
 
         // Get correct file from request type
-        switch (strtolower($requestType))
-        {
+        switch (strtolower($requestType)) {
             case "dwg":
                 $filename = $document->getFileName();
                 $basedir = $this->getParameter("document_upload_directory");
@@ -57,28 +59,72 @@ class DownloadController extends AbstractController
         }
 
         /* Stop if the file doesn't exist. */
-        if (!file_exists($basedir . $filename) || $filename == null)
-        {
+        if (!file_exists($basedir . $filename) || $filename == null) {
             $this->addFlash("danger", "The file you requested doesn't exist.");
             return $this->redirectToRoute("document", ['documentId' => $documentId]);
         }
 
         /** If the user is planning to return the document, we need to add it to the issue table */
-        if ($withIssue)
-        {
+        if ($withIssue) {
             // If the user doesn't have the correct permissions
-            if(!$this->isGranted("ROLE_LEVERANCIER"))
+            if (!$this->isGranted("ROLE_LEVERANCIER"))
                 return $this->render("errors/error.html.twig", ['message', "Incorrect permissions"]);
 
             /** If an issue already exists for this document, this is not possible. */
-            if ($document->getIssue())
-            {
+            if ($document->getIssue()) {
                 return $this->render("errors/error.html.twig", ['message' => "Dit document is al uitgegeven."]);
             }
             $issueHandlerService->addDocumentIssue($document, $this->getUser(), $deadline);
         }
 
         return $this->file($basedir . $filename);
-
     }
+
+
+    /**
+     * @Route("/download/{revisionId}/{fileType}", name="document.download.revision")
+     * @param int $revisionId
+     * @param string $fileType
+     * @param DocumentHistoryRepository $documentHistoryRepository
+     * @return Response
+     * @throws \Exception
+     */
+    public function downloadRevision(int $revisionId, string $fileType, DocumentHistoryRepository $documentHistoryRepository, UserActionService $userActionService)
+    {
+        $documentVersion = $documentHistoryRepository->findOneBy(['id' => $revisionId]);
+
+        if (!$documentVersion) {
+            $this->addFlash("danger", "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator.");
+            return $this->redirectToRoute("document", ['documentId' => $documentVersion->getDocument()->getId()]);
+        }
+
+        // Get correct file from request type
+        switch (strtolower($fileType)) {
+            case "dwg":
+                $filename = $documentVersion->getFileName();
+                $basedir = $this->getParameter("document_upload_directory");
+                $fileType = "dwg";
+                break;
+            case "pdf":
+                $filename = $documentVersion->getPdfFilename();
+                $basedir = $this->getParameter("pdf_upload_directory");
+                $fileType = "pdf";
+                break;
+            default:
+                $this->addFlash("danger", "Geen geldig bestandstype. Probeer het opnieuw.");
+                return $this->redirectToRoute("document", ['documentId' => $documentVersion->getDocument()->getId()]);
+        }
+
+        /* Stop if the file doesn't exist. */
+        if (!file_exists($basedir . $filename) || $filename == null) {
+            $this->addFlash("danger", "The file you requested doesn't exist.");
+            return $this->redirectToRoute("document", ['documentId' => $documentVersion->getDocument()->getId()]);
+        }
+
+        // Only add a user action if the file is available
+        $userActionService->createUserAction($this->getUser(), $documentVersion->getDocument(), null, $fileType, false);
+
+        return $this->file($basedir . $filename);
+    }
+
 }

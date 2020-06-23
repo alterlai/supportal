@@ -130,11 +130,11 @@
                                     <td>{{ history.updatedBy }}</td>
                                     <td>
                                         <a class="closemodal"
-                                           href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
+                                           href="{{ path('document.download.revision', {revisionId: history.id, fileType: "dwg"}) }}">
                                             DWG
                                         </a>
                                         <a class="closemodal"
-                                           href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
+                                           href="{{ path('document.download.revision', {revisionId: history.id, fileType: "pdf"}) }}">
                                             PDF
                                         </a>
                                     </td>
