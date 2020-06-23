@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Repository\DocumentRepository;
 use App\Service\IssueHandlerService;
 use App\Service\UserActionService;
-use DateTime;
-use Monolog\DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

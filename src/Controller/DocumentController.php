@@ -112,7 +112,7 @@ class DocumentController extends AbstractController
             throw new \Exception("Unknown document number");
         }
 
-        return $this->render('pages/document.html.twig', ['document' => $document, 'documentHistory' => $history, 'canDoRevision' => $canDoRevision]);
+        return $this->render('documents/show.html.twig', ['document' => $document, 'documentHistory' => $history, 'canDoRevision' => $canDoRevision]);
     }
 
     /**
