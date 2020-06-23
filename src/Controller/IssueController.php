@@ -78,14 +78,6 @@ class IssueController extends AbstractController
                     return $this->redirectToRoute("issue.show", ['id' => $issue->getId()]);
                 }
 
-                $newFileName = $documentNameParserService->generateFileNameFromEntities(
-                    $issue->getDocument()->getBuilding(),
-                    $issue->getDocument()->getDiscipline(),
-                    $issue->getDocument()->getDocumentType(),
-                    $issue->getDocument()->getFloor(),
-                    ($issue->getDocument()->getVersion()),
-                    ".dwg"
-                );
                 $draft = new DocumentDraft();
 
                 $draft->setDocument($issue->getDocument());
@@ -93,8 +85,6 @@ class IssueController extends AbstractController
                 $draft->setUploadedAt(new \DateTime("now"));
                 $draft->setUploadedBy($issue->getIssuedTo());
                 $draft->setDraftStatus($draftStatus);
-
-                $draft->setFileName("test.dwg");
                 $entityManager->persist($draft);
                 $entityManager->remove($issue);
 

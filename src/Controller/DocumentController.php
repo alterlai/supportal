@@ -106,6 +106,7 @@ class DocumentController extends AbstractController
 
         $maxDeadlineDate = new \DateTime($this->getParameter("max_revision_time"));
         $minDeadlineDate = new \DateTime("now +1 day");
+        $defaultDeadlineDate = new \DateTime("now +2 weeks");
 
         if (
             $documentDraftRepository->getOpenDocumentDraftsByDocument($document) || $document->getIssue())
@@ -123,7 +124,8 @@ class DocumentController extends AbstractController
             'documentHistory' => $history,
             'canDoRevision' => $canDoRevision,
             'maxDeadlineDate' => $maxDeadlineDate,
-            'minDeadlineDate' => $minDeadlineDate
+            'minDeadlineDate' => $minDeadlineDate,
+            'defaultDeadlineDate' => $defaultDeadlineDate
         ]);
     }
 
