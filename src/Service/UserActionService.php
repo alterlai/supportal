@@ -17,14 +17,17 @@ class UserActionService
         $this->entityManager = $entityManager;
     }
 
-    public function createUserAction(User $user, Document $document, ?DateTimeImmutable $deadline, string $filetype)
+    public function createUserAction(User $user, Document $document, ?DateTimeImmutable $deadline, string $filetype, bool $hasDeadline)
     {
         $userAction = new UserAction();
         $userAction->setUser($user);
         $userAction->setDocument($document);
         $userAction->setDownloadedAt(new DateTimeImmutable("now"));
-        $userAction->setDeadline($deadline);
         $userAction->setFileType($filetype);
+        if ($hasDeadline)
+        {
+            $userAction->setDeadline($deadline);
+        }
 
         $this->entityManager->persist($userAction);
         $this->entityManager->flush();

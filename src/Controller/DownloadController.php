@@ -32,7 +32,7 @@ class DownloadController extends AbstractController
     {
         $document = $documentRepository->find($documentId);
         $requestType = $request->query->get("type");
-        $issue = $request->query->get("issue");
+        $withIssue = $request->query->get("issue");
         $deadline = new \DateTimeImmutable("now +2 weeks");
 
         if (!$document)
@@ -47,12 +47,12 @@ class DownloadController extends AbstractController
             case "dwg":
                 $filename = $document->getFileName();
                 $basedir = $this->getParameter("document_upload_directory");
-                $userActionService->createUserAction($this->getUser(), $document, $deadline, "dwg");
+                $userActionService->createUserAction($this->getUser(), $document, $deadline, "dwg", $withIssue);
                 break;
             case "pdf":
                 $filename = $document->getPdfFilename();
                 $basedir = $this->getParameter("pdf_upload_directory");
-                $userActionService->createUserAction($this->getUser(), $document, null, "pdf");
+                $userActionService->createUserAction($this->getUser(), $document, null, "pdf", $withIssue);
                 break;
             default:
                 return $this->render("errors/error.html.twig", ['message' => "Geen geldig bestandstype. Probeer het opnieuw."]);
@@ -66,7 +66,7 @@ class DownloadController extends AbstractController
         }
 
         /** If the user is planning to return the document, we need to add it to the issue table */
-        if ($issue == true)
+        if ($withIssue)
         {
             // If the user doesn't have the correct permissions
             if(!$this->isGranted("ROLE_LEVERANCIER"))

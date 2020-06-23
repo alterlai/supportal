@@ -99,7 +99,7 @@ class IssueController extends AbstractController
                 $entityManager->remove($issue);
 
                 // Add submission to user action
-                $userAction = $userActionRepository->findLastDWGByUserAndDocument($issue->getIssuedTo(), $issue->getDocument());
+                $userAction = $userActionRepository->findLastedRevisionUserHistory($issue->getIssuedTo(), $issue->getDocument());
                 $userAction->setReturnedAt(new \DateTime("now"));
 
                 $entityManager->flush();
@@ -153,7 +153,7 @@ class IssueController extends AbstractController
         }
 
         // Set user action delivery date to today. User has reserved the document until this point
-        $user_action = $userActionRepository->findLastDWGByUserAndDocument($user, $issue->getDocument());
+        $user_action = $userActionRepository->findLastedRevisionUserHistory($user, $issue->getDocument());
 
         $user_action->setReturnedAt(new \DateTime("now"));
 

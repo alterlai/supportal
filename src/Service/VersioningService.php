@@ -89,7 +89,7 @@ class VersioningService {
      */
     private function saveNewPDF(UploadedFile $newPdfFile, Document $currentDocument)
     {
-        $directory = $this->parameterBag->get('document_upload_directory');
+        $directory = $this->parameterBag->get('pdf_upload_directory');
 
         $newFileName = $this->documentNameParserService->generateFileNameFromEntities(
             $currentDocument->getBuilding(),
