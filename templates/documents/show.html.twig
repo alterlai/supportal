@@ -81,7 +81,7 @@
                         <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestPdf">PDF downloaden</button>
                         {# Alleen leveranciers en + mogen revisie doen#}
                         {% if is_granted("ROLE_LEVERANCIER") %}
-                            <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg">DWG downloaden</button>
+                            <button type="button" class="btn d-inline-block btn-info" data-toggle="modal" data-target="#requestDwg1">DWG downloaden</button>
                         {% else %}
                             <a class="closemodal" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
                                 <button type="button" class="btn btn-info">DWG downloaden</button>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="{{ path('document.download', {documentId: document.id, type: "PDF", issue: false}) }}">
-                        <button type="button" class="btn btn-info">Doorgaan</button>
+                        <button type="button" class="btn btn-info closeModal">Doorgaan</button>
                     </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
@@ -172,11 +172,11 @@
     </div>
 
     {#  DWG Opvragen modal  #}
-    <div class="modal fade" id="requestDwg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="requestDwg1" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">DWG opvragen</h5>
+                    <h5 class="modal-title">DWG opvragen 1/2</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -194,19 +194,59 @@
                 </div>
                 <div class="modal-footer">
                     {% if canDoRevision %}
-                        <a class="closemodal" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}">
-                            <button type="button" class="btn btn-info">Met revisie</button>
-                        </a>
+                        <button type="button" class="btn btn-info btn-next">Met revisie</button>
                     {% else %}
                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="Dit document is momenteel in revisie en kan pas opnieuw aangevraagd worden als dit is afgerond.">
                             <button disabled style="pointer-events: none;" type="button" class="btn btn-info">Met revisie</button>
                         </span>
                     {% endif %}
                     <a class="closemodal" href="{{ path('document.download', {documentId: document.id, type: "DWG", issue: false}) }}">
-                        <button type="button" class="btn btn-info">Zonder revisie</button>
+                        <button type="button" class="btn btn-info closeModal">Zonder revisie</button>
                     </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    {# Inleverdatum modal #}
+    <div class="modal fade" id="requestDwg2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{{ path('document.download', {documentId: document.id, type: "DWG", issue: true}) }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title">DWG opvragen 2/2</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Wanneer wordt de revisie uiterlijk opgeleverd?</p>
+                        <label>
+                            Datum: <input type="date" name="deadlineInput" required>
+                        </label>
+                        <input type="hidden" name="type" value="dwg">
+                        <input type="hidden" name="issue" value="true">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-prev">
+                            <svg class="bi bi-arrow-left" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 1 0 .708L3.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M2.5 8a.5.5 0 0 1 .5-.5h10.5a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            Terug
+                        </button>
+                        <button type="submit" class="btn btn-info closeModal">
+                            <svg class="bi bi-download" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z"/>
+                                <path fill-rule="evenodd" d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z"/>
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z"/>
+                            </svg>
+                            Download
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                    </div>
+                </form> {# Datum input form #}
             </div>
         </div>
     </div>

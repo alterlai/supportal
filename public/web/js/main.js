@@ -58,7 +58,30 @@ $(document).ready(function() {
     // Trigger all tooltips
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+
+    $("div[id^='requestDwg']").each(function(){
+
+        var currentModal = $(this);
+
+        //click next
+        currentModal.find('.btn-next').click(function(){
+            currentModal.modal('hide');
+            currentModal.closest("div[id^='requestDwg']").nextAll("div[id^='requestDwg']").first().modal('show');
+        });
+
+        //click prev
+        currentModal.find('.btn-prev').click(function(){
+            currentModal.modal('hide');
+            currentModal.closest("div[id^='requestDwg']").prevAll("div[id^='requestDwg']").first().modal('show');
+        });
+
+    });
+
+    $(".closeModal").click(function() {
+        var currentModal = $(this).closest(".modal").modal('hide');
+    });
+
 
 
     //

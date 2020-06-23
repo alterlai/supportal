@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Exception\InvalidDeadlineException;
 use App\Repository\DocumentHistoryRepository;
 use App\Repository\DocumentRepository;
 use App\Service\IssueHandlerService;
@@ -34,13 +35,13 @@ class DownloadController extends AbstractController
         $document = $documentRepository->find($documentId);
         $requestType = strtolower($request->query->get("type"));
         $withIssue = $request->query->get("issue");
-        $deadline = new \DateTimeImmutable("now +2 weeks");
+        $deadline = new \DateTimeImmutable($request->query->get("deadlineInput"));
 
         if (!$document) {
             $this->addFlash("danger", "Oeps, er ging iets fout. Dat document bestaat niet. Neem contact op met een administrator.");
             return $this->redirectToRoute("document", ['documentId' => $documentId]);
         }
-        
+
         // Get correct file from request type
         switch ($requestType) {
             case "dwg":
@@ -63,7 +64,15 @@ class DownloadController extends AbstractController
         }
 
         // Only add user action after the file is available
-        $userActionService->createUserAction($this->getUser(), $document, null, $requestType, $withIssue);
+        try
+        {
+            $userActionService->createUserAction($this->getUser(), $document, $deadline, $requestType, $withIssue);
+        }
+        catch (\Exception $e)
+        {
+            $this->addFlash("danger", $e->getMessage());
+            return $this->redirectToRoute("document", ['documentId' => $documentId]);
+        }
 
         /** If the user is planning to return the document, we need to add it to the issue table */
         if ($withIssue) {
