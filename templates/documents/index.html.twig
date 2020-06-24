@@ -48,7 +48,7 @@
                             <ul class="list-group list-unstyled subfilter">
                                 {% for documentType in documentTypeGroup %}
                                     <label>
-                                        <input type="checkbox" name="documentTypes" value="{{ documentType.code }}">
+                                        <input type="checkbox" name="documentTypes" value="{{ documentType.id }}">
                                         {{ documentType.name }}
                                     </label>
                                 {% endfor %}
