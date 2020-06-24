@@ -354,11 +354,32 @@ background {
     margin-top: auto;
     clear: both;
     width: 100%;
+    background: var(--antraciet);
 }
 .footer-content {
     margin-top: 50px;
     padding-top: 50px;
     padding-bottom: 50px;
-    background: var(--antraciet);
 }
 
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.footer-content img {
+    max-height: 50px;
+}
+.footer-content ul {
+    list-style: none;
+}
+.footer-content ul a {
+    color: white;
+}
+.footer-content > div:last-child {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+#copyright {color: white;}
