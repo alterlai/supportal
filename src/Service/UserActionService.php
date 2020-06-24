@@ -70,7 +70,7 @@ class UserActionService
 
         if ($deadline > $max_deadline)
         {
-            throw new InvalidDeadlineException("Deadline kan niet langer zijn dan 1 maand");
+            throw new InvalidDeadlineException("Deadline kan niet langer zijn dan 1 jaar.");
         }
     }
 }
