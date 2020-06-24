@@ -8,9 +8,9 @@ easy_admin:
                 title: "Gebruikers"
                 fields:
                     - id
+                    - username
                     - { property: 'organisation.name', label: 'Organisation' }
                     - role
-                    - username
                     - email
                     - { property: 'suspended', label: 'Geblokkeerd'}
             form:
@@ -22,12 +22,18 @@ easy_admin:
                     - { property: 'email', type: 'email' }
                     - { property: 'suspended', label: 'Geblokkeerd'}
                     - { type: 'section', label: 'Password'}
-                    - {'property': 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: false, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
+                    - { property : 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: false, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
 
         Area:
             class: App\Entity\Area
         Building:
             class: App\Entity\Building
+            form:
+                fields:
+                    - name
+                    - code
+                    - description
+                    - { property: 'location', }
         Location:
             class: App\Entity\Location
         Discipline:
@@ -57,8 +63,25 @@ easy_admin:
                     - { property: 'discipline', type_options: { required: true } }
                     - { property: 'documentType', type_options: { required: true } }
                     - { property: 'version', type_options: { required: true } }
+            edit:
+                fields:
+                    - { property: 'file_content', type: 'vich_file', type_options: { required: false }}
+                    - { property: 'pdf_file', type: 'vich_file', type_options: { required: false }}
+                    - description
+                    - location
+                    - building
+                    - floor
+                    - area
+                    - { property: 'discipline', type_options: { required: true } }
+                    - { property: 'documentType', type_options: { required: true } }
+                    - { property: 'version', type_options: { required: true } }
         Organisation:
             class: App\Entity\Organisation
+            form:
+                fields:
+                    - { property: 'name', type: 'text'}
+                    - { property: 'logo' }
+                    - { property: 'color', type: 'color' }
         Draft:
             class: App\Entity\DocumentDraft
         DocumentHistory:

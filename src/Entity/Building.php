@@ -133,6 +133,34 @@ class Building
 
         return $this;
     }
+    
+    public function getAreas(): Collection
+    {
+        return $this->areas;
+    }
+
+    public function addArea(Area $area): self
+    {
+        if (!$this->areas->contains($area)) {
+            $this->areas[] = $area;
+            $area->setBuilding($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArea(Area $area): self
+    {
+        if ($this->areas->contains($area)) {
+            $this->areas->removeElement($area);
+            // set the owning side to null (unless already changed)
+            if ($area->getBuilding() === $this) {
+                $area->setBuilding(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getDescription(): ?string
     {

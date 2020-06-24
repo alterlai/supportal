@@ -47,6 +47,7 @@ class Location
     public function __construct()
     {
         $this->documents = new ArrayCollection();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +132,19 @@ class Location
         if (!$this->buildings->contains($building)) {
             $this->buildings[] = $building;
             $building->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuildings(Building $building): self
+    {
+        if ($this->buildings->contains($building)) {
+            $this->buildings->removeElement($building);
+            // set the owning side to null (unless already changed)
+            if ($building->getLocation() === $this) {
+                $building->setLocation(null);
+            }
         }
 
         return $this;
