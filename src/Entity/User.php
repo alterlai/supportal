@@ -66,6 +66,11 @@ class User implements UserInterface
      */
     private $lastLogin;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $suspended;
+
     public function __construct()
     {
         $this->issues = new ArrayCollection();
@@ -290,6 +295,18 @@ class User implements UserInterface
     public function setLastLogin(?\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function isSuspended(): ?bool
+    {
+        return $this->suspended;
+    }
+
+    public function setSuspended(bool $suspended): self
+    {
+        $this->suspended = $suspended;
 
         return $this;
     }

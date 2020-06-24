@@ -36,6 +36,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findInactiveUsers()
+    {
+        $threshold = new \DateTime("now -6 months");
+
+        return $this->createQueryBuilder('u')
+            ->where('u.lastLogin < :threshold')
+            ->setParameter("threshold", $threshold)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

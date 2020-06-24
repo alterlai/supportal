@@ -26,6 +26,7 @@ class AdminController extends EasyAdminController
     {
         $encodedPassword = $this->passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($encodedPassword);
+        $user->setSuspended(0);
 
         parent::persistEntity($user);
     }

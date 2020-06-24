@@ -27,7 +27,7 @@ class SendUserActivityReportCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('reporting:mail')
+            ->setName('iqsupport:reporting:mail')
             ->setDescription('Compile user activity and send it to the recipient.')
             ->addArgument('recipient', InputArgument::REQUIRED, 'Email of the recipient e.g. test@gmail.com')
             ->addArgument('grouping', InputArgument::REQUIRED, 'Grouping by user or organisation. use \'org\' or \'user\'')

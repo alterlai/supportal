@@ -5,13 +5,14 @@ easy_admin:
             class: App\Entity\User
             label: "Users"
             list:
-                title: "Most recent users"
+                title: "Gebruikers"
                 fields:
                     - id
                     - { property: 'organisation.name', label: 'Organisation' }
                     - role
                     - username
                     - email
+                    - { property: 'suspended', label: 'Geblokkeerd'}
             form:
                 fields:
                     - { type: 'section', label: 'Information' }
@@ -19,6 +20,7 @@ easy_admin:
                     - username
                     - { property: 'role', type: 'choice', type_options: { choices: { 'Administrator': 'ROLE_ADMIN', 'Leverancier': 'ROLE_LEVERANCIER', 'Opdrachtgever': 'ROLE_OPDRACHTGEVER'}}}
                     - { property: 'email', type: 'email' }
+                    - { property: 'suspended', label: 'Geblokkeerd'}
                     - { type: 'section', label: 'Password'}
                     - {'property': 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: false, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
 
@@ -26,6 +28,8 @@ easy_admin:
             class: App\Entity\Area
         Building:
             class: App\Entity\Building
+        Location:
+            class: App\Entity\Location
         Discipline:
             class: App\Entity\Discipline
         Document:
@@ -57,8 +61,13 @@ easy_admin:
             class: App\Entity\Organisation
         Draft:
             class: App\Entity\DocumentDraft
+        DocumentHistory:
+            class: App\Entity\DocumentHistory
+        Issue:
+            class: App\Entity\Issue
 
     design:
+        brand_color: '#e6382f'
         form_theme:
             - 'form_div_layout.html.twig'
             - '@EasyAdmin/form/bootstrap_4.html.twig'

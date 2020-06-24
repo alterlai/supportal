@@ -23,7 +23,7 @@ class ImportDisciplinesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('import:disciplines')
+            ->setName('iqsupport:import:disciplines')
             ->setDescription('Import disciplines CSV into Doctrine');
     }
 
