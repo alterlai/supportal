@@ -68,7 +68,7 @@
                             <ul class="list-group list-unstyled subfilter">
                                 {% for discipline in disciplineGroup %}
                                     <label>
-                                        <input type="checkbox" class="checkbox" name="disciplineGroup" value="{{ discipline.code }}">
+                                        <input type="checkbox" class="checkbox" name="disciplineGroup" value="{{ discipline.id }}">
                                         [{{ discipline.code }}] {{ discipline.description|lower }}
                                     </label>
                                 {% endfor %}

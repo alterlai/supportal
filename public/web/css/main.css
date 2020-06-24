@@ -303,6 +303,7 @@ background {
     /*padding: 10px;*/
     display: none;
 }
+.subfilter label { display: block;}
 
 #listing { width: 100%;}
 #listing td { padding: 10px 5px;}

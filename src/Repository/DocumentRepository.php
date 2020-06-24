@@ -146,4 +146,81 @@ class DocumentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+
+    public function findWithFilter2(UserInterface $user, array $buildings = null, array $disciplines = null, $floor = null, array $documentTypes = null)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        $qb->innerJoin('d.location', 'l', 'WITH', 'd.location = l.id');
+        $qb->innerJoin('l.organisation', 'o', 'WITH',  'l.organisation = o.id');
+        $qb->innerJoin('o.users', 'u', 'WITH', 'u.organisation = o.id');
+
+        $clauses = "";
+
+        if ($buildings)
+        {
+            foreach($buildings as $i => $buildingId)
+            {
+                if ($i == 0)
+                    $clauses .= "(d.building = :buildingId".$i;
+                else
+                    $clauses .= " OR d.building = :buildingId".$i;
+
+                $qb->setParameter("buildingId$i", $buildingId);
+            }
+            $clauses .= ")";
+        }
+
+        if ($disciplines)
+        {
+            if ($buildings) $clauses .= " AND ";
+            foreach($disciplines as $i => $discipline)
+            {
+                if ($i == 0)
+                    $clauses .= " (d.discipline = :discipline".$i;
+                else
+                    $clauses .= " OR d.discipline = :discipline".$i;
+
+                $qb->setParameter("discipline$i", $discipline);
+            }
+            $clauses .= ")";
+        }
+
+        if ($documentTypes)
+        {
+            if ($buildings || $disciplines) $clauses .= " AND ";
+            foreach($documentTypes as $i => $documentType)
+            {
+                if ($i == 0)
+                    $clauses .= " (d.documentType = :documentType".$i;
+                else
+                    $clauses .= " OR d.documentType = :documentType".$i;
+
+                $qb->setParameter("documentType$i", $documentType);
+            }
+            $clauses .= ")";
+        }
+
+        // Filter on floor level
+        if ($floor !== null && strlen($floor) > 0)
+        {
+            if ($buildings || $disciplines || $documentTypes)
+                $clauses .= " AND ";
+            $clauses .= " d.floor = $floor";
+        }
+
+        $qb->where("u.id = :userId");
+
+        if ($clauses)
+            $qb->andWhere($clauses);
+
+        $qb->setParameter("userId", $user->getId());
+
+//        echo($qb->getDQL());
+//        die();
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

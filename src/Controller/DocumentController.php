@@ -149,7 +149,7 @@ class DocumentController extends AbstractController
         $floor = $request->query->get('floor');
 
         /** @var ArrayCollection|Document[] $documents */
-        $documents = $documentRepository->findWithFilter($this->getUser(), $buildings, $disciplineGroups, $floor, $documentTypes);
+        $documents = $documentRepository->findWithFilter2($this->getUser(), $buildings, $disciplineGroups, $floor, $documentTypes);
 
         $jsonData = array();
 
