@@ -147,7 +147,15 @@ class DocumentRepository extends ServiceEntityRepository
     }
 
 
-
+    /**
+     * Dit is echt een pure dumpsterfire.
+     * @param UserInterface $user
+     * @param array|null $buildings
+     * @param array|null $disciplines
+     * @param null $floor
+     * @param array|null $documentTypes
+     * @return mixed
+     */
     public function findWithFilter2(UserInterface $user, array $buildings = null, array $disciplines = null, $floor = null, array $documentTypes = null)
     {
         $qb = $this->createQueryBuilder('d');
