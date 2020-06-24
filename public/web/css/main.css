@@ -354,8 +354,8 @@ background {
     margin-top: auto;
     clear: both;
     width: 100%;
-    background: var(--antraciet);
 }
+.footer-background { background: var(--antraciet);}
 .footer-content {
     margin-top: 50px;
     padding-top: 50px;
@@ -367,16 +367,21 @@ background {
     justify-content: space-between;
     padding-left: 20px;
     padding-right: 20px;
+    flex-wrap: wrap;
 }
 .footer-content img {
     max-height: 50px;
+    margin-bottom: 20px;
 }
 .footer-content ul {
     list-style: none;
 }
 .footer-content ul a {
     color: white;
+    font-weight: 600;
+    font-size: 1rem;
 }
+.footer-content ul a:hover { text-decoration: none;}
 .footer-content > div:last-child {
     display: flex;
     flex-direction: column;
