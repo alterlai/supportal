@@ -61,6 +61,11 @@ class User implements UserInterface
      */
     private $userActions;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
     public function __construct()
     {
         $this->issues = new ArrayCollection();
@@ -273,6 +278,18 @@ class User implements UserInterface
                 $userAction->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }

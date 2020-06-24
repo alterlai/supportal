@@ -50,3 +50,8 @@ services:
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: console.command }
+
+    # Event listener for logins
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
