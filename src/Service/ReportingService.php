@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Exception\InvalidReportGroupingException;
+use App\Repository\BuildingRepository;
 use App\Repository\OrganisationRepository;
 use App\Repository\UserActionRepository;
 use App\Repository\UserRepository;
@@ -26,8 +27,9 @@ class ReportingService
     private $userRepository;
     private $generatedFiles;
     private $organisationRepository;
+    private $buildingRepository;
 
-    public function __construct(UserActionRepository $userActionRepository, ParameterBagInterface $parameterBag, Environment $twig, UserRepository $userRepository, OrganisationRepository $organisationRepository)
+    public function __construct(UserActionRepository $userActionRepository, ParameterBagInterface $parameterBag, Environment $twig, UserRepository $userRepository, OrganisationRepository $organisationRepository, BuildingRepository $buildingRepository)
     {
         $this->userActionRepository = $userActionRepository;
         $this->templating = $twig;
@@ -36,6 +38,7 @@ class ReportingService
         $this->userRepository = $userRepository;
         $this->generatedFiles = [];
         $this->organisationRepository = $organisationRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
 
@@ -82,6 +85,19 @@ class ReportingService
                     }
                 }
                 break;
+            case "building":
+                $allBuildings = $this->buildingRepository->findAll();
+                foreach ($allBuildings as $building)
+                {
+                    $buildingData = $this->userActionRepository->getGroupedByBuilding($building, $from, $to);
+                    // If there is actual data
+                    if ($buildingData){
+                        $this->generateWithBuildingTemplate($buildingData, $from, $to);
+                    }
+                }
+                break;
+
+
             default:
                 throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
@@ -140,6 +156,25 @@ class ReportingService
         $filename = $data[0]['organisation'].".pdf";
 
         $html =  $this->templating->render("pdf/organisation_report.html.twig", [
+            'data' => $data,
+            'imgdir' => $abs_img,
+            'projectdir' => $abs_proj,
+            'from' => $from,
+            'to' => $to
+        ]);
+
+        return $this->generatePDFFile($html, $absolutePDFDirectory, $filename);
+    }
+
+    private function generateWithBuildingTemplate(array $data, DateTime $from, DateTime $to, string $absolutePDFDirectory)
+    {
+        $abs_img = $this->paramterbag->get("absolute_image_directory");
+
+        $abs_proj = $this->paramterbag->get("kernel.project_dir");
+
+        $filename = $data[0]['building'].".pdf";
+
+        $html =  $this->templating->render("pdf/building_report.html.twig", [
             'data' => $data,
             'imgdir' => $abs_img,
             'projectdir' => $abs_proj,
