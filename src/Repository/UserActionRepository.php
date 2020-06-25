@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\Document;
 use App\Entity\Organisation;
 use App\Entity\User;
@@ -81,6 +82,12 @@ class UserActionRepository extends ServiceEntityRepository
             ->setParameter("organisationId", $organisation->getId())
             ->getQuery()
             ->getResult();
+    }
+
+
+    public function getGroupedByBuilding(Building $building, \DateTime $from, \DateTime $to)
+    {
+
     }
 
     /**

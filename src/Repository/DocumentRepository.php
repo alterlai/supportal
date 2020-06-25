@@ -214,7 +214,7 @@ class DocumentRepository extends ServiceEntityRepository
         if ($floor !== null && strlen($floor) > 0)
         {
             if ($clauses) $clauses .= " AND ";
-            $clauses .= " d.floor = $floor";
+            $clauses .= " d.floor = '$floor'";
         }
 
         $qb->where("u.id = :userId");
