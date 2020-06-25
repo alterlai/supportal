@@ -56,36 +56,36 @@ class ReportingService
         // Temporary directory for PDF files
         $tempdir = $this->generateTempDirectory();
 
-        if ($grouping == "user")
+        switch ($grouping)
         {
-            $allUsers = $this->userRepository->findAll();
-            foreach ($allUsers as $user)
-            {
-                $userData = $this->userActionRepository->getFromUser($user, $from, $to);
-                // If there is actual userdata
-                if($userData)
+            case "user":
+                $allUsers = $this->userRepository->findAll();
+                foreach ($allUsers as $user)
                 {
-                    $this->generateWithUserTemplate($userData, $from, $to, $tempdir);
+                    $userData = $this->userActionRepository->getFromUser($user, $from, $to);
+                    // If there is actual userdata
+                    if($userData)
+                    {
+                        $this->generateWithUserTemplate($userData, $from, $to, $tempdir);
+                    }
                 }
-            }
-        }
-        elseif ($grouping == "org")
-        {
-            $allOrganisations = $this->organisationRepository->findAll();
-            foreach ($allOrganisations as $organisation)
-            {
-                $organisationData = $this->userActionRepository->getGroupedByOrganisation($organisation, $from, $to);
-                // If there is actual userdata
-                if($organisationData)
+                break;
+            case "org":
+                $allOrganisations = $this->organisationRepository->findAll();
+                foreach ($allOrganisations as $organisation)
                 {
-                    $this->generateWithOrganisationTemplate($organisationData, $from, $to, $tempdir);
+                    $organisationData = $this->userActionRepository->getGroupedByOrganisation($organisation, $from, $to);
+                    // If there is actual userdata
+                    if($organisationData)
+                    {
+                        $this->generateWithOrganisationTemplate($organisationData, $from, $to, $tempdir);
+                    }
                 }
-            }
+                break;
+            default:
+                throw new InvalidReportGroupingException("Onbekende grouping value.");
         }
-        else
-        {
-            throw new InvalidReportGroupingException("Onbekende grouping value.");
-        }
+
 
         return $this->createArchive($tempdir);
     }

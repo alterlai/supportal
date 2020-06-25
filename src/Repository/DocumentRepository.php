@@ -182,7 +182,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         if ($disciplines)
         {
-            if ($buildings) $clauses .= " AND ";
+            if ($clauses) $clauses .= " AND ";
             foreach($disciplines as $i => $discipline)
             {
                 if ($i == 0)
@@ -197,7 +197,7 @@ class DocumentRepository extends ServiceEntityRepository
 
         if ($documentTypes)
         {
-            if ($buildings || $disciplines) $clauses .= " AND ";
+            if ($clauses) $clauses .= " AND ";
             foreach($documentTypes as $i => $documentType)
             {
                 if ($i == 0)
@@ -213,8 +213,7 @@ class DocumentRepository extends ServiceEntityRepository
         // Filter on floor level
         if ($floor !== null && strlen($floor) > 0)
         {
-            if ($buildings || $disciplines || $documentTypes)
-                $clauses .= " AND ";
+            if ($clauses) $clauses .= " AND ";
             $clauses .= " d.floor = $floor";
         }
 

@@ -22,7 +22,8 @@ class ReportType extends AbstractType
             ->add("grouping", ChoiceType::class, [
                 'choices' => [
                     'Per gebruiker' => "user",
-                    'Per organisatie' => "org"
+                    'Per organisatie' => "org",
+                    'Per gebouw' => "building"
                 ],
                 'label' => 'Gegroepeerd:',
                 'required' => true,
