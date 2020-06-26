@@ -92,7 +92,7 @@ class ReportingService
                     $buildingData = $this->userActionRepository->getGroupedByBuilding($building, $from, $to);
                     // If there is actual data
                     if ($buildingData){
-                        $this->generateWithBuildingTemplate($buildingData, $from, $to);
+                        $this->generateWithBuildingTemplate($buildingData, $from, $to, $tempdir);
                     }
                 }
                 break;

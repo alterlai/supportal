@@ -90,31 +90,34 @@ class UserActionRepository extends ServiceEntityRepository
      * SELECT user.username, building.name, COUNT(action.file_type) as total_downloads, action.file_type
     FROM user_action as action
     INNER JOIN user ON user.id = action.user_id
-    INNER JOIN organisation ON organisation.id = user.organisation_id
-    INNER JOIN location ON organisation.id = location.organisation_id
-    INNER JOIN building ON location.id = building.location_id
-    GROUP BY action.file_type, building.name
+    INNER JOIN document ON action.document_id = document.id
+    INNER JOIN building ON document.building_id = building.id
+    WHERE building.id = 7
+    GROUP BY action.file_type, building.id, user.id
     ORDER BY building.name
      * @param Building $building
      * @param \DateTime $from
      * @param \DateTime $to
+     * @return UserAction[]
      */
     public function getGroupedByBuilding(Building $building, \DateTime $from, \DateTime $to)
     {
-        $qb = $this->createQueryBuilder('ua')
-            ->innerJoin('action.user', 'user', 'WITH', 'action.user = user.id')
+        return $this->createQueryBuilder('ua')
+            ->innerJoin('ua.user', 'user', 'WITH', 'ua.user = user.id')
+            ->innerJoin('ua.document', 'd', 'WITH','ua.document = d.id')
+            ->innerJoin("d.building", 'b', 'WITH','d.building = b.id')
             ->innerJoin("user.organisation", 'o', 'WITH', 'user.organisation = o.id')
-            ->innerJoin("organisation.location", 'l', 'WITH', 'organisation.location = l.id')
-            ->innerJoin("location.building", 'b', 'WITH', 'location.building = b.id')
             ->select("user.username as username")
-            ->addSelect("COUNT(action.fileType) as downloads")
-            ->addSelect("action.fileType")
-            ->addSelect("SUM(DATE_DIFF(action.deadline, action.downloadedAt)) as gereserveerd")
-            ->addSelect("SUM(DATE_DIFF(action.returnedAt, action.downloadedAt)) as uitgeleend")
+            ->addSelect("COUNT(ua.fileType) as downloads")
+            ->addSelect("o.name as organisation")
+            ->addSelect("ua.fileType")
+            ->addSelect("SUM(DATE_DIFF(ua.deadline, ua.downloadedAt)) as gereserveerd")
+            ->addSelect("SUM(DATE_DIFF(ua.returnedAt, ua.downloadedAt)) as uitgeleend")
             ->addSelect("b.name as building")
-            ->where("action.downloadedAt BETWEEN :from AND :to")
+            ->where("ua.downloadedAt BETWEEN :from AND :to")
             ->andWhere("b.id = :buildingId")
-            ->groupBy('action.fileType, b.name')
+            ->groupBy('b.name, ua.fileType, ua.user')
+            ->orderBy("user.username")
             ->setParameter("from", $from)
             ->setParameter("to", $to)
             ->setParameter("buildingId", $building->getId())
