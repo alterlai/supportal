@@ -1,6 +1,5 @@
 code;description
 0.0;indirecte projectvoorzieningen
-0.1;werkterreininrichtingen
 0.10;indirecte projectvoorzieningen: werkterreininrichting, algemeen
 0.11;indirecte projectvoorzieningen: werkterreininrichting, bijkomende werken
 0.12;indirecte projectvoorzieningen: werkterreininrichting, personen/materiaalvoorzieningen
@@ -9,7 +8,6 @@ code;description
 0.15;indirecte projectvoorzieningen: werkterreininrichting, doorwerkvoorzieningen
 0.16;indirecte projectvoorzieningen: werkterreininrichting, voorzieningen belendende percelen
 0.17;indirecte projectvoorzieningen: werkterreininrichting, onderhoudsvoorzieningen
-0.2;materieelvoorzieningen
 0.20;indirecte projectvoorzieningen: materieelvoorzieningen, algemeen
 0.21;indirecte projectvoorzieningen: materieelvoorzieningen, transport
 0.22;indirecte projectvoorzieningen: materieelvoorzieningen, gereedschappen
@@ -23,13 +21,10 @@ code;description
 0.41;indirecte projectvoorzieningen: projectorganisatie, administratie
 0.42;indirecte projectvoorzieningen: projectorganisatie, uitvoering
 0.43;indirecte projectvoorzieningen: projectorganisatie, documentatie
-0.5;bedrijfsorganisatie
 0.50;indirecte projectvoorzieningen: bedrijfsorganisatie, algemeen
 0.51;indirecte projectvoorzieningen: bedrijfsorganisatie, bestuur en directie
 0.52;indirecte projectvoorzieningen: bedrijfsorganisatie, winstregelingen
 1;FUNDERINGEN
-10;gereserveerd
-11;Bodemvoorzieningen
 11.0;bodemvoorzieningen: algemeen
 11.1;bodemvoorzieningen: grond
 11.10;bodemvoorzieningen: grond, algemeen (verzamelniveau)
@@ -41,8 +36,6 @@ code;description
 11.20;bodemvoorzieningen: water, algemeen (verzamelniveau)
 11.24;bodemvoorzieningen: water, bemalingen
 11.25;bodemvoorzieningen: water, damwanden
-12;gereserveerd
-13;Vloeren op grondslag
 13.0;vloeren op grondslag: algemeen
 13.1;vloeren op grondslag: niet constructief
 13.10;vloeren op grondslag: niet constructief, algemeen (verzamelniveau)
@@ -54,9 +47,6 @@ code;description
 13.21;vloeren op grondslag: constructief, bodemafsluitingen
 13.22;vloeren op grondslag: constructief, vloeren als gebouwonderdeel
 13.25;vloeren op grondslag: constructief, grondverbeteringen
-14;gereserveerd
-15;gereserveerd
-16;Funderingsconstructies
 16.0;funderingsconstructies: algemeen
 16.1;funderingsconstructies: voeten en balken
 16.10;funderingsconstructies: voeten en balken, algemeen (verzamelniveau)
@@ -65,13 +55,11 @@ code;description
 16.13;funderingsconstructies: voeten en balken, fundatie poeren
 16.14;funderingsconstructies: voeten en balken, gevelwanden (200)
 16.15;funderingsconstructies: voeten en balken, grondverbeteringen
-16.2;funderingsconstructies: keerwanden
 16.20;funderingsconstructies: keerwanden, algemeen (verzamelniveau)
 16.21;funderingsconstructies: keerwanden, grondkerende wanden
 16.22;funderingsconstructies: keerwanden, waterkerende wanden
 16.23;funderingsconstructies: keerwanden, gevelwanden (200)
 16.25;funderingsconstructies: keerwanden, grondverbeteringen
-17;Paalfunderingen
 17.0;paalfunderingen: algemeen
 17.1;paalfunderingen: niet geheid
 17.10;paalfunderingen: niet geheid, algemeen (verzamelniveau)
@@ -86,11 +74,7 @@ code;description
 17.22;paalfunderingen: geheid, palen: ingeheide bekisting
 17.23;paalfunderingen: geheid, trekverankeringen
 17.25;paalfunderingen: geheid, damwandenfunderingen
-18;gereserveerd
-19;gereserveerd
 2;RUWBOUW
-20;gereserveerd
-21;Buitenwanden
 21.0;buitenwanden: algemeen
 21.1;buitenwanden: niet constructief
 21.10;buitenwanden: niet constructief, algemeen (verzamelniveau)
@@ -106,7 +90,6 @@ code;description
 21.22;buitenwanden: constructief, spouwwanden
 21.23;buitenwanden: constructief, systeemwanden
 21.25;buitenwanden: constructief, borstweringen
-22;Binnenwanden
 22.0;binnenwanden: algemeen
 22.1;binnenwanden: niet constructief
 22.10;binnenwanden: niet constructief, algemeen (verzamelniveau)
@@ -119,7 +102,6 @@ code;description
 22.21;binnenwanden: constructief, massieve wanden
 22.22;binnenwanden: constructief, spouwwanden
 22.23;binnenwanden: constructief, systeemwanden: vast
-23;Vloeren
 23.0;vloeren: algemeen
 23.1;vloeren: niet constructief
 23.10;vloeren: niet constructief, algemeen (verzamelniveau)
@@ -135,7 +117,6 @@ code;description
 23.23;vloeren: constructief, galerijen
 23.24;vloeren: constructief, bordessen
 23.25;vloeren: constructief, vloeren t.b.v. technische voorzieningen
-24;Trappen en hellingen
 24.0;trappen en hellingen: algemeen
 24.1;trappen en hellingen: trappen
 24.10;trappen en hellingen: trappen, algemeen (verzamelniveau)
@@ -153,9 +134,6 @@ code;description
 24.31;trappen en hellingen: ladders en klimijzers, ladders
 24.32;trappen en hellingen: ladders en klimijzers, klimijzers
 24.35;trappen en hellingen: ladders en klimijzers, bordessen
-25;gereserveerd
-26;gereserveerd
-27;Daken
 27.0;daken: algemeen
 27.1;daken: niet constructief
 27.10;daken: niet constructief, algemeen (verzamelniveau)
@@ -171,7 +149,6 @@ code;description
 27.23;daken: constructief, luifels
 27.24;daken: constructief, overkappingen
 27.26;daken: constructief, gootconstructies
-28;Hoofddraagconstructies
 28.0;hoofddraagconstructies: algemeen
 28.1;hoofddraagconstructies: kolommen en liggers
 28.10;hoofddraagconstructies: kolommen en liggers, algemeen (verzamelniveau)
@@ -183,10 +160,7 @@ code;description
 28.3;hoofddraagconstructies: ruimteeenheden
 28.30;hoofddraagconstructies: ruimteeenheden, algemeen (verzamelniveau)
 28.31;hoofddraagconstructies: ruimteeenheden, doosconstructies
-29;gereserveerd
 3;AFBOUW
-30;gereserveerd
-31;Buitenwandopeningen
 31.0;buitenwandopeningen: algemeen
 31.1;buitenwandopeningen: niet gevuld
 31.10;buitenwandopeningen: niet gevuld, algemeen (verzamelniveau)
@@ -208,7 +182,6 @@ code;description
 31.4;buitenwandopeningen: gevuld met puien
 31.40;buitenwandopeningen: gevuld met puien, algemeen (verzamelniveau)
 31.41;buitenwandopeningen: gevuld met puien, gesloten puien
-32;Binnenwandopeningen
 32.0;binnenwandopeningen: algemeen
 32.1;binnenwandopeningen: niet gevuld
 32.10;binnenwandopeningen: niet gevuld, algemeen (verzamelniveau)
@@ -230,7 +203,6 @@ code;description
 32.4;binnenwandopeningen: gevuld met puien
 32.40;binnenwandopeningen: gevuld met puien, algemeen (verzamelniveau)
 32.41;binnenwandopeningen: gevuld met puien, gesloten puien
-33;Vloeropeningen
 33.0;vloeropeningen: algemeen
 33.1;vloeropeningen: niet gevuld
 33.10;vloeropeningen: niet gevuld, algemeen (verzamelniveau)
@@ -240,7 +212,6 @@ code;description
 33.20;vloeropeningen: gevuld, algemeen (verzamelniveau)
 33.21;vloeropeningen: gevuld, beloopbare vullingen
 33.22;vloeropeningen: gevuld, nietbeloopbare vullingen
-34;Balustrades en leuningen
 34.0;balustrades en leuningen: algemeen
 34.1;balustrades en leuningen: balustrades
 34.10;balustrades en leuningen: balustrades, algemeen (verzamelniveau)
@@ -250,9 +221,6 @@ code;description
 34.20;balustrades en leuningen: leuningen, algemeen (verzamelniveau)
 34.21;balustrades en leuningen: leuningen, binnenleuningen
 34.22;balustrades en leuningen: leuningen, buitenleuningen
-35;gereserveerd
-36;gereserveerd
-37;Dakopeningen
 37.0;dakopeningen: algemeen
 37.1;dakopeningen: niet gevuld
 37.10;dakopeningen: niet gevuld, algemeen (verzamelniveau)
@@ -265,29 +233,23 @@ code;description
 37.23;dakopeningen: gevuld, schuiframen
 37.24;dakopeningen: gevuld, ramen draaiend op een as
 37.25;dakopeningen: gevuld, combinatieramen
-38;Inbouwpakketten
 38.0;inbouwpakketten: algemeen
 38.1;inbouwpakketten
 38.10;inbouwpakketten: algemeen (verzamelniveau)
 38.11;inbouwpakketten: inbouwpakketten met te openen delen
 38.12;inbouwpakketten: inbouwpakketten met gesloten delen
-39;gereserveerd
 4;AFWERKINGEN
-40;gereserveerd
-41;Buitenwandafwerkingen
 41.0;buitenwandafwerkingen: algemeen
 41.1;buitenwandafwerkingen
 41.10;buitenwandafwerkingen: algemeen (verzamelniveau)
 41.11;buitenwandafwerkingen: afwerklagen
 41.12;buitenwandafwerkingen: bekledingen
 41.13;buitenwandafwerkingen: voorzetwanden
-42;Binnenwandafwerkingen
 42.0;binnenwandafwerkingen: algemeen
 42.1;binnenwandafwerkingen
 42.10;binnenwandafwerkingen: algemeen (verzamelniveau)
 42.11;binnenwandafwerkingen: afwerklagen
 42.12;binnenwandafwerkingen: bekledingen
-43;Vloerafwerkingen
 43.0;vloerafwerkingen: algemeen
 43.1;vloerafwerkingen: verhoogd
 43.10;vloerafwerkingen: verhoogd, algemeen (verzamelniveau)
@@ -298,7 +260,6 @@ code;description
 43.21;vloerafwerkingen: niet verhoogd, afwerklagen
 43.22;vloerafwerkingen: niet verhoogd, bekledingen
 43.23;vloerafwerkingen: niet verhoogd, systeemvloerafwerkingen
-44;Trap en hellingafwerkingen
 44.0;trap en hellingafwerkingen: algemeen
 44.1;trap en hellingafwerkingen: trapafwerkingen
 44.10;trap en hellingafwerkingen: trapafwerkingen, algemeen (verzamelniveau)
@@ -310,7 +271,6 @@ code;description
 44.21;trap en hellingafwerkingen: hellingafwerkingen, afwerklagen
 44.22;trap en hellingafwerkingen: hellingafwerkingen, bekledingen
 44.23;trap en hellingafwerkingen: hellingafwerkingen, systeemafwerkingen
-45;Plafondafwerkingen
 45.0;plafondafwerkingen: algemeen
 45.1;plafondafwerkingen: verlaagd
 45.10;plafondafwerkingen: verlaagd, algemeen (verzamelniveau)
@@ -325,8 +285,6 @@ code;description
 45.23;plafondafwerkingen: niet verlaagd, systeemafwerkingen
 45.24;plafondafwerkingen: niet verlaagd, koofconstructies
 45.25;plafondafwerkingen: niet verlaagd, gordijnplanken
-46;gereserveerd
-47;Dakafwerkingen
 47.0;dakafwerkingen: algemeen
 47.1;dakafwerkingen: afwerkingen
 47.10;dakafwerkingen: afwerkingen, algemeen (verzamelniveau)
@@ -344,16 +302,12 @@ code;description
 47.24;dakafwerkingen: bekledingen, overkapping bekledingen
 47.25;dakafwerkingen: bekledingen, beloopbare dak bekledingen
 47.26;dakafwerkingen: bekledingen, berijdbare dak  bekledingen
-48;Afwerkingpakketten
 48.0;afwerkingspakketten: algemeen
 48.1;afwerkingspakketten
 48.10;afwerkingspakketten: algemeen (verzamelniveau)
 48.11;afwerkingspakketten: naadloze afwerkingen
 48.12;afwerkingspakketten: overige afwerkingen
-49;gereserveerd
 5;INSTALLATIES WERKTUIGBOUWKUNDIG
-50;gereserveerd
-51;Warmteopwekking
 51.0;warmteopwekking: algemeen
 51.1;warmteopwekking: lokaal
 51.10;warmteopwekking: lokaal, algemeen (verzamelniveau)
@@ -390,7 +344,6 @@ code;description
 51.53;warmteopwekking: bijzonder, accumulatie
 51.54;warmteopwekking: bijzonder, aardwarmte
 51.55;warmteopwekking: bijzonder, kernenergie
-52;Afvoeren
 52.0;afvoeren: algemeen
 52.1;afvoeren: regenwater
 52.10;afvoeren: regenwater, algemeen (verzamelniveau)
@@ -425,7 +378,6 @@ code;description
 52.63;afvoeren: vast vuil, persluchtsysteem
 52.64;afvoeren: vast vuil, verdichtingsysteem
 52.65;afvoeren: vast vuil, verbrandingsysteem
-53;Water
 53.0;water: algemeen
 53.1;water: drinkwater
 53.10;water: drinkwater, algemeen (verzamelniveau)
@@ -457,7 +409,6 @@ code;description
 53.52;water: waterbehandeling, absorptiesysteem
 53.53;water: waterbehandeling, ontgassingsysteem
 53.54;water: waterbehandeling, destillatiesysteem
-54;Gassen
 54.0;gassen: algemeen
 54.1;gassen: brandstof
 54.10;gassen: brandstof, algemeen (verzamelniveau)
@@ -489,7 +440,6 @@ code;description
 54.50;gassen: bijzonder, algemeen (verzamelniveau)
 54.51;gassen: bijzonder, voorziening: zuivere gassen
 54.52;gassen: bijzonder, voorziening: menggassen
-55;Koudeopwekking en distributie
 55.0;koudeopwekking: algemeen
 55.1;koudeopwekking: lokaal
 55.10;koudeopwekking: lokaal, algemeen (verzamelniveau)
@@ -505,7 +455,6 @@ code;description
 55.3;koudeopwekking: distributie
 55.30;koudeopwekking: distributie, algemeen (verzamelniveau)
 55.31;koudeopwekking: distributie, distributiesystemen
-56;Warmtedistributie
 56.0;warmtedistributie: algemeen
 56.1;warmtedistributie: water
 56.10;warmtedistributie: water, algemeen (verzamelniveau)
@@ -526,7 +475,6 @@ code;description
 56.41;warmtedistributie: bijzonder, zonnewarmtesystemen
 56.42;warmtedistributie: bijzonder, aardwarmtesystemen
 56.43;warmtedistributie: bijzonder, centraal
-57;Luchtbehandeling
 57.0;luchtbehandeling: algemeen
 57.1;luchtbehandeling: natuurlijke ventilatie
 57.10;luchtbehandeling: natuurlijke ventilatie, algemeen (verzamelniveau)
@@ -551,7 +499,6 @@ code;description
 57.7;luchtbehandeling: centraal
 57.70;luchtbehandeling: centraal, algemeen (verzamelniveau)
 57.71;luchtbehandeling: centraal, luchtbehandelingsinstallatie
-58;Regeling klimaat en sanitair
 58.0;regeling klimaat en sanitair: algemeen
 58.1;regeling klimaat en sanitair: specifieke regelingen
 58.10;regeling klimaat en sanitair: specifieke regelingen, algemeen (verzamelniveau)
@@ -561,10 +508,7 @@ code;description
 58.20;regeling klimaat en sanitair: centrale melding, meting en sturing, algemeen (verzamelniveau)
 58.21;regeling klimaat en sanitair: centrale melding, meting en sturing, specifieke regeling
 58.22;regeling klimaat en sanitair: centrale melding, meting en sturing, gecombineerde regeling
-59;gereserveerd
 6;INSTALLATIES ELEKTROTECHNISCH
-60;gereserveerd
-61;Centrale elektrotechnische voorzieningen
 61.0;centrale elektrotechnische voorzieningen: algemeen
 61.1;centrale elektrotechnische voorzieningen: energie, noodstroom
 61.10;centrale elektrotechnische voorz.: energie, noodstroom, algemeen (verzamelniveau)
@@ -594,7 +538,6 @@ code;description
 61.7;centrale elektrotechnische voorzieningen: bliksemafleiding
 61.70;centrale elektrotechnische voorz.: bliksemafleiding, algemeen
 61.71;centrale elektrotechnische voorz.: bliksemafleiding
-62;Krachtstroom
 62.0;krachtstroom: algemeen
 62.1;krachtstroom: hoogspanning
 62.10;krachtstroom: hoogspanning, algemeen (verzamelniveau)
@@ -620,7 +563,6 @@ code;description
 62.51;krachtstroom: laagspanning, gecompenseerd, 220/230 V  380 V
 62.52;krachtstroom: laagspanning, gecompenseerd, 380 V  660 V
 62.53;krachtstroom: laagspanning, gecompenseerd, 660 V  1 kV
-63;Verlichting
 63.0;verlichting: algemeen
 63.1;verlichting: standaard, onbewaakt
 63.10;verlichting: standaard, onbewaakt, algemeen (verzamelniveau)
@@ -663,7 +605,6 @@ code;description
 63.73;verlichting: bijzonder, reclame, 42 V
 63.74;verlichting: bijzonder, reclame, 24 V
 63.75;verlichting: bijzonder, reclame, 1 kV en hoger
-64;Communicatie
 64.0;communicatie: algemeen
 64.1;communicatie: signalen
 64.10;communicatie: overdracht van signalen, algemeen (verzamelniveau)
@@ -694,7 +635,6 @@ code;description
 64.52;communicatie: geïntegreerde systemen, openbare netwerken
 64.6;communicatie: antenneinrichtingen
 64.60;communicatie: antenneinrichtingen, algemeen
-65;Beveiliging
 65.0;beveiliging: algemeen
 65.1;beveiliging: brand
 65.10;beveiliging: brand, algemeen (verzamelniveau)
@@ -721,7 +661,6 @@ code;description
 65.42;beveiliging: sociale alarmering, nooddetectie: open systemen
 65.5;beveiliging: milieuoverlast, detectie en alarmering
 65.50;beveiliging: milieuoverlast, detectie en alarmering, algemeen (verzamelniveau)
-66;Transport
 66.0;transport: algemeen
 66.1;transport: liften
 66.10;transport: liften, algemeen (verzamelniveau)
@@ -747,7 +686,6 @@ code;description
 66.41;transport: documenten, buizenpost
 66.42;transport: documenten, railcontainer banen
 66.44;transport: documenten, bandtransportmiddelen
-67;Gebouwbeheervoorzieningen
 67.0;gebouwbeheervoorzieningen: algemeen
 67.1;gebouwbeheervoorzieningen: bediening en signalering
 67.10;gebouwbeheervoorzieningen: bediening en signalering, algemeen (verzamelniveau)
@@ -767,11 +705,7 @@ code;description
 67.32;gebouwbeheervoorz.: reg. klimaat en sanitair (op afstand), optische systemen
 67.33;gebouwbeheervoorz.: reg. klimaat en sanitair (op afstand), pneum. systemen
 67.34;gebouwbeheervoorz.: reg. klimaat en sanitair (op afstand), geïntegreerde systemen
-68;gereserveerd
-69;gereserveerd
 7;VASTE VOORZIENINGEN
-70;gereserveerd
-71;Vaste verkeersvoorzieningen
 71.0;vaste verkeersvoorzieningen: algemeen
 71.1;vaste verkeersvoorzieningen: standaard
 71.10;vaste verkeersvoorzieningen: standaard, algemeen (verzamelniveau)
@@ -784,7 +718,6 @@ code;description
 71.21;vaste verkeersvoorzieningen: bijzonder, meubileringen
 71.22;vaste verkeersvoorzieningen: bijzonder, bewegwijzeringen
 71.23;vaste verkeersvoorzieningen: bijzonder, specifieke voorzieningen
-72;Vaste gebruikersvoorzieningen
 72.0;vaste gebruikersvoorzieningen: algemeen
 72.1;vaste gebruikersvoorzieningen: standaard
 72.10;vaste gebruikersvoorzieningen: standaard, algemeen (verzamelniveau)
@@ -796,7 +729,6 @@ code;description
 72.20;vaste gebruikersvoorzieningen: bijzonder, algemeen (verzamelniveau)
 72.21;vaste gebruikersvoorzieningen: bijzonder, meubilering voor specifieke functiedoeleinden
 72.22;vaste gebruikersvoorzieningen: bijzonder, instrumenten/apparatuur
-73;Vaste keukenvoorzieningen
 73.0;vaste keukenvoorzieningen: algemeen
 73.1;vaste keukenvoorzieningen: standaard
 73.10;vaste keukenvoorzieningen: standaard, algemeen (verzamelniveau)
@@ -806,7 +738,6 @@ code;description
 73.20;vaste keukenvoorzieningen: bijzonder, algemeen (verzamelniveau)
 73.21;vaste keukenvoorzieningen: bijzonder, keukenmeubilering
 73.22;vaste keukenvoorzieningen: bijzonder, keukenapparatuur
-74;Vaste sanitaire voorzieningen
 74.0;vaste sanitaire voorzieningen: algemeen
 74.1;vaste sanitaire voorzieningen: standaard
 74.10;vaste sanitaire voorzieningen: standaard, algemeen (verzamelniveau)
@@ -817,7 +748,6 @@ code;description
 74.20;vaste sanitaire voorzieningen: bijzonder, algemeen (verzamelniveau)
 74.21;vaste sanitaire voorzieningen: bijzonder, sanitaire toestellen voor bijzondere toepassing
 74.22;vaste sanitaire voorzieningen: bijzonder, ingebouwde sanitaire voorzieningen
-75;Vaste onderhoudsvoorzieningen
 75.0;vaste onderhoudsvoorzieningen: algemeen
 75.1;vaste onderhoudsvoorzieningen: standaard
 75.10;vaste onderhoudsvoorzieningen: standaard, algemeen (verzamelniveau)
@@ -829,7 +759,6 @@ code;description
 75.21;vaste onderhoudsvoorzieningen: bijzonder, gebouwonderhoudsvoorzieningen
 75.22;vaste onderhoudsvoorzieningen: bijzonder, interieuronderhoudsvoorzieningen
 75.23;vaste onderhoudsvoorzieningen: bijzonder, gemechaniseerde gevelonderhoudsvoorzieningen
-76;Vaste opslagvoorzieningen
 76.0;vaste opslagvoorzieningen: algemeen
 76.1;vaste opslagvoorzieningen: standaard
 76.10;vaste opslagvoorzieningen: standaard, algemeen (verzamelniveau)
@@ -838,12 +767,7 @@ code;description
 76.20;vaste opslagvoorzieningen: bijzonder, algemeen (verzamelniveau)
 76.21;vaste opslagvoorzieningen: bijzonder, gemechaniseerde voorzieningen
 76.22;vaste opslagvoorzieningen: bijzonder, specifieke voorzieningen
-77;gereserveerd
-78;gereserveerd
-79;gereserveerd
 8;LOSSE INVENTARIS
-80;gereserveerd
-81;Losse verkeersinventaris
 81.0;losse verkeersinventaris: algemeen
 81.1;losse verkeersinventaris: standaard
 81.10;losse verkeersinventaris: standaard, algemeen (verzamelniveau)
@@ -856,7 +780,6 @@ code;description
 81.21;losse verkeersinventaris: bijzonder, meubilering
 81.22;losse verkeersinventaris: bijzonder, bewegwijzering
 81.23;losse verkeersinventaris: bijzonder, specifieke voorzieningen
-82;Losse gebruikersinventaris
 82.0;losse gebruikersinventaris: algemeen
 82.1;losse gebruikersinventaris: standaard
 82.10;losse gebruikersinventaris: standaard, algemeen (verzamelniveau)
@@ -867,7 +790,6 @@ code;description
 82.20;losse gebruikersinventaris: bijzonder, algemeen (verzamelniveau)
 82.21;losse gebruikersinventaris: bijzonder, meubilering voor specifieke functiedoeleinden
 82.22;losse gebruikersinventaris: bijzonder, instrumenten/apparatuur
-83;Losse keukeninventaris
 83.0;losse keukeninventaris: algemeen
 83.1;losse keukeninventaris: standaard
 83.10;losse keukeninventaris: standaard, algemeen (verzamelniveau)
@@ -880,7 +802,6 @@ code;description
 83.22;losse keukeninventaris: bijzonder, keukenapparatuur
 83.23;losse keukeninventaris: bijzonder, kleine keukeninventaris
 83.24;losse keukeninventaris: bijzonder, transportmiddelen
-84;Losse sanitaire inventaris
 84.0;losse sanitaire inventaris: algemeen
 84.1;losse sanitaire inventaris: standaard
 84.10;losse sanitaire inventaris: standaard, algemeen (verzamelniveau)
@@ -890,7 +811,6 @@ code;description
 84.2;losse sanitaire inventaris: bijzonder
 84.20;losse sanitaire inventaris: bijzonder, algemeen (verzamelniveau)
 84.21;losse sanitaire inventaris: bijzonder, sanitaire toestellen voor bijzondere toepassing
-85;Losse schoonmaakinventaris
 85.0;losse schoonmaakinventaris: algemeen
 85.1;losse schoonmaakinventaris: standaard
 85.10;losse schoonmaakinventaris: standaard, algemeen (verzamelniveau)
@@ -902,7 +822,6 @@ code;description
 85.21;losse schoonmaakinventaris: bijzonder, schoonmaakapparatuur
 85.22;losse schoonmaakinventaris: bijzonder, vuilopslag
 85.23;losse schoonmaakinventaris: bijzonder, vuiltransport
-86;Losse opslaginventaris
 86.0;losse opslaginventaris: algemeen
 86.1;losse opslaginventaris: standaard
 86.10;losse opslaginventaris: standaard, algemeen (verzamelniveau)
@@ -911,12 +830,7 @@ code;description
 86.20;losse opslaginventaris: bijzonder, algemeen (verzamelniveau)
 86.21;losse opslaginventaris: bijzonder, gemechaniseerde voorzieningen
 86.22;losse opslaginventaris: bijzonder, specifieke voorzieningen
-87;gereserveerd
-88;gereserveerd
-89;gereserveerd
 9;TERREIN
-90;gereserveerd
-90.0;terrein
 90.1;grondvoorzieningen
 90.10;terrein: grondvoorzieningen, algemeen (verzamelniveau)
 90.11;terrein: grondvoorzieningen, verwijderen obstakels
@@ -969,12 +883,3 @@ code;description
 90.81;terrein: terreininrichtingen, bijzonder, terreinmeubilering
 90.82;terrein: terreininrichtingen, bijzonder, specifieke voorzieningen
 90.83;terrein: terreininrichtingen, bijzonder, bijzondere verhardingen
-91;gereserveerd
-92;gereserveerd
-93;gereserveerd
-94;gereserveerd
-95;gereserveerd
-96;gereserveerd
-97;gereserveerd
-98;gereserveerd
-99;gereserveerd
