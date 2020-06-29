@@ -23,6 +23,7 @@ class UserFixtures extends Fixture
             ->setUsername("leverancier")
             ->setRole("ROLE_LEVERANCIER")
             ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
+            ->setSuspended(0)
             ->setEmail("levr@user.com");
         $user->setPassword($this->passwordEncoder->encodePassword($user, "leverancier"));
         $manager->persist($user);
@@ -30,6 +31,7 @@ class UserFixtures extends Fixture
         $user = (new User())
             ->setUsername("opdrachtgever")
             ->setRole("ROLE_OPDRACHTGEVER")
+            ->setSuspended(0)
             ->setPassword($this->passwordEncoder->encodePassword($user, "opdrachtgever"))
             ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
             ->setEmail("opdr@user.com");
@@ -38,6 +40,7 @@ class UserFixtures extends Fixture
         $user = (new User())
             ->setUsername("admin")
             ->setRole("ROLE_ADMIN")
+            ->setSuspended(0)
             ->setPassword($this->passwordEncoder->encodePassword($user, "admin"))
             ->setOrganisation($this->getReference(OrganisationFixtures::ORGANISATIE_REFERENCE))
             ->setEmail("admin@user.com");

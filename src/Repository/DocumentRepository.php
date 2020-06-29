@@ -186,9 +186,9 @@ class DocumentRepository extends ServiceEntityRepository
             foreach($disciplines as $i => $discipline)
             {
                 if ($i == 0)
-                    $clauses .= " (d.discipline = :discipline".$i;
+                    $clauses .= " (d.discipline BETWEEN  :discipline".$i." AND :discipline".$i." +10";
                 else
-                    $clauses .= " OR d.discipline = :discipline".$i;
+                    $clauses .= " OR d.discipline BETWEEN :discipline".$i." AND :discipline".$i." +10";
 
                 $qb->setParameter("discipline$i", $discipline);
             }

@@ -61,6 +61,7 @@ class DocumentController extends AbstractController
      * @param DisciplineRepository $disciplineRepository
      * @param DocumentRepository $documentRepository
      * @return Response
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function index(LocationRepository $locationRepository, DocumentTypeRepository $documentTypeRepository, DisciplineRepository $disciplineRepository, DocumentRepository $documentRepository)
     {
@@ -73,7 +74,7 @@ class DocumentController extends AbstractController
 
         $documentTypes = $documentTypeRepository->findAllAsArray();
 
-        $disciplines = $disciplineRepository->findAllAsGroupedArray();
+        $disciplines = $disciplineRepository->findGroups();
 
         return $this->render('documents/index.html.twig', [
             'documents' => $documents,

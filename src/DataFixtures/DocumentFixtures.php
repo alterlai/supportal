@@ -39,7 +39,7 @@ class DocumentFixtures extends Fixture implements DependentFixtureInterface
     {
         $this->loadDocumentTypes($manager);
         $this->loadDisciplines($manager);
-        $adminUser = $this->userRepository->findOneBy(["username-" => "admin"]);
+        $adminUser = $this->userRepository->findOneBy(["username" => "admin"]);
         $loader = new NativeLoader();
         /** @var Document[] $objectset */
         $objectset = $loader->loadData(
