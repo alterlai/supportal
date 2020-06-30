@@ -14,3 +14,6 @@ vich_uploader:
             uri_prefix: '%app.path.drafts%'
             upload_destination: '%draft_upload_directory%'
             namer: App\Service\DraftNamer
+        logos:
+            uri_prefix: '%app.path.logos%'
+            upload_destination: '%logo_upload_directory%'

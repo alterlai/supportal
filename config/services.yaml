@@ -7,7 +7,9 @@ parameters:
     app.path.documents: /documents
     app.path.pdf: /pdf
     app.path.drafts: /drafts
+    app.path.logos: /logos/
     pdf_upload_directory: '%kernel.project_dir%/public/pdf/'
+    logo_upload_directory: '%kernel.project_dir%/public/logos/'
     app.allowed_file_extensions: ['image/vnd.dwg']
     document_upload_directory: '%kernel.project_dir%/data/documents/'
     draft_upload_directory: '%kernel.project_dir%/data/drafts/'

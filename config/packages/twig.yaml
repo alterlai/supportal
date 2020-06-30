@@ -4,3 +4,4 @@ twig:
     globals:
         draft_directory: '%app.path.drafts%'
         document_directory: '%app.path.documents%'
+        logo_directory: '%app.path.logos%'

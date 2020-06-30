@@ -80,7 +80,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'name', type: 'text'}
-                    - { property: 'logo' }
+                    - { property: 'logoContent', type: 'vich_file', label: 'Logo'}
                     - { property: 'color', type: 'color' }
         Draft:
             class: App\Entity\DocumentDraft

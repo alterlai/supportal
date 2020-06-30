@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrganisationRepository")
+ * @Vich\Uploadable
  */
-class Organisation
+class Organisation implements \Serializable
 {
     /**
      * @ORM\Id()
@@ -24,9 +26,15 @@ class Organisation
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100)
+     * @var string
      */
-    private $logo;
+    private $logoFileName;
+
+    /**
+     * @Vich\UploadableField(mapping="logos", fileNameProperty="logoFileName")
+     */
+    private $logoContent;
 
     /**
      * @ORM\Column(type="string", length=7, nullable=true)
@@ -42,6 +50,11 @@ class Organisation
      * @ORM\OneToMany(targetEntity="App\Entity\Location", mappedBy="organisation")
      */
     private $locations;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
 
     public function __construct()
     {
@@ -67,16 +80,33 @@ class Organisation
         return $this;
     }
 
-    public function getLogo(): ?string
+    public function getLogoFileName(): ?string
     {
-        return $this->logo;
+        return $this->logoFileName;
     }
 
-    public function setLogo(?string $logo): self
+    public function setLogoFileName(?string $file_name): self
     {
-        $this->logo = $logo;
+        $this->logoFileName = $file_name;
 
         return $this;
+    }
+
+    public function getLogoContent()
+    {
+        return $this->logoContent;
+    }
+
+    public function setLogoContent($logoContent = null): void
+    {
+        $this->logoContent = $logoContent;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($logoContent) {
+            $this->updated_at = new \DateTime("now");
+        }
     }
 
     public function getColor(): ?string
@@ -156,5 +186,29 @@ class Organisation
         }
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+
+    public function serialize()
+    {
+        return serialize($this->id);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->id = unserialize($serialized);
+
     }
 }
