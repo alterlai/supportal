@@ -46,7 +46,6 @@ easy_admin:
                     - id
                     - filename
                     - { property: file_name, label: 'filename' }
-                    - { property: 'file_name', template: 'previews/pdf_preview.html.twig', base_path: '%app.path.documents%', label: 'Preview' }
                     - discipline
                     - building
                     - floor
@@ -76,12 +75,17 @@ easy_admin:
                     - { property: 'documentType', type_options: { required: true } }
                     - { property: 'version', type_options: { required: true } }
         Organisation:
+            list_actions: ['edit', 'show']
             class: App\Entity\Organisation
             form:
                 fields:
                     - { property: 'name', type: 'text'}
                     - { property: 'logoContent', type: 'vich_file', label: 'Logo'}
                     - { property: 'color', type: 'color' }
+            list:
+                fields:
+                    - { property: 'name', type: 'text'}
+                    - { property: 'logoFileName', type: 'image', label: 'Logo', base_path: '%app.path.logos%' }
         Draft:
             class: App\Entity\DocumentDraft
         DocumentHistory:
