@@ -18,12 +18,7 @@ use App\Entity\DocumentType;
  */
 class DocumentNameParserService
 {
-    public function getDocumentFromFilename()
-    {
-        return null;
-    }
-
-public function generateFileNameFromEntities(Building $building, Discipline $discipline, DocumentType $documentType, string $floor, int $revision, string $fileExtension)
+    public function generateFileNameFromEntities(Building $building, Discipline $discipline, DocumentType $documentType, string $floor, int $revision, string $fileExtension)
     {
         $name = (string) $building->getCode() . "-" . $floor . "-" . $discipline->getCode() . "." . $documentType->getCode() . "-000-" . $revision . $fileExtension;
         return $name;
