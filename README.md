@@ -241,4 +241,16 @@ Om met een user account de bestanden te kunnen bewerken, kan je het account toev
 ## Production environment
 Wanneer de installatie klaar is, open .env, en verander de `APP_ENV` variabele van `dev` naar `prod`
 
+## Genereer een admin account
+Om initeel toegang te krijgen tot de applicatie moet een admin account gegenereerd worden. Hiervoor is een command beschikbaar
+```
+ php bin/console iqsupport:generate:admin
+
+ ! [NOTE] Password: 58297494
+
+ [OK] Admin created!
+```
+Met dit commando wordt een admin account gegenereerd met het gegeven wachtwoord. Log nu in met username `admin` en het gegeven wachtwoord, en pas vervolgens het wachtwoord aan.
+
+
 
