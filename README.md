@@ -119,18 +119,7 @@ server {
 ```
 Voer vervolgens sudo service nginx reload uit om de configuratie te laden.
 
-### File permissies
-Omdat het Nginx accout (www-data) de bestanden moet kunnen lezen worden de file permissies ingesteld op de folderstructuur.
-```
-cd /var/www/html/
-mkdir supportal
-sudo chmod 775 supportal
-sudo chown www-data:www-data supportal
-```
-Om met een user account de bestanden te kunnen bewerken, kan je het account toevoegen aan de www-data groep.
-    ```
-    sudo usermod -a -G www-data [user account]
-    ```
+
 ### Composer
 Installeer composer met 
 ```
@@ -236,5 +225,20 @@ Installeer benodigde packages met
 composer install
 ```
 
+### File permissies
+Omdat het Nginx accout (www-data) de bestanden moet kunnen lezen worden de file permissies ingesteld op de folderstructuur.
+```
+cd /var/www/html/
+mkdir supportal
+sudo chmod 775 supportal
+sudo chown www-data:www-data supportal
+```
+Om met een user account de bestanden te kunnen bewerken, kan je het account toevoegen aan de www-data groep.
+    ```
+    sudo usermod -a -G www-data [user account]
+    ```
+    
+## Production environment
+Wanneer de installatie klaar is, open .env, en verander de `APP_ENV` variabele van `dev` naar `prod`
 
 

@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class GenerateAdminAccount extends Command
 {
@@ -42,7 +43,9 @@ class GenerateAdminAccount extends Command
 
             $org = new Organisation();
             $org->setName("IQSupport")
-                ->setColor("#000000");
+                ->setColor("#000000")
+                ->setLogoFileName("")
+                ->setUpdatedAt(new \DateTime("now"));
 
             $this->em->persist($org);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exception;
+namespace App\Exceptions;
 
 /**
  * Interface for custom defined exceptions.
