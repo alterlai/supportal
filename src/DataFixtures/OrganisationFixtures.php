@@ -18,6 +18,7 @@ class OrganisationFixtures extends Fixture
         $org = new Organisation();
         $org->setName('Hanzehogeschool');
         $org->setColor('#123456');
+        $org->setLogoFileName("");
         $this->addReference(self::ORGANISATIE_REFERENCE, $org);
 
         $manager->persist($org);
