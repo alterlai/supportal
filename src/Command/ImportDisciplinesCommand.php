@@ -33,7 +33,8 @@ class ImportDisciplinesCommand extends Command
 
         $io->title("Attempting to import disciplines...");
 
-        $reader = Reader::createFromPath('%kernel.root_dir%/../csv/nlsfb.csv', 'r');
+        $reader = Reader::createFromPath('%kernel.root_dir%/../csv/nlsfb.csv', 'r' );
+        $reader->addStreamFilter('convert.iconv.Windows-1252/UTF-8');
 
         $reader->setDelimiter(";");
 

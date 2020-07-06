@@ -34,6 +34,7 @@ class ImportDocumentTypesCommand extends Command
         $io->title("Attempting to import document types...");
 
         $reader = Reader::createFromPath('%kernel.root_dir%/../csv/documentTypes.csv', 'r');
+        $reader->addStreamFilter('convert.iconv.Windows-1252/UTF-8');
 
         $reader->setDelimiter(";");
 
