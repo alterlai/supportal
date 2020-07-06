@@ -52,16 +52,16 @@ easy_admin:
                     - documentType
             form:
                 fields:
-                    - { property: 'file_content', type: 'vich_file', type_options: { required: true }}
-                    - { property: 'pdf_file', type: 'vich_file', type_options: { required: true }}
-                    - description
-                    - location
-                    - building
-                    - floor
-                    - area
+                    - { property: 'file_content', label: 'DWG bestand', type: 'vich_file', type_options: { required: true }}
+                    - { property: 'pdf_file', label: 'PDF bestand', type: 'vich_file', type_options: { required: true }}
+                    - { property: 'description', label: 'Omschrijving document' }
+                    - {property: 'location', label: 'Locatie', type_options: { required: true }}
+                    - { property: 'building', label: 'Gebouw', type_options: { required: true }}
+                    - { property: 'floor', label: 'Verdieping' }
+                    - { property: 'area', label: 'Gebouwdeel' }
                     - { property: 'discipline', type_options: { required: true } }
-                    - { property: 'documentType', type_options: { required: true } }
-                    - { property: 'version', type_options: { required: true } }
+                    - { property: 'documentType', label: 'Document type', type_options: { required: true } }
+                    - { property: 'version', label: 'versie', type_options: { required: true } }
             edit:
                 fields:
                     - { property: 'file_content', type: 'vich_file', type_options: { required: false }}
