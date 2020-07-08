@@ -219,6 +219,9 @@ MAILER_URL=smtp://smtp.office365.com:587?encryption=tls&auth_mode=login&username
 ###< symfony/swiftmailer-bundle ###
 
 ```
+Een secret kan worden gegenereerd met behulp van de website http://nux.net/secret.
+
+
 Installeer benodigde packages met 
 ```
 composer install
