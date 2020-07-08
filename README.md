@@ -1,6 +1,5 @@
 
 # IQ support 
----
 
 ## Installatiehandleiding ## 
 
@@ -15,7 +14,7 @@ Dit document beschrijft de stappen om de webapplicatie te installeren op een nie
 
 ## Voorwaarden
 Om deze installatiehandleiding uit te voeren, dienen de volgende voorwaarden in orde te zijn.
-1.1.    Server
+1.1.	Server
 De server waarop de webapplicatie gehost wordt, moet aan de minimale systeemeisen voldoen.
 | Naam | Omschrijving |
 | ---- | ---- |
@@ -234,14 +233,16 @@ sudo chmod 775 supportal
 sudo chown www-data:www-data supportal
 ```
 Om met een user account de bestanden te kunnen bewerken, kan je het account toevoegen aan de www-data groep.
-    ```
-    sudo usermod -a -G www-data [user account]
-    ```
-    
-## Production environment
-Wanneer de installatie klaar is, open .env, en verander de `APP_ENV` variabele van `dev` naar `prod`
+	```
+	sudo usermod -a -G www-data [user account]
+	```
+	
+### Voorbereiding
+Genereer het database schema met het volgende commando
+```
+php bin/console doctrine:schema:create
+```
 
-## Genereer een admin account
 Om initeel toegang te krijgen tot de applicatie moet een admin account gegenereerd worden. Hiervoor is een command beschikbaar
 ```
  php bin/console iqsupport:generate:admin
@@ -252,5 +253,10 @@ Om initeel toegang te krijgen tot de applicatie moet een admin account gegeneree
 ```
 Met dit commando wordt een admin account gegenereerd met het gegeven wachtwoord. Log nu in met username `admin` en het gegeven wachtwoord, en pas vervolgens het wachtwoord aan.
 
+## Production environment
+Wanneer de installatie klaar is, open .env, en verander de `APP_ENV` variabele van `dev` naar `prod`
+
+## That's it!
+De applicatie is nu klaar voor gebruik. Klopt er iets niet aan deze handleiding; neem contact op met de auteur via jvanderlaan@iqsupportbv.nl
 
 
