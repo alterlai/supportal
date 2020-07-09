@@ -2,17 +2,14 @@
 
 namespace App\Command;
 
-use App\Entity\DocumentType;
 use App\Entity\Organisation;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Constraints\Date;
 
 class GenerateAdminAccount extends Command
 {

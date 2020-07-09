@@ -1,7 +1,8 @@
 {% block navbar %}
     <nav class="navbar navbar-dark bg-dark  flex-md-nowrap shadow navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="{{ path('home') }}">{{ app.user.organisation }}</a>
+{#            <a class="navbar-brand" href="{{ path('home') }}">{{ app.user.organisation }}</a>#}
+            <a class="navbar-brand" href="{{ path('home') }}"><img src="{{ asset(logo_directory ~ app.user.organisation.logoFileName) }}" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#pageNav"
                     aria-controls="pageNav" aria-expanded="false" aria-label="Navigatie">
                 <span class="navbar-toggler-icon"></span>

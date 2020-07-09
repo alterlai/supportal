@@ -57,6 +57,7 @@ label, .small_bold {
 .no-padding {padding: 0;}
 .pt-0\!{padding-top: 0 !important;}
 .overflow-scroll {overflow: auto; overflow-y: hidden;}
+.no-brand {border-top: 0 !important;}
 
 background {
     background: var(--bg-light);
@@ -77,6 +78,7 @@ background {
 .navbar .username { color: ghostwhite; }
 .navbar a.current {color: white !important; font-weight: 600;}
 .navbar a:hover {transition: .2s; color: white;}
+.navbar img {max-height: 35px; max-width: 200px;}
 
 /*
  * Card component
@@ -237,6 +239,62 @@ background {
 .building {
     padding: 10px;
 }
+
+/**
+ *  Home
+ */
+#home-banner {
+    background-image: url("/web/img/blueprint3.jpg");
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+#home-banner div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#home-banner p {
+    margin-bottom: 10%;
+    font-size: 1.5rem;
+}
+#home-banner h1 {
+    font-weight: 600;
+    font-size: 4rem;
+}
+#home-banner .card-block {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+#home-banner .card-block .card {
+    flex: 1 1 0px;
+    transition: .2s;
+}
+#home-banner .card-block .card:hover {
+    padding-left: 20px;
+    padding-right: 20px;
+    background: var(--bg_light_blue);
+}
+#home-banner .card-block .card:nth-child(2) {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+#home-banner .card-block .card a{ width: 100%; }
+#home-banner .card-block .card a:hover{ text-decoration: none; }
+#home-banner .card-block .card .card_body { width: 100%; }
+#home-banner .card-block .card .card_body hr { width: 100%; }
+#home-banner .card-block img {
+    height: 100%;
+    width: 100%;
+    max-height: 70px;
+    fill: #666666;
+}
+
 
 /**
  * Documents page

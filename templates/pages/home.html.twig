@@ -3,38 +3,49 @@
 {% block body %}
 {% include 'partials/navbar.html.twig' %}
 
-    <div class="container">
-        <ol class="breadcrumb shadow-sm bg-white">
-            <li class="breadcrumb-item">Home /</li>
-        </ol>
+    <div id="home-banner">
+        <div class="container-fluid h-100">
 
-        <div class="row">
-            <div class="col-sm-8">
-                <a href="{{ path("documents.index") }}">Documenten</a>
-                <br>
-                <img class="img-fluid" src="{{ asset(logo_directory ~ app.user.organisation.logoFileName) }}" alt="">
-            </div>
-            <div class="issues-container col-sm-4">
-                <div class="card">
-                    <div class="card_head">
-                        <h4 class="font-weight-bold">Openstaande tekeningen</h4>
-                    </div>
-                    <div class="card_body">
-                        {% for issue in issues %}
-                            <a href="{{ path('issue.show', {id: issue.id}) }}">
-                                {{ issue.document }}
-                                <br>
-                                {{ issue.issuedAt.format("d-m-Y H:m") }}
-                                <br>
-                                {{ issue.issueDeadline.format("d-m-Y H:m") }}
-                            </a>
-                        {% endfor %}
-                    </div>
+            <h1>Welkom {{ app.user.username }}</h1>
+
+            <p>Hier kan een verwelkomende tekst staan en eventueel het logo van de organisatie.</p>
+
+            <div class="card-block container">
+
+                <div class="card no-brand">
+                    <a href="{{ path('issue.index') }}">
+                        <div class="card_body">
+                            <img src="{{ asset('/web/img/policy.svg') }}" alt="">
+                            <hr>
+                            <h4>Openstaande tekeningen</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card no-brand">
+                    <a href="{{ path('documents.index') }}">
+                        <div class="card_body">
+                            <img src="{{ asset('/web/img/document.svg') }}" alt="">
+                            <hr>
+                            <h4>Tekeningen database</h4>
+                        </div>
+                    </a>
+                </div>
+                <div class="card no-brand">
+                    <a href="{{ path('profile') }}">
+                        <div class="card_body">
+                            <img src="{{ asset('/web/img/user.svg') }}" alt="">
+                            <hr>
+                            <h4>Profiel</h4>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
 
-
-
     </div>
+    <style>
+        .footer-content { margin-top: 0; }
+    </style>
+
 {% endblock %}
