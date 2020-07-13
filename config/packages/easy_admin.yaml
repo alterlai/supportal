@@ -3,21 +3,21 @@ easy_admin:
     entities:
         User:
             class: App\Entity\User
-            label: "Users"
+            label: "Gebruikers"
             list:
                 title: "Gebruikers"
                 fields:
                     - id
                     - username
-                    - { property: 'organisation.name', label: 'Organisation' }
-                    - role
-                    - email
+                    - { property: 'organisation.name', label: 'Organisatie' }
+                    - { property: 'role', label: "Rol" }
+                    - {property: 'email', label: 'E-mail' }
                     - { property: 'suspended', label: 'Geblokkeerd'}
             form:
                 fields:
-                    - { type: 'section', label: 'Information' }
-                    - { property: 'organisation', label: 'Organisation' }
-                    - username
+                    - { type: 'section', label: 'Informatie' }
+                    - { property: 'organisation', label: 'Organisatie', type_options: { required: true }}
+                    - { property: 'username', label: 'Username' }
                     - { property: 'role', type: 'choice', type_options: { choices: { 'Administrator': 'ROLE_ADMIN', 'Leverancier': 'ROLE_LEVERANCIER', 'Opdrachtgever': 'ROLE_OPDRACHTGEVER'}}}
                     - { property: 'email', type: 'email' }
                     - { property: 'suspended', label: 'Geblokkeerd'}
@@ -26,8 +26,10 @@ easy_admin:
 
         Area:
             class: App\Entity\Area
+            label: "Gebouwdeel"
         Building:
             class: App\Entity\Building
+            label: "Gebouw"
             form:
                 fields:
                     - name
@@ -36,6 +38,7 @@ easy_admin:
                     - { property: 'location', }
         Location:
             class: App\Entity\Location
+            label: "Locatie"
         Discipline:
             class: App\Entity\Discipline
         Document:
@@ -54,8 +57,8 @@ easy_admin:
                 fields:
                     - { property: 'file_content', label: 'DWG bestand', type: 'vich_file', type_options: { required: true }}
                     - { property: 'pdf_file', label: 'PDF bestand', type: 'vich_file', type_options: { required: true }}
-                    - { property: 'description', label: 'Omschrijving document' }
-                    - {property: 'location', label: 'Locatie', type_options: { required: true }}
+                    - { property: 'description', label: 'Omschrijving document', type: 'textarea' }
+                    - { property: 'location', label: 'Locatie', type_options: { required: true }}
                     - { property: 'building', label: 'Gebouw', type_options: { required: true }}
                     - { property: 'floor', label: 'Verdieping' }
                     - { property: 'area', label: 'Gebouwdeel' }
@@ -77,6 +80,7 @@ easy_admin:
         Organisation:
             list_actions: ['edit', 'show']
             class: App\Entity\Organisation
+            label: "Organisatie"
             form:
                 fields:
                     - { property: 'name', type: 'text'}
@@ -88,10 +92,13 @@ easy_admin:
                     - { property: 'logoFileName', type: 'image', label: 'Logo', base_path: '%app.path.logos%' }
         Draft:
             class: App\Entity\DocumentDraft
+            label: "Ingediende tekeningen"
         DocumentHistory:
             class: App\Entity\DocumentHistory
+            label: "Document revisie"
         Issue:
             class: App\Entity\Issue
+            label: "Openstaande tekeningen"
 
     design:
         brand_color: '#e6382f'
