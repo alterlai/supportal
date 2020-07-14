@@ -31,7 +31,7 @@ class Building
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10, unique=true)
      */
     private $code;
 
