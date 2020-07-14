@@ -248,6 +248,7 @@ background {
     height: 100%;
     width: 100%;
     background-size: cover;
+    min-height: 80%;
 }
 
 #home-banner div {

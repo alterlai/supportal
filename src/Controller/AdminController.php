@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\Organisation;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -46,6 +47,17 @@ class AdminController extends EasyAdminController
         $document->setUploadedBy($user);
 
         parent::persistEntity($document);
+    }
+
+    protected function persistOrganisationEntity(Organisation $organisation)
+    {
+        if ($organisation->getLogoFileName() == null)
+        {
+            $organisation->setLogoFileName("");
+        }
+        $organisation->setUpdatedAt(new \DateTime('now'));
+
+        parent::persistEntity($organisation);
     }
 
 
