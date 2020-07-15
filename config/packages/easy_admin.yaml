@@ -22,11 +22,18 @@ easy_admin:
                     - { property: 'email', type: 'email' }
                     - { property: 'suspended', label: 'Geblokkeerd'}
                     - { type: 'section', label: 'Password'}
+                    - { property : 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: true, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
+            edit:
+                fields:
                     - { property : 'password', type: 'repeated', type_options: { type: Symfony\Component\Form\Extension\Core\Type\PasswordType, invalid_message: 'Passwords do not match',  required: false, first_options: {label: 'Password'}, second_options: {label: 'Password confirmation'} } }
-
         Area:
             class: App\Entity\Area
             label: "Gebouwdeel"
+            form:
+                fields:
+                    - name
+                    - code
+                    - { property: 'building', label: 'Gebouw', type_options: { required: true, choice_label: 'fullName' }}
         Building:
             class: App\Entity\Building
             label: "Gebouw"
