@@ -6,6 +6,7 @@ use App\Entity\Document;
 use App\Entity\Organisation;
 use App\Entity\User;
 use App\Repository\BuildingRepository;
+use App\Service\DocumentNameParserService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -21,12 +22,14 @@ class AdminController extends EasyAdminController
     private $passwordEncoder;
     private $buildingRepository;
     private $flashbag;
+    private $documentNamer;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, BuildingRepository $buildingRepository, FlashBagInterface $flashbag)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, BuildingRepository $buildingRepository, FlashBagInterface $flashbag, DocumentNameParserService $documentNamer)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->buildingRepository = $buildingRepository;
         $this->flashbag = $flashbag;
+        $this->documentNamer = $documentNamer;
     }
 
     protected function persistUserEntity(User $user)
@@ -51,6 +54,15 @@ class AdminController extends EasyAdminController
         // If the building is not owned by the parent location, generate an error. Document is niet aangemaakt.
         if (!$this->buildingRepository->findOneBy(['id' => $document->getBuilding(), 'location' => $document->getLocation()])) {
             $this->flashbag->add("danger", "Het gebouw is niet onderdeel van de geselecteerde locatie.");
+            return $this->redirectToReferrer();
+        }
+
+        // Check if the file is somewhere on disk so we don't accidentally overwrite it.
+        $fileName = $this->documentNamer->generateFileNameFromEntities($document->getBuilding(), $document->getDiscipline(), $document->getDocumentType(), $document->getVersion(), ".dwg", $document->getFloor());
+        $fs = new Filesystem();
+        if ($fs->exists($this->getParameter("document_upload_directory").$fileName))
+        {
+            $this->flashbag->add("danger", "Een document met deze bestandsnaam bestaat al. Het bestand is niet overschreven.");
             return $this->redirectToReferrer();
         }
 

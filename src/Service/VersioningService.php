@@ -96,9 +96,9 @@ class VersioningService {
             $currentDocument->getBuilding(),
             $currentDocument->getDiscipline(),
             $currentDocument->getDocumentType(),
-            $currentDocument->getFloor(),
             $currentDocument->getVersion() + 1, // +1 for the new revision
-            ".pdf"
+            ".pdf",
+            $currentDocument->getFloor()
         );
 
         $newPdfFile->move($directory, $newFileName);
@@ -121,9 +121,9 @@ class VersioningService {
             $currentDocument->getBuilding(),
             $currentDocument->getDiscipline(),
             $currentDocument->getDocumentType(),
-            $currentDocument->getFloor(),
             $currentDocument->getVersion() + 1, // +1 for the new revision
-            ".dwg"
+            ".dwg",
+            $currentDocument->getFloor()
         );
 
         $filesystem = new Filesystem();
