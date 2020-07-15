@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Document;
 use App\Entity\Organisation;
 use App\Entity\User;
+use App\Repository\BuildingRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AdminController
@@ -18,10 +19,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AdminController extends EasyAdminController
 {
     private $passwordEncoder;
+    private $buildingRepository;
+    private $flashbag;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, BuildingRepository $buildingRepository, FlashBagInterface $flashbag)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->buildingRepository = $buildingRepository;
+        $this->flashbag = $flashbag;
     }
 
     protected function persistUserEntity(User $user)
@@ -43,6 +48,12 @@ class AdminController extends EasyAdminController
 
     protected function persistDocumentEntity(Document $document)
     {
+        // If the building is not owned by the parent location, generate an error. Document is niet aangemaakt.
+        if (!$this->buildingRepository->findOneBy(['id' => $document->getBuilding(), 'location' => $document->getLocation()])) {
+            $this->flashbag->add("danger", "Het gebouw is niet onderdeel van de geselecteerde locatie.");
+            return $this->redirectToReferrer();
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         $document->setUploadedBy($user);
