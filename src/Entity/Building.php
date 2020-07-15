@@ -74,6 +74,27 @@ class Building
         return $this;
     }
 
+    /**
+     * This returns the full name of the location and the corresponding organisation name
+     * This is used to differentiate between two locations with the same name.
+     */
+    public function getFullName()
+    {
+        /** @var Organisation $organisation */
+        return $this->getLocation()->getOrganisation()->getName() . " : " . $this->getName();
+    }
+
+    /**
+     * This is only a stub because easyAdmin requires a setter and getter.
+     * This function only calls the setName function
+     * @param string $name
+     * @return Location
+     */
+    public function setFullName(string $name): self
+    {
+        return $this->setName($name);
+    }
+
     public function getCode(): ?string
     {
         return $this->code;

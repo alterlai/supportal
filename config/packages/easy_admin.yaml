@@ -35,10 +35,12 @@ easy_admin:
                     - name
                     - code
                     - description
-                    - { property: 'location', }
+                    - { property: 'location', label: 'Locatie', type_options: { required: true, choice_label: 'fullName' }}
         Location:
             class: App\Entity\Location
             label: "Locatie"
+            form:
+                fields: ['name', 'code', 'organisation']
         Discipline:
             class: App\Entity\Discipline
         Document:
@@ -50,7 +52,7 @@ easy_admin:
                     - filename
                     - { property: file_name, label: 'filename' }
                     - discipline
-                    - building
+                    - { property: 'building' }
                     - floor
                     - documentType
             form:
@@ -58,8 +60,8 @@ easy_admin:
                     - { property: 'file_content', label: 'DWG bestand', type: 'vich_file', type_options: { required: true }}
                     - { property: 'pdf_file', label: 'PDF bestand', type: 'vich_file', type_options: { required: true }}
                     - { property: 'description', label: 'Omschrijving document', type: 'textarea' }
-                    - { property: 'location', label: 'Locatie', type_options: { required: true }}
-                    - { property: 'building', label: 'Gebouw', type_options: { required: true }}
+                    - { property: 'location', label: 'Locatie', type_options: { required: true, choice_label: 'fullName' }}
+                    - { property: 'building', label: 'Gebouw', type_options: { required: true, choice_label: 'fullName' }}
                     - { property: 'floor', label: 'Verdieping' }
                     - { property: 'area', label: 'Gebouwdeel' }
                     - { property: 'discipline', type_options: { required: true } }
