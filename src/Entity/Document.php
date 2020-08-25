@@ -5,11 +5,18 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
  * @Vich\Uploadable
+ * @UniqueEntity(
+ *     fields={"discipline", "building", "version", "documentType"},
+ *     errorPath="location",
+ *     message="Een document met deze bestandsnaam bestaat al"
+ * )
+ * UNIQUE ENTITY NEEMT FLOOR NIET IN BESCHOUWING. DIT IS EEN BUG IN SYMFONY. UNIQUEENTITY TRIGGERT NIET OP NULL VALUES.
  */
 class Document
 {
