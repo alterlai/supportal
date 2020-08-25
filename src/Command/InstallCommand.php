@@ -20,19 +20,22 @@ class InstallCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $importDisciplines = $this->getApplication()->find('iqsupport:import:disciplines');
-        $importDocumentTypes = $this->getApplication()->find('iqsupport:import:documentTypes');
-        $generateAdmin = $this->getApplication()->find('iqsupport:generate:admin');
+        $commands = [
+            $this->getApplication()->find('iqsupport:import:disciplines'),
+            $this->getApplication()->find('iqsupport:import:documentTypes'),
+            $this->getApplication()->find('iqsupport:import:draftstatus'),
+            $this->getApplication()->find('iqsupport:generate:admin'),
+        ];
 
-        try {
-            $importDisciplines->run($input, $output);
-            $importDocumentTypes->run($input, $output);
-            $generateAdmin->run($input, $output);
-        }
-        catch (\Exception $e)
-        {
-            $io->error("Error executing command ");
-            $io->error($e);
+        foreach ($commands as $command) {
+            try {
+                $command->run($input, $output);
+            }
+            catch (\Exception $e)
+            {
+                $io->error("Error executing command ");
+                $io->error($e);
+            }
         }
 
         return 0;
