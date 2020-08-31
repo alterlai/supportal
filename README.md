@@ -246,9 +246,9 @@ Genereer het database schema met het volgende commando
 php bin/console doctrine:schema:create
 ```
 
-Om initeel toegang te krijgen tot de applicatie moet een admin account gegenereerd worden. Hiervoor is een command beschikbaar
+Om de benodigde applicatie data te prepareren en een administrator account te genereren, run het volgende commando.
 ```
- php bin/console iqsupport:generate:admin
+ php bin/console iqsupport:install
 
  ! [NOTE] Password: 58297494
 
